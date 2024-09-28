@@ -1,12 +1,12 @@
-import React from "react";
-import { Layout } from "./onboard.tsx";
+import React from 'react';
+import { Layout } from '../styles/layout';
 
 const GuestHome: React.FC = () => {
-  return (
-    <Layout>
-      <div>비회원용 홈페이지입니다.</div>
-    </Layout>
-  );
+    return (
+        <Layout>
+            <div>비회원용 홈페이지입니다.</div>
+        </Layout>
+    );
 };
 
 export default GuestHome;

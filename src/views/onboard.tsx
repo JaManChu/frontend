@@ -2,22 +2,10 @@ import '../App.css';
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { Layout } from '../styles/layout';
 
 // 스타일드 컴포넌트 부분 시작 //
 
-//레이아웃
-export const Layout = styled.div`
-    min-width: 100vw;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
-    color: black;
-`;
 //로고영역
 
 //로고div

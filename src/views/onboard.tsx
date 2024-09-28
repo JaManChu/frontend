@@ -1,11 +1,12 @@
 import "../App.css";
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 // 스타일드 컴포넌트 부분 시작 //
 
 //레이아웃
-const Layout = styled.div`
+export const Layout = styled.div`
   min-width: 100vw;
   min-height: 100vh;
   margin: 0;
@@ -15,6 +16,7 @@ const Layout = styled.div`
   align-items: center;
   justify-content: center;
   background-color: white;
+  color: black;
 `;
 //로고영역
 
@@ -24,6 +26,7 @@ const LogoDiv = styled.div`
   height: 100px;
   display: flex;
   gap: 200px;
+  margin-left: 500px;
 
   .title-wrapper {
     display: flex;
@@ -36,6 +39,7 @@ const LogoDiv = styled.div`
 
   strong {
     color: black;
+    text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
   }
 `;
 
@@ -93,6 +97,7 @@ const ButtonSection = styled.section`
 // 스타일드 컴포넌트 부분 끝//
 
 const Onboard: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <>
       <Layout>
@@ -134,8 +139,8 @@ const Onboard: React.FC = () => {
           </RecomendItem>
         </RecomendItems>
         <ButtonSection>
-          <Button>Join</Button>
-          <Button>둘러보기</Button>
+          <Button onClick={() => navigate("/signup")}>Join</Button>
+          <Button onClick={() => navigate("/guesthome")}>둘러보기</Button>
         </ButtonSection>
       </Layout>
     </>

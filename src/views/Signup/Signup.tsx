@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Layout } from '../styles/layout';
+import { Layout } from '../../styles/layout';
 
 const Wrapper = styled.div`
     display: flex;

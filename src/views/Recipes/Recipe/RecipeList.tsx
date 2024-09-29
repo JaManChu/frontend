@@ -19,12 +19,15 @@ interface RecipeProps {
 }
 interface RecipeListProps {
     recipes: RecipeProps[];
+    limit?: number;
 }
-export default function RecipeList({ recipes }: RecipeListProps) {
+export default function RecipeList({ recipes, limit }: RecipeListProps) {
+    const displayRecipes = limit ? recipes.slice(0, limit) : recipes;
+
     return (
         <RecipeContainer>
             {/* 데이터 연동하면 ...recipe로 코드 변경 필요 */}
-            {recipes.map((recipe: RecipeProps) => (
+            {displayRecipes.map((recipe: RecipeProps) => (
                 <RecipeCard
                     key={recipe.id}
                     id={recipe.id}

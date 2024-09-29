@@ -1,8 +1,8 @@
-import '../App.css';
+import '../../App.css';
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { Layout } from '../styles/layout';
+import { Layout } from '../../styles/layout';
 
 // 스타일드 컴포넌트 부분 시작 //
 

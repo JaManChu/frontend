@@ -38,20 +38,32 @@ const ModalButton = styled.button`
     font-size: 1rem;
     margin-top: 20px;
     width: 100px;
+    margin-left: 20px;
+`;
+
+const ButtonWrapper = styled.div`
+    display: flex;
 `;
 
 interface ModalProps {
     visible: boolean;
     onClose: () => void;
     children: React.ReactNode;
+    buttons?: { label: string; onClick: () => void }[];
 }
 
-const Modal: React.FC<ModalProps> = ({ visible, onClose, children }) => {
+const Modal: React.FC<ModalProps> = ({ visible, onClose, children, buttons }) => {
     return (
         <ModalWrapper visible={visible} onClick={onClose}>
             <ModalContent onClick={(e) => e.stopPropagation()}>
                 {children}
-                <ModalButton onClick={onClose}>취소</ModalButton>
+                <ButtonWrapper>
+                    {buttons?.map((button, index) => (
+                        <ModalButton key={index} onClick={button.onClick}>
+                            {button.label}
+                        </ModalButton>
+                    ))}
+                </ButtonWrapper>
             </ModalContent>
         </ModalWrapper>
     );

@@ -121,7 +121,7 @@ const Onboard: React.FC = () => {
                     </RecomendItem>
                 </RecomendItems>
                 <ButtonSection>
-                    <Button onClick={() => navigate('/signup')}>Join</Button>
+                    <Button onClick={() => navigate('/login')}>Join</Button>
                     <Button onClick={() => navigate('/guesthome')}>둘러보기</Button>
                 </ButtonSection>
             </Layout>

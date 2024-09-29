@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { FiLogOut, FiUser } from 'react-icons/fi';
 
 const HeaderSection = styled.section`
-    height: 10vh;
+    height: 70px;
     padding: 16px;
     font-size: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -38,13 +38,15 @@ const StyledLink = styled(Link)`
 `;
 const UserAction = styled.div`
     flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
     cursor: pointer;
 `;
 
 export default function Header() {
     const [isActive, setIsActive] = useState<string>('Home');
     const menuItems = [
-        { name: 'Home', to: '/' },
+        { name: 'Home', to: '/main' },
         { name: 'Recommend', to: '/recipes/recommended' },
         { name: 'Popular', to: '/recipes/popular' },
         { name: 'Latest', to: '/recipes/latest' },

@@ -1,4 +1,3 @@
-import '../../App.css';
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
@@ -69,9 +68,15 @@ const RecomendItem = styled.div`
     border-radius: 10px;
     width: 350px;
     padding: 20px;
+    flex-shrink: 0;
 
     span {
         color: black;
+    }
+
+    img {
+        width: 100%;
+        height: auto;
     }
 `;
 

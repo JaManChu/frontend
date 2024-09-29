@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout } from '../styles/layout';
+import { Layout } from '../../styles/layout';
 
 const GuestHome: React.FC = () => {
     return (

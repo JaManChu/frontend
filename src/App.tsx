@@ -1,9 +1,9 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
-import Onboard from './views/onboard.tsx';
-import Login from './views/login.tsx';
-import Signup from './views/signup.tsx';
-import Mypage from './views/mypage.tsx';
-import GuestHome from './views/guestHome.tsx';
+import Onboard from './views/Onboard/Onboard.tsx';
+import Login from './views/Login/Login.tsx';
+import Signup from './views/Signup/Signup.tsx';
+import Mypage from './views/Mypage/Mypage.tsx';
+import GuestHome from './views/GuestHome/GuestHome.tsx';
 import Header from './components/Header/Header.tsx';
 import Main from './views/Main/Main.tsx';
 

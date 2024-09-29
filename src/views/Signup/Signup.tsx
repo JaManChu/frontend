@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Layout } from '../../styles/layout';
-import Modal from '../../components/Modal';
+import Modal from '../../components/Modal/Modal';
 
 const Wrapper = styled.div`
     display: flex;
@@ -15,7 +15,7 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h1`
-    font-size: 2rem;
+    font-size: 2.5rem;
 `;
 
 const Input = styled.input<{ isError: boolean }>`
@@ -30,6 +30,7 @@ const Input = styled.input<{ isError: boolean }>`
 
 const CombineWrapper = styled.section`
     display: flex;
+    margin-top: 30px;
 `;
 
 const LeftWrapper = styled.section`
@@ -182,6 +183,10 @@ const Signup: React.FC = () => {
         setIsModalVisible(true); // 모달을 띄움
     };
 
+    const handleClose = () => {
+        setIsModalVisible(false);
+    };
+
     return (
         <Layout>
             <Wrapper>
@@ -237,7 +242,7 @@ const Signup: React.FC = () => {
                 <Button onClick={handleSubmit}>회원가입</Button>
 
                 {isModalVisible && (
-                    <Modal visible={isModalVisible} onClose={() => setIsModalVisible(false)}>
+                    <Modal visible={isModalVisible} onClose={handleClose} buttons={[{ label: '확인', onClick: handleClose }]}>
                         <h2>중복 확인</h2>
                         <p>이미 사용중인 이메일입니다.</p>
                     </Modal>

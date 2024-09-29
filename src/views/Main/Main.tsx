@@ -1,0 +1,94 @@
+import { ChangeEvent, useState } from 'react';
+import Latest from '../Recipes/Latest/Latest';
+import Popular from '../Recipes/Popular/Popular';
+import Recommend from '../Recipes/Recommend/Recommend';
+import styled from 'styled-components';
+import axios from 'axios';
+import { CiSearch } from 'react-icons/ci';
+
+const MainContainer = styled.section`
+    background-color: #f5f4f3;
+    height: 100vh;
+`;
+const MainImage = styled.img`
+    display: block;
+    width: 100%;
+    height: 100px;
+    border: 1px solid #000;
+`;
+const SearchArea = styled.div`
+    width: 50%;
+    margin: 16px auto;
+    position: relative;
+`;
+const SearchBox = styled.input`
+    display: block;
+    width: 90%;
+    height: 40px;
+    padding-left: 16px;
+    border: transparent;
+    border-radius: 16px;
+    color: black;
+    background-color: rgba(239, 182, 63, 0.2);
+`;
+const SearchIcon = styled(CiSearch)`
+    position: absolute;
+    right: 15%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    cursor: pointer;
+`;
+
+export default function Main() {
+    const [searched, setSearched] = useState<string>('');
+    const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
+    const [message, setMessage] = useState<string>('');
+
+    const changeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        const search = e.target.value;
+        setSelectedIngredients(search.split(' '));
+        setSearched(search);
+    };
+
+    const handleSubmit = async () => {
+        if (searched === '') {
+            alert('검색어를 입력해주세요');
+        } else {
+            alert(selectedIngredients);
+        }
+        const response = await axios.get('/recipes/search');
+        // ! 데이터 들어오는 구조 확인 - 데이터 받아오면 setSelectedIngredients 데이터 가공해서 화면 렌더링 처리
+        try {
+        } catch (err: any) {
+            console.log(err);
+            setMessage(err);
+        }
+    };
+
+    const handleActiveEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleSubmit();
+        }
+    };
+    return (
+        <MainContainer>
+            <MainImage src="" alt="메인페이지 이미지" />
+            <SearchArea>
+                <SearchBox
+                    type="text"
+                    value={searched}
+                    onChange={(e) => changeInputHandler(e)}
+                    onKeyDown={(e) => handleActiveEnter(e)}
+                    placeholder="재료를 입력해주세요."
+                />
+                <SearchIcon onClick={handleSubmit} />
+            </SearchArea>
+
+            <Recommend />
+            <Latest />
+            <Popular />
+        </MainContainer>
+    );
+}

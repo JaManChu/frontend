@@ -16,6 +16,7 @@ function App() {
                 <Route path="/signup" element={<Signup />} />
                 {/* Header 추가해야하는 컴포넌트는 Header 아래에 작성 */}
                 <Route element={<Header />}>
+                    <Route path="/signup" element={<Signup />} />
                     <Route path="/mypage" element={<Mypage />} />
                     <Route path="/guesthome" element={<GuestHome />} />
                     <Route path="/main" element={<Main />} />

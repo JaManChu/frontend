@@ -24,7 +24,7 @@ interface RecipeListProps {
 }
 export default function RecipeList({ recipes, limit, isMain }: RecipeListProps) {
     const displayRecipes = limit ? recipes.slice(0, limit) : recipes;
-    console.log(isMain);
+
     return (
         <RecipeContainer isMain={isMain}>
             {/* 데이터 연동하면 ...recipe로 코드 변경 필요 */}

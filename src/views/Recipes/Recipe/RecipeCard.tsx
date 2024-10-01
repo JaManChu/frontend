@@ -3,17 +3,19 @@ import { Link } from 'react-router-dom';
 import { FaStairs, FaRegClock, FaRegStar, FaRegBookmark, FaBookmark } from 'react-icons/fa6';
 import styled from 'styled-components';
 
+// main 페이지가 아닌 Latest에서 isMain을 콘솔에 찍으면 false값이 찍힘 -> 최적화 방안 생각(RecipeCard에서는 4번 : main, latest, recipeList, recipeCard인듯
+
 const RecipeCardFigure = styled.figure<{ isMain: boolean }>`
     border: 1px solid lightgrey;
-    border-radius: ${(isMain) => (isMain ? 0 : '8px')};
+    border-radius: ${({ isMain }) => (isMain ? '0' : '8px')};
     display: flex;
     position: relative;
 
-    height: ${(isMain) => (isMain ? '300px' : '200px')};
+    height: ${({ isMain }) => (isMain ? '300px' : '200px')};
     img {
         display: block;
         min-width: 200px;
-        width: ${(isMain) => (isMain ? '50%' : '30%')};
+        width: ${(props) => (props.isMain ? '50%' : '30%')};
         border-right: 1px solid lightgrey;
         flex-shrink: 0;
     }
@@ -74,7 +76,7 @@ interface CardProps {
 
 export default function RecipeCard({ isMain = false, id, title, image, time, level, rate, desc }: CardProps) {
     const [marked, setMarked] = useState<boolean>(false);
-
+    console.log(isMain);
     return (
         <RecipeCardFigure isMain={isMain}>
             <img src={image} alt="레시피이미지" />

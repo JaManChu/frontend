@@ -9,7 +9,6 @@ interface RecipeLimitProps {
 }
 
 export default function Latest({ limit, isMain }: RecipeLimitProps) {
-    console.log('latest, ', isMain);
     const [recipes, setRecipes] = useState<string[]>([]);
     useEffect(() => {
         const fetchRecipes = async () => {

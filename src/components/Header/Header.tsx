@@ -56,7 +56,6 @@ export default function Header() {
         { name: 'Popular', to: '/recipes/popular' },
         { name: 'Latest', to: '/recipes/latest' },
     ];
-    console.log(isActive);
     const handleClickMenu = (menu: string): void => {
         setIsActive(menu);
         localStorage.setItem('menu', menu);

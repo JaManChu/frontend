@@ -1,11 +1,289 @@
-import React from "react";
+import React from 'react';
+import styled from 'styled-components';
+import Modal from '../../components/Modal/Modal';
+import { useState } from 'react';
+const Row_layout = styled.div`
+    min-width: 100vw;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    color: black;
+`;
+
+const Favorites_wrapper = styled.div`
+    width: 35%;
+`;
+
+const Post_wrapper = styled.div`
+    width: 35%;
+`;
+
+const Card_List = styled.div`
+    width: 35%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 10px;
+    margin-top: 50px;
+    margin-left: 50px;
+`;
+
+const Card = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    height: 300px;
+    text-align: center;
+    font-size: 1.5rem;
+    background-color: #ccc;
+    p {
+        margin-top: 10px;
+    }
+`;
+
+const User_info_Wrapper = styled.div`
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
+
+const Info_wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    img {
+        margin-bottom: 50px;
+        width: 150px;
+        height: 150px;
+    }
+    p {
+        margin-top: 10px;
+        font-size: 1.5rem;
+    }
+`;
+
+const Update_button_wrapper = styled.div`
+    margin-top: 60px;
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+`;
+
+const Update_button = styled.button`
+    width: 150px;
+    height: 50px;
+    background-color: #f59910;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+`;
+
+const Title = styled.h1`
+    font-size: 2rem;
+    margin-left: 70px;
+`;
+
+const Input = styled.input<{ isError: boolean }>`
+    width: 400px;
+    height: 45px;
+    color: gray;
+    margin-top: 20px;
+    border-radius: 10px;
+    font-size: 1rem;
+    border: ${(props) => (props.isError ? '2px solid red' : '1px solid #ccc')};
+`;
+
+const ErrorMessage = styled.p<{ visible: boolean }>`
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    margin-right: 260px;
+    min-height: 20px;
+    visibility: ${(props) => (props.visible ? 'visible' : 'hidden')};
+`;
+
+const favorites_recipe = [
+    { name: '김치볶음밥', img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg' },
+    { name: '계란말이', img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg' },
+    { name: '만두', img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg' },
+    { name: '짜장면', img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg' },
+];
+
+const post_list = [
+    { name: '게시글1', img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg' },
+    { name: '게시글2', img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg' },
+    { name: '게시글3', img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg' },
+    { name: '게시글4', img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg' },
+];
+
+const user_info = {
+    email: 'abc@naver.com',
+    nickName: '제로베이스',
+    img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg',
+};
 
 const Mypage: React.FC = () => {
-  return (
-    <>
-      <div>마이페이지입니다.</div>
-    </>
-  );
+    const [isNickModalVisible, setIsNickModalVisible] = useState(false);
+    const [isPwModalVisible, setIsPwModalVisible] = useState(false);
+
+    const handleNickClose = () => {
+        setIsNickModalVisible(false);
+    };
+
+    const handlePwClose = () => {
+        setIsPwModalVisible(false);
+    };
+
+    const handleNickUpdate = () => {
+        console.log('닉네임수정 로직실행');
+    };
+
+    const handlePasswordUpdate = () => {
+        console.log('비밀번호수정 로직실행');
+    };
+
+    const [updateNick, setUpdateNick] = useState('');
+
+    //유효성검사
+    const [pw, setPw] = useState('');
+    const [pwCheck, setPwCheck] = useState('');
+    const [errors, setErrors] = useState<{ [key: string]: string }>({
+        pw: '',
+        pwCheck: '',
+    });
+
+    const [touched, setTouched] = useState<{ [key: string]: boolean }>({
+        pw: false,
+        pwCheck: false,
+    });
+
+    const validateField = (field: string) => {
+        const newErrors = { ...errors };
+        switch (field) {
+            case 'pw':
+                if (!pw) {
+                    newErrors.pw = '비밀번호를 입력하세요';
+                } else {
+                    newErrors.pw = '';
+                }
+                break;
+            case 'pwCheck':
+                if (!pwCheck) {
+                    newErrors.pwCheck = '비밀번호 확인을 입력하세요';
+                } else if (pw !== pwCheck) {
+                    newErrors.pwCheck = '비밀번호가 일치하지 않습니다.';
+                } else {
+                    newErrors.pwCheck = '';
+                }
+                break;
+            default:
+                break;
+        }
+        setErrors(newErrors);
+    };
+
+    const handleBlur = (field: string) => {
+        setTouched((prev) => ({ ...prev, [field]: true }));
+        validateField(field);
+    };
+
+    const clearFieldError = (field: string) => {
+        const newErrors = { ...errors };
+        newErrors[field] = '';
+        setErrors(newErrors);
+    };
+
+    return (
+        <Row_layout>
+            <Favorites_wrapper>
+                <Title>찜한 레시피</Title>
+                <Card_List>
+                    {favorites_recipe.map((recipe) => (
+                        <Card>
+                            <img src={recipe.img}></img>
+                            <p>{recipe.name}</p>
+                        </Card>
+                    ))}
+                </Card_List>
+            </Favorites_wrapper>
+            <Post_wrapper>
+                <Title>작성한 게시글 목록</Title>
+                <Card_List>
+                    {post_list.map((post) => (
+                        <Card>
+                            <img src={post.img}></img>
+                            <p>{post.name}</p>
+                        </Card>
+                    ))}
+                </Card_List>
+            </Post_wrapper>
+            <User_info_Wrapper>
+                <Info_wrapper>
+                    <img src={user_info.img} alt="user-profile"></img>
+                    <p>이메일:{user_info.email}</p>
+                    <p>닉네임:{user_info.nickName}</p>
+                </Info_wrapper>
+                <Update_button_wrapper>
+                    <Update_button onClick={() => setIsNickModalVisible(true)}>닉네임수정</Update_button>
+                    {isNickModalVisible && (
+                        <Modal
+                            visible={isNickModalVisible}
+                            onClose={handleNickClose}
+                            buttons={[
+                                { label: '확인', onClick: handleNickUpdate },
+                                { label: '취소', onClick: handleNickClose },
+                            ]}
+                        >
+                            <h1>닉네임 수정</h1>
+                            <p>이메일 : {user_info.email}</p>
+                            <input value={updateNick} placeholder="변경할 닉네임을 입력하세요" onChange={(e) => setUpdateNick(e.target.value)} />
+                        </Modal>
+                    )}
+                    <Update_button onClick={() => setIsPwModalVisible(true)}>
+                        비밀번호 수정
+                        {isPwModalVisible && (
+                            <Modal
+                                visible={isPwModalVisible}
+                                onClose={handlePwClose}
+                                buttons={[
+                                    { label: '확인', onClick: handlePasswordUpdate },
+                                    { label: '취소', onClick: handlePwClose },
+                                ]}
+                            >
+                                <h1>비밀번호 수정</h1>
+                                <p>이메일 : {user_info.email}</p>
+                                <Input
+                                    value={pw}
+                                    placeholder="기존 비밀번호를 입력하세요"
+                                    onChange={(e) => setPw(e.target.value)}
+                                    isError={!!errors.pw && touched.pw}
+                                    onFocus={() => clearFieldError('pw')}
+                                    onBlur={() => handleBlur('pw')}
+                                />
+                                <ErrorMessage visible={!!errors.pw && touched.pw}>{errors.pw}</ErrorMessage>
+                                <Input
+                                    value={pwCheck}
+                                    placeholder="변경할 비밀번호를 입력하세요"
+                                    onChange={(e) => setPwCheck(e.target.value)}
+                                    isError={!!errors.pw && touched.pw}
+                                    onFocus={() => clearFieldError('pwCheck')}
+                                    onBlur={() => handleBlur('pwCheck')}
+                                />
+                                <ErrorMessage visible={!!errors.pwCheck && touched.pwCheck}>{errors.pwCheck}</ErrorMessage>
+                            </Modal>
+                        )}
+                    </Update_button>
+                </Update_button_wrapper>
+            </User_info_Wrapper>
+        </Row_layout>
+    );
 };
 
 export default Mypage;

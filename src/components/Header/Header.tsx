@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FiLogOut, FiUser } from 'react-icons/fi';
@@ -44,15 +44,22 @@ const UserAction = styled.div`
 `;
 
 export default function Header() {
-    const [isActive, setIsActive] = useState<string>('Home');
+    const [isActive, setIsActive] = useState<string>();
+    useEffect(() => {
+        const getMenu = localStorage.getItem('menu') || 'Home';
+        setIsActive(getMenu);
+    }, []);
+
     const menuItems = [
         { name: 'Home', to: '/main' },
         { name: 'Recommend', to: '/recipes/recommended' },
         { name: 'Popular', to: '/recipes/popular' },
         { name: 'Latest', to: '/recipes/latest' },
     ];
+    console.log(isActive);
     const handleClickMenu = (menu: string): void => {
         setIsActive(menu);
+        localStorage.setItem('menu', menu);
     };
 
     return (
@@ -60,11 +67,13 @@ export default function Header() {
             <HeaderSection>
                 <Logo src="" alt="LOGO" />
                 <MenuList>
-                    {menuItems.map((item, idx) => (
-                        <MenuItem key={item.name + idx} active={isActive == item.name} onClick={() => handleClickMenu(item.name)}>
-                            <StyledLink to={`${item.to}`}>{item.name}</StyledLink>
-                        </MenuItem>
-                    ))}
+                    {menuItems.map((item, idx) => {
+                        return (
+                            <MenuItem key={item.name + idx} active={isActive === item.name} onClick={() => handleClickMenu(item.name)}>
+                                <StyledLink to={`${item.to}`}>{item.name}</StyledLink>
+                            </MenuItem>
+                        );
+                    })}
                 </MenuList>
                 <UserAction>
                     <StyledLink to="/">

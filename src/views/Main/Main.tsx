@@ -5,6 +5,7 @@ import Recommend from '../Recipes/Recommend/Recommend';
 import styled from 'styled-components';
 import axios from 'axios';
 import { CiSearch } from 'react-icons/ci';
+import { useLocation } from 'react-router-dom';
 
 const MainContainer = styled.section`
     background-color: #f5f4f3;
@@ -44,6 +45,9 @@ export default function Main() {
     const [searched, setSearched] = useState<string>('');
     const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
     const [message, setMessage] = useState<string>('');
+
+    const { pathname } = useLocation();
+    const isMain = pathname == '/main';
 
     const changeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const search = e.target.value;
@@ -85,9 +89,11 @@ export default function Main() {
                 />
                 <SearchIcon onClick={handleSubmit} />
             </SearchArea>
-
+            This if Recommended Recipes
             <Recommend />
-            <Latest />
+            {/* 리덕스 툴킷 도입 : 최근레시피 전역상태관리 - RecipePageHeader + RecipeList 호출가능?  */}
+            <Latest limit={1} isMain={isMain} />
+            This if Popular Recipes
             <Popular />
         </MainContainer>
     );

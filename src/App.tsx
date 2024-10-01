@@ -6,6 +6,9 @@ import Mypage from './views/Mypage/Mypage.tsx';
 import GuestHome from './views/GuestHome/GuestHome.tsx';
 import Header from './components/Header/Header.tsx';
 import Main from './views/Main/Main.tsx';
+import Latest from './views/Recipes/Latest/Latest.tsx';
+import Popular from './views/Recipes/Popular/Popular.tsx';
+import Recommend from './views/Recipes/Recommend/Recommend.tsx';
 
 function App() {
     return (
@@ -16,10 +19,12 @@ function App() {
                 <Route path="/signup" element={<Signup />} />
                 {/* Header 추가해야하는 컴포넌트는 Header 아래에 작성 */}
                 <Route element={<Header />}>
-                    <Route path="/signup" element={<Signup />} />
                     <Route path="/mypage" element={<Mypage />} />
                     <Route path="/guesthome" element={<GuestHome />} />
                     <Route path="/main" element={<Main />} />
+                    <Route path="/recipes/recommended" element={<Recommend />} />
+                    <Route path="/recipes/popular" element={<Popular />} />
+                    <Route path="/recipes/latest" element={<Latest />} />
                 </Route>
             </Routes>
         </BrowserRouter>

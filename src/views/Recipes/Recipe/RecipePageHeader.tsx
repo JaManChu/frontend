@@ -26,11 +26,7 @@ export default function RecipePageHeader({ title }: TitleProps) {
     return (
         <>
             <TitleHeader>
-                <Title>
-                    Choose for your meal,
-                    <br />
-                    {title} Recipes
-                </Title>
+                <Title>{title} Recipes 입니다.</Title>
                 <img src="" alt="음식이미지" />
             </TitleHeader>
         </>

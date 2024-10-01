@@ -1,11 +1,11 @@
 import RecipeCard from './RecipeCard';
 import styled from 'styled-components';
 
-const RecipeContainer = styled.section`
-    padding: 30px;
+const RecipeContainer = styled.section<{ isMain?: boolean }>`
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
+    padding: ${(props) => (props.isMain ? '0px' : '30px;')};
+    grid-template-columns: ${(props) => (props.isMain ? '1fr' : 'repeat(2, 1fr)')};
 `;
 
 interface RecipeProps {
@@ -20,24 +20,16 @@ interface RecipeProps {
 interface RecipeListProps {
     recipes: RecipeProps[];
     limit?: number;
+    isMain?: boolean;
 }
-export default function RecipeList({ recipes, limit }: RecipeListProps) {
+export default function RecipeList({ recipes, limit, isMain }: RecipeListProps) {
     const displayRecipes = limit ? recipes.slice(0, limit) : recipes;
-
+    console.log(isMain);
     return (
-        <RecipeContainer>
+        <RecipeContainer isMain={isMain}>
             {/* 데이터 연동하면 ...recipe로 코드 변경 필요 */}
             {displayRecipes.map((recipe: RecipeProps) => (
-                <RecipeCard
-                    key={recipe.id}
-                    id={recipe.id}
-                    title={recipe.title}
-                    image={recipe.image}
-                    time={recipe.time}
-                    level={recipe.level}
-                    rate={recipe.rate}
-                    desc={recipe.desc}
-                />
+                <RecipeCard key={recipe.id} {...recipe} isMain={isMain} />
             ))}
         </RecipeContainer>
     );

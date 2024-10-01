@@ -1,22 +1,30 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaStairs, FaRegClock, FaRegStar, FaRegBookmark, FaBookmark, FaBook } from 'react-icons/fa6';
+import { FaStairs, FaRegClock, FaRegStar, FaRegBookmark, FaBookmark } from 'react-icons/fa6';
 import styled from 'styled-components';
 
-const RecipeCardFigure = styled.figure`
-    height: 200px;
+const RecipeCardFigure = styled.figure<{ isMain: boolean }>`
     border: 1px solid lightgrey;
-    border-radius: 8px;
+    border-radius: ${(isMain) => (isMain ? 0 : '8px')};
     display: flex;
     position: relative;
 
+    height: ${(isMain) => (isMain ? '300px' : '200px')};
     img {
+        display: block;
         min-width: 200px;
+        width: ${(isMain) => (isMain ? '50%' : '30%')};
+        border-right: 1px solid lightgrey;
+        flex-shrink: 0;
     }
 `;
 const RecipeFigcaption = styled.figcaption`
     padding: 16px;
     text-align: center;
+`;
+const RecipePageTitle = styled.h2`
+    margin: 16px;
+    font-size: 40px;
 `;
 const RecipeInfo = styled.div`
     height: 40px;
@@ -54,6 +62,7 @@ const BookmarkIcons = styled.span<{ mark: boolean }>`
 `;
 
 interface CardProps {
+    isMain?: boolean;
     id: string;
     title: string;
     image: string;
@@ -63,32 +72,30 @@ interface CardProps {
     desc: string;
 }
 
-export default function RecipeCard(props: CardProps) {
+export default function RecipeCard({ isMain = false, id, title, image, time, level, rate, desc }: CardProps) {
     const [marked, setMarked] = useState<boolean>(false);
 
     return (
-        <RecipeCardFigure>
-            <img src={props.image} alt="레시피이미지" />
+        <RecipeCardFigure isMain={isMain}>
+            <img src={image} alt="레시피이미지" />
             <RecipeFigcaption>
+                {isMain && <RecipePageTitle>Latest Rcipes</RecipePageTitle>}
                 <h4>
-                    <Linked to={`/recipes/${props.id}`}>{props.title}</Linked>
+                    <Linked to={`/recipes/${id}`}>{title}</Linked>
                 </h4>
                 <BookmarkIcons mark={marked} onClick={() => setMarked(!marked)}>
                     {marked ? <FaBookmark /> : <FaRegBookmark />}
                 </BookmarkIcons>
-
                 <RecipeInfo>
                     <FaRegClock />
-                    <RecipeInfoItem>{props.time}</RecipeInfoItem>
+                    <RecipeInfoItem>{time}</RecipeInfoItem>
                     <FaStairs />
-                    <RecipeInfoItem>{props.level}</RecipeInfoItem>
+                    <RecipeInfoItem>{level}</RecipeInfoItem>
                     <FaRegStar />
-                    <RecipeInfoItem>{props.rate}</RecipeInfoItem>
+                    <RecipeInfoItem>{rate}</RecipeInfoItem>
                 </RecipeInfo>
-                <RecipeDescription>{props.desc}</RecipeDescription>
-                <span>
-                    <Linked to={`/recipes/${props.id}`}>view more</Linked>
-                </span>
+                <RecipeDescription>{desc}</RecipeDescription>
+                <span>{isMain ? <Linked to={`/recipes/latest`}>view more</Linked> : <Linked to={`/recipes/${id}`}>view more</Linked>}</span>
             </RecipeFigcaption>
         </RecipeCardFigure>
     );

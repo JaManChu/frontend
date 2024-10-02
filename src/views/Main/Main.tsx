@@ -6,16 +6,18 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { CiSearch } from 'react-icons/ci';
 import { useLocation } from 'react-router-dom';
+import mainImage from '../../assets/img/spoon.jpg';
+import Visited from '../Visited/Visited';
 
 const MainContainer = styled.section`
     background-color: #f5f4f3;
-    height: 100vh;
+    min-height: 100vh;
 `;
 const MainImage = styled.img`
     display: block;
     width: 100%;
-    height: 100px;
-    border: 1px solid #000;
+    height: 250px;
+    object-fit: cover;
 `;
 const SearchArea = styled.div`
     width: 50%;
@@ -39,6 +41,11 @@ const SearchIcon = styled(CiSearch)`
     transform: translateY(-50%);
     font-size: 20px;
     cursor: pointer;
+`;
+
+const VisitedPopularWrapper = styled.div`
+    display: flex;
+    height: auto;
 `;
 
 export default function Main() {
@@ -78,7 +85,7 @@ export default function Main() {
     };
     return (
         <MainContainer>
-            <MainImage src="" alt="메인페이지 이미지" />
+            <MainImage src={mainImage} alt="메인페이지 이미지" />
             <SearchArea>
                 <SearchBox
                     type="text"
@@ -89,12 +96,13 @@ export default function Main() {
                 />
                 <SearchIcon onClick={handleSubmit} />
             </SearchArea>
-            This if Recommended Recipes
-            <Recommend />
-            {/* 리덕스 툴킷 도입 : 최근레시피 전역상태관리 - RecipePageHeader + RecipeList 호출가능?  */}
-            <Latest limit={1} isMain={isMain} />
-            This if Popular Recipes
-            <Popular />
+            {/* 리덕스 툴킷 도입 : 레시피페이지 전역상태관리 - RecipePageHeader + RecipeList 호출가능?  */}
+            <Recommend limit={4} page="recommended" />
+            <Latest limit={1} page="latest" />
+            <VisitedPopularWrapper>
+                <Popular limit={2} page="popular" />
+                <Visited />
+            </VisitedPopularWrapper>
         </MainContainer>
     );
 }

@@ -6,10 +6,10 @@ import fakeData from '../../../fakeData/recipeFake.js';
 
 interface RecipeLimitProps {
     limit?: number;
-    isMain?: boolean;
+    page?: string;
 }
 
-export default function Latest({ limit, isMain }: RecipeLimitProps) {
+export default function Latest({ limit, page }: RecipeLimitProps) {
     const [recipes, setRecipes] = useState<string[]>([]);
     useEffect(() => {
         const fetchRecipes = async () => {
@@ -21,8 +21,8 @@ export default function Latest({ limit, isMain }: RecipeLimitProps) {
 
     return (
         <>
-            {!isMain && <RecipePageHeader title="Latest" />}
-            <RecipeList recipes={fakeData} limit={limit} isMain={isMain} />
+            {!page && <RecipePageHeader title="Latest" />}
+            <RecipeList recipes={fakeData} limit={limit} page={page} />
         </>
     );
 }

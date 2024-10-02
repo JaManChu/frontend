@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FiLogOut, FiUser } from 'react-icons/fi';
+import logo from '../../assets/img/logo.png';
 
 const HeaderSection = styled.section`
     height: 70px;
@@ -13,7 +14,8 @@ const HeaderSection = styled.section`
     align-items: center;
 `;
 const Logo = styled.img`
-    flex-grow: 2;
+    margin-top: 5px;
+    width: 150px;
 `;
 const MenuList = styled.ul`
     padding: 0;
@@ -64,7 +66,7 @@ export default function Header() {
     return (
         <>
             <HeaderSection>
-                <Logo src="" alt="LOGO" />
+                <Logo src={logo} alt="LOGO" />
                 <MenuList>
                     {menuItems.map((item, idx) => {
                         return (

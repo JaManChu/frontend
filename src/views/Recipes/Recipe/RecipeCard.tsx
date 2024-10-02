@@ -5,27 +5,32 @@ import styled from 'styled-components';
 
 // main 페이지가 아닌 Latest에서 isMain을 콘솔에 찍으면 false값이 찍힘 -> 최적화 방안 생각(RecipeCard에서는 4번 : main, latest, recipeList, recipeCard인듯
 
-const RecipeCardFigure = styled.figure<{ isMain: boolean }>`
+const RecipeCardFigure = styled.figure<{ page: string }>`
+    margin: 8px;
+    height: ${({ page }) => (page ? '300px' : '200px')};
     border: 1px solid lightgrey;
-    border-radius: ${({ isMain }) => (isMain ? '0' : '8px')};
+    border-radius: ${(props) => (props.page == 'latest' ? '0' : '8px')};
     display: flex;
+    flex-direction: ${(props) => (props.page == 'popular' || props.page == 'recommended' ? 'column' : 'row')};
     position: relative;
 
-    height: ${({ isMain }) => (isMain ? '300px' : '200px')};
     img {
-        display: block;
         min-width: 200px;
-        width: ${(props) => (props.isMain ? '50%' : '30%')};
-        border-right: 1px solid lightgrey;
+        width: ${(props) => (props.page == 'latest' ? '50%' : props.page == 'recommended' || props.page == 'popular' ? '100%' : '30%')};
+        height: ${(props) => (props.page == 'recommended' ? '60%' : '100%')};
+        border-right: ${(props) => (props.page == 'popular' || props.page == 'recommended' ? 'none' : '1px solid lightgrey')};
+        border-bottom: ${(props) => (props.page == 'popular' || props.page == 'recommended' ? '1px solid lightgrey' : 'none')};
         flex-shrink: 0;
     }
 `;
-const RecipeFigcaption = styled.figcaption`
+const RecipeFigcaption = styled.figcaption<{ page: string }>`
     padding: 16px;
     text-align: center;
+    background-color: ${(props) => (props.page === 'latest' ? '#D9D9D9' : ' transparent')};
 `;
 const RecipePageTitle = styled.h2`
     margin: 16px;
+    color: #622b18;
     font-size: 40px;
 `;
 const RecipeInfo = styled.div`
@@ -64,7 +69,7 @@ const BookmarkIcons = styled.span<{ mark: boolean }>`
 `;
 
 interface CardProps {
-    isMain?: boolean;
+    page?: string;
     id: string;
     title: string;
     image: string;
@@ -74,30 +79,34 @@ interface CardProps {
     desc: string;
 }
 
-export default function RecipeCard({ isMain = false, id, title, image, time, level, rate, desc }: CardProps) {
+export default function RecipeCard({ page = '', id, title, image, time, level, rate, desc }: CardProps) {
     const [marked, setMarked] = useState<boolean>(false);
-    console.log(isMain);
+
     return (
-        <RecipeCardFigure isMain={isMain}>
+        <RecipeCardFigure page={page}>
             <img src={image} alt="레시피이미지" />
-            <RecipeFigcaption>
-                {isMain && <RecipePageTitle>Latest Rcipes</RecipePageTitle>}
+            <RecipeFigcaption page={page}>
+                {page == 'latest' ? <RecipePageTitle>{page.replace(/\b[a-z]/, (letter) => letter.toUpperCase())} Rcipes</RecipePageTitle> : null}
                 <h4>
                     <Linked to={`/recipes/${id}`}>{title}</Linked>
                 </h4>
                 <BookmarkIcons mark={marked} onClick={() => setMarked(!marked)}>
                     {marked ? <FaBookmark /> : <FaRegBookmark />}
                 </BookmarkIcons>
-                <RecipeInfo>
-                    <FaRegClock />
-                    <RecipeInfoItem>{time}</RecipeInfoItem>
-                    <FaStairs />
-                    <RecipeInfoItem>{level}</RecipeInfoItem>
-                    <FaRegStar />
-                    <RecipeInfoItem>{rate}</RecipeInfoItem>
-                </RecipeInfo>
-                <RecipeDescription>{desc}</RecipeDescription>
-                <span>{isMain ? <Linked to={`/recipes/latest`}>view more</Linked> : <Linked to={`/recipes/${id}`}>view more</Linked>}</span>
+                {page != 'popular' ? (
+                    <RecipeInfo>
+                        <FaRegClock />
+                        <RecipeInfoItem>{time}</RecipeInfoItem>
+                        <FaStairs />
+                        <RecipeInfoItem>{level}</RecipeInfoItem>
+                        <FaRegStar />
+                        <RecipeInfoItem>{rate}</RecipeInfoItem>
+                    </RecipeInfo>
+                ) : null}
+                {page == 'popular' || page == 'recommended' ? null : <RecipeDescription>{desc}</RecipeDescription>}
+                <span>
+                    <Linked to={`/recipes/${id}`}>view more</Linked>
+                </span>
             </RecipeFigcaption>
         </RecipeCardFigure>
     );

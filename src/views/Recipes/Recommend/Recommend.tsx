@@ -3,12 +3,19 @@ import RecipeList from '../Recipe/RecipeList';
 import RecipePageHeader from '../Recipe/RecipePageHeader';
 import axios from 'axios';
 import fakeData from '../../../fakeData/recipeFake.js';
+import styled from 'styled-components';
 
+const RecipePageTitle = styled.h2`
+    margin: 36px 16px 0px;
+    color: #622b18;
+    font-size: 40px;
+    text-align: center;
+`;
 interface RecipeLimitProps {
     limit?: number;
-    isMain?: boolean;
+    page?: string;
 }
-export default function Recommend({ limit, isMain }: RecipeLimitProps) {
+export default function Recommend({ limit, page }: RecipeLimitProps) {
     const [recipes, setRecipes] = useState<string[]>([]);
     useEffect(() => {
         const fetchRecipes = async () => {
@@ -20,8 +27,8 @@ export default function Recommend({ limit, isMain }: RecipeLimitProps) {
 
     return (
         <>
-            {!isMain && <RecipePageHeader title="Recommended" />}
-            <RecipeList recipes={fakeData} limit={limit} isMain={isMain} />
+            {page ? <RecipePageTitle>Recommend Recipes</RecipePageTitle> : <RecipePageHeader title="Recommend" />}
+            <RecipeList recipes={fakeData} limit={limit} page={page} />
         </>
     );
 }

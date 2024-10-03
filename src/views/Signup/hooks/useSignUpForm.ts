@@ -46,6 +46,8 @@ export const useSignupForm = () => {
         }
 
         setErrors((prev) => ({ ...prev, [field]: newError }));
+        console.log('Touched state', touched);
+        console.log('errors', errors);
     };
 
     const clearFieldError = (field: string) => {

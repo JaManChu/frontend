@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import styled from 'styled-components';
 import { CiSearch } from 'react-icons/ci';
 import { useNavigate } from 'react-router-dom';
 import MainLogo from '../../assets/img/spoon.jpg';
+import axios from 'axios';
 
 const GuestContainer = styled.section`
     background-color: #f5f4f3;
@@ -182,9 +183,9 @@ const GuestHome: React.FC = () => {
         } else {
             alert(selectedIngredients);
         }
-        const response = await axios.get('/recipes/search');
-        // ! 데이터 들어오는 구조 확인 - 데이터 받아오면 setSelectedIngredients 데이터 가공해서 화면 렌더링 처리
         try {
+            const response = await axios.get('/recipes/search');
+            // ! 데이터 들어오는 구조 확인 - 데이터 받아오면 setSelectedIngredients 데이터 가공해서 화면 렌더링 처리
         } catch (err: any) {
             console.log(err);
             setMessage(err);
@@ -214,7 +215,7 @@ const GuestHome: React.FC = () => {
         Today: '15',
     };
 
-    const navigate = useNavigate('');
+    const navigate = useNavigate();
 
     return (
         <GuestContainer>

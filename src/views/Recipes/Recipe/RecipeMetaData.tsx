@@ -17,7 +17,7 @@ interface Props {
     level: string;
     rate: string;
 }
-export default function RecipeMetaData({ page, time, level, rate }: Props) {
+export default function RecipeMetaData({ page = '', time, level, rate }: Props) {
     return (
         <>
             {page != 'popular' ? (

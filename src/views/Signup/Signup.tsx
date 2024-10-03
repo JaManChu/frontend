@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Layout } from '../../styles/layout';
 import Modal from '../../components/Modal/Modal';
+import { validateEmail, validatePassword, validatePasswordCheck, validateNickname, validateAllFields } from './validation/validation';
 
 const Wrapper = styled.div`
     display: flex;
@@ -67,13 +68,13 @@ const ErrorMessage = styled.p<{ visible: boolean }>`
 `;
 
 const Signup: React.FC = () => {
-    //input 필드값
+    // input 필드값
     const [email, setEmail] = useState('');
     const [pw, setPw] = useState('');
     const [pwCheck, setPwCheck] = useState('');
     const [nickName, setNickName] = useState('');
 
-    //에러메세지
+    // 에러메세지
     const [errors, setErrors] = useState<{ [key: string]: string }>({
         email: '',
         pw: '',
@@ -81,7 +82,7 @@ const Signup: React.FC = () => {
         nickName: '',
     });
 
-    //유저의 input 필드값 사용여부
+    // 유저의 input 필드값 사용여부
     const [touched, setTouched] = useState<{ [key: string]: boolean }>({
         email: false,
         pw: false,
@@ -89,80 +90,43 @@ const Signup: React.FC = () => {
         nickName: false,
     });
 
-    //이메일형식 검사
-    const validateEmail = (email: string) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    };
+    // handleBlur 함수에 의해 실행, 유효성 검사 및 에러메세지 업데이트
+    const handleBlur = (field: string) => {
+        setTouched((prev) => ({ ...prev, [field]: true }));
 
-    // handleBlur함수에 의해실행, 유효성 검사 및 에러메세지 업데이트
-    const validateField = (field: string) => {
-        const newErrors = { ...errors };
+        let newError = '';
 
         switch (field) {
             case 'email':
-                if (!email) {
-                    newErrors.email = '이메일을 입력하세요';
-                } else if (!validateEmail(email)) {
-                    newErrors.email = '이메일 형식이 올바르지 않습니다';
-                } else {
-                    newErrors.email = '';
-                }
+                newError = validateEmail(email);
                 break;
-
             case 'pw':
-                if (!pw) {
-                    newErrors.pw = '비밀번호를 입력하세요';
-                } else {
-                    newErrors.pw = '';
-                }
+                newError = validatePassword(pw);
                 break;
-
             case 'pwCheck':
-                if (!pwCheck) {
-                    newErrors.pwCheck = '비밀번호 확인을 입력하세요';
-                } else if (pw !== pwCheck) {
-                    newErrors.pwCheck = '비밀번호가 일치하지 않습니다';
-                } else {
-                    newErrors.pwCheck = '';
-                }
+                newError = validatePasswordCheck(pw, pwCheck);
                 break;
-
             case 'nickName':
-                if (!nickName) {
-                    newErrors.nickName = '닉네임을 입력하세요';
-                } else {
-                    newErrors.nickName = '';
-                }
+                newError = validateNickname(nickName);
                 break;
-
             default:
                 break;
         }
 
-        setErrors(newErrors);
+        setErrors((prev) => ({ ...prev, [field]: newError }));
     };
 
-    // 1. 유저가 필드를 포커스 후 아무값도 입력하지않고, 넘어갔을때 실행.
-    // 2. 해당 필드에대해 touched값(유저가 선택했는지)을 true로 변경
-    // 3. validateField 함수실행 : 해당 필드에대해 유효성검사 및 에러메세지 새롭게 업데이트
-    const handleBlur = (field: string) => {
-        setTouched((prev) => ({ ...prev, [field]: true }));
-        validateField(field);
-    };
-
-    //포커스된 필드의 에러메세지 초기화
+    // 포커스된 필드의 에러메세지 초기화
     const clearFieldError = (field: string) => {
-        const newErrors = { ...errors };
-        newErrors[field] = '';
-        setErrors(newErrors);
+        setErrors((prev) => ({ ...prev, [field]: '' }));
     };
 
-    //에러메세지가 없을 때 api와 추후통신
+    // 에러메세지가 없을 때 api와 추후통신
     const handleSubmit = () => {
-        Object.keys(errors).forEach((field) => validateField(field));
+        const newErrors = validateAllFields(email, pw, pwCheck, nickName);
+        setErrors(newErrors);
 
-        const hasErrors = Object.values(errors).some((error) => error !== '');
+        const hasErrors = Object.values(newErrors).some((error) => error !== '');
 
         if (!hasErrors) {
             const signupData = {
@@ -175,7 +139,7 @@ const Signup: React.FC = () => {
         }
     };
 
-    //모달 상태관리
+    // 모달 상태관리
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     // 중복 확인 버튼을 눌렀을 때 모달 열기

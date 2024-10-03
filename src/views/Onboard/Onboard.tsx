@@ -116,8 +116,8 @@ const Onboard: React.FC = () => {
                     </div>
                 </LogoDiv>
                 <RecomendItems>
-                    {RecomendItemsArray.map((item) => (
-                        <RecomendItem>
+                    {RecomendItemsArray.map((item, idx) => (
+                        <RecomendItem key={idx}>
                             <img src={item.imgUrl} />
                             <span>{item.content}</span>
                         </RecomendItem>

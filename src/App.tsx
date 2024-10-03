@@ -9,6 +9,7 @@ import Main from './views/Main/Main.tsx';
 import Latest from './views/Recipes/Latest/Latest.tsx';
 import Popular from './views/Recipes/Popular/Popular.tsx';
 import Recommend from './views/Recipes/Recommend/Recommend.tsx';
+import DetailRecipe from './views/Recipes/DetailRecipe/DetailRecipe.tsx';
 
 function App() {
     return (
@@ -25,6 +26,7 @@ function App() {
                     <Route path="/recipes/recommended" element={<Recommend />} />
                     <Route path="/recipes/popular" element={<Popular />} />
                     <Route path="/recipes/latest" element={<Latest />} />
+                    <Route path="/recipes/:id" element={<DetailRecipe />} />
                 </Route>
             </Routes>
         </BrowserRouter>

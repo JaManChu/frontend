@@ -19,7 +19,7 @@ const MainImage = styled.img`
     height: 250px;
     object-fit: cover;
 `;
-const SearchArea = styled.div`
+const SearchWrapper = styled.div`
     width: 50%;
     margin: 16px auto;
     position: relative;
@@ -42,7 +42,11 @@ const SearchIcon = styled(CiSearch)`
     font-size: 20px;
     cursor: pointer;
 `;
-
+const RecipeWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+`;
 const VisitedPopularWrapper = styled.div`
     display: flex;
     height: auto;
@@ -86,7 +90,7 @@ export default function Main() {
     return (
         <MainContainer>
             <MainImage src={mainImage} alt="메인페이지 이미지" />
-            <SearchArea>
+            <SearchWrapper>
                 <SearchBox
                     type="text"
                     value={searched}
@@ -95,14 +99,17 @@ export default function Main() {
                     placeholder="재료를 입력해주세요."
                 />
                 <SearchIcon onClick={handleSubmit} />
-            </SearchArea>
+            </SearchWrapper>
             {/* 리덕스 툴킷 도입 : 레시피페이지 전역상태관리 - RecipePageHeader + RecipeList 호출가능?  */}
-            <Recommend limit={4} page="recommended" />
-            <Latest limit={1} page="latest" />
-            <VisitedPopularWrapper>
-                <Popular limit={2} page="popular" />
-                <Visited />
-            </VisitedPopularWrapper>
+            <RecipeWrapper>
+                <Recommend limit={4} page="recommended" />
+                <Latest limit={1} page="latest" />
+                {/* Popular, Visited 분리 작업 후 VisitedWrapper는 float/position으로 css 변경처리 */}
+                <VisitedPopularWrapper>
+                    <Popular limit={2} page="popular" />
+                    <Visited />
+                </VisitedPopularWrapper>
+            </RecipeWrapper>
         </MainContainer>
     );
 }

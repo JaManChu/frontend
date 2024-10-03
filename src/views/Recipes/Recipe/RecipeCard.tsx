@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaStairs, FaRegClock, FaRegStar, FaRegBookmark, FaBookmark } from 'react-icons/fa6';
+import { FaRegBookmark, FaBookmark } from 'react-icons/fa6';
+import RecipeMetaData from './RecipeMetaData';
 import styled from 'styled-components';
 
 // main 페이지가 아닌 Latest에서 isMain을 콘솔에 찍으면 false값이 찍힘 -> 최적화 방안 생각(RecipeCard에서는 4번 : main, latest, recipeList, recipeCard인듯
@@ -32,15 +33,6 @@ const RecipePageTitle = styled.h2`
     margin: 16px;
     color: #622b18;
     font-size: 40px;
-`;
-const RecipeInfo = styled.div`
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
-const RecipeInfoItem = styled.span`
-    margin: 0 8px 0 5px;
 `;
 const RecipeDescription = styled.p`
     margin-bottom: 8px;
@@ -93,16 +85,7 @@ export default function RecipeCard({ page = '', id, title, image, time, level, r
                 <BookmarkIcons mark={marked} onClick={() => setMarked(!marked)}>
                     {marked ? <FaBookmark /> : <FaRegBookmark />}
                 </BookmarkIcons>
-                {page != 'popular' ? (
-                    <RecipeInfo>
-                        <FaRegClock />
-                        <RecipeInfoItem>{time}</RecipeInfoItem>
-                        <FaStairs />
-                        <RecipeInfoItem>{level}</RecipeInfoItem>
-                        <FaRegStar />
-                        <RecipeInfoItem>{rate}</RecipeInfoItem>
-                    </RecipeInfo>
-                ) : null}
+                <RecipeMetaData page={page} time={time} level={level} rate={rate} />
                 {page == 'popular' || page == 'recommended' ? null : <RecipeDescription>{desc}</RecipeDescription>}
                 <span>
                     <Linked to={`/recipes/${id}`}>view more</Linked>

@@ -92,6 +92,19 @@ const ButtonSection = styled.section`
 
 const Onboard: React.FC = () => {
     const navigate = useNavigate();
+
+    const RecomendItemsArray = [
+        { imgUrl: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg', content: '자취할때 어떻게 요리를 선택하시나요 ?' },
+        {
+            imgUrl: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg',
+            content: '좋아하는 요리를 선택해 오늘의 요리를 추천받아보세요.',
+        },
+        { imgUrl: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg', content: '원하는 요리를 직접 고를수도 있어요' },
+        {
+            imgUrl: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg',
+            content: '나중에 도전하고 싶은 요리는 저장해 놓을 수 있어요',
+        },
+    ];
     return (
         <>
             <Layout>
@@ -102,23 +115,13 @@ const Onboard: React.FC = () => {
                         <strong>한번의 클릭으로, 다양한 요리를!</strong>
                     </div>
                 </LogoDiv>
-                <RecomendItems className="recomend-items">
-                    <RecomendItem>
-                        <img src="https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg" alt="이미지"></img>
-                        <span>자취할때 어떻게 요리를 선택하시나요 ?</span>
-                    </RecomendItem>
-                    <RecomendItem>
-                        <img src="https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg" alt="이미지"></img>
-                        <span>좋아하는 요리를 선택해 오늘의 요리를 추천받아보세요.</span>
-                    </RecomendItem>
-                    <RecomendItem>
-                        <img src="https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg" alt="이미지"></img>
-                        <span>원하는 요리를 직접 고를수도 있어요</span>
-                    </RecomendItem>
-                    <RecomendItem>
-                        <img src="https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg" alt="이미지"></img>
-                        <span>나중에 도전하고 싶은 요리는 저장해 놓을 수 있어요</span>
-                    </RecomendItem>
+                <RecomendItems>
+                    {RecomendItemsArray.map((item) => (
+                        <RecomendItem>
+                            <img src={item.imgUrl} />
+                            <span>{item.content}</span>
+                        </RecomendItem>
+                    ))}
                 </RecomendItems>
                 <ButtonSection>
                     <Button onClick={() => navigate('/login')}>Join</Button>

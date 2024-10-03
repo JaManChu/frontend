@@ -9,21 +9,21 @@ export const validateEmail = (email: string): string => {
 };
 
 // 비밀번호 유효성 검사
-export const validatePassword = (password: string): string => {
-    if (!password) return '비밀번호를 입력하세요';
+export const validatePassword = (pw: string): string => {
+    if (!pw) return '비밀번호를 입력하세요';
     return '';
 };
 
 // 비밀번호 확인 유효성 검사
-export const validatePasswordCheck = (password: string, passwordCheck: string): string => {
+export const validatePasswordCheck = (pw: string, passwordCheck: string): string => {
     if (!passwordCheck) return '비밀번호 확인을 입력하세요';
-    if (password !== passwordCheck) return '비밀번호가 일치하지 않습니다';
+    if (pw !== passwordCheck) return '비밀번호가 일치하지 않습니다';
     return '';
 };
 
 // 닉네임 유효성 검사
-export const validateNickname = (nickname: string): string => {
-    if (!nickname) return '닉네임을 입력하세요';
+export const validateNickname = (nickName: string): string => {
+    if (!nickName) return '닉네임을 입력하세요';
     return '';
 };
 

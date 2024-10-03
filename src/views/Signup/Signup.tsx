@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Layout } from '../../styles/layout';
 import Modal from '../../components/Modal/Modal';
-import { validateEmail, validatePassword, validatePasswordCheck, validateNickname, validateAllFields } from './validation/validation';
+import { useSignupForm } from './hooks/useSignUpForm.ts';
+import { useModal } from './hooks/useModal.ts';
 
 const Wrapper = styled.div`
     display: flex;
@@ -68,88 +69,10 @@ const ErrorMessage = styled.p<{ visible: boolean }>`
 `;
 
 const Signup: React.FC = () => {
-    // input 필드값
-    const [email, setEmail] = useState('');
-    const [pw, setPw] = useState('');
-    const [pwCheck, setPwCheck] = useState('');
-    const [nickName, setNickName] = useState('');
+    const { email, setEmail, pw, setPw, pwCheck, setPwCheck, nickName, setNickName, errors, touched, handleBlur, clearFieldError, handleSubmit } =
+        useSignupForm();
 
-    // 에러메세지
-    const [errors, setErrors] = useState<{ [key: string]: string }>({
-        email: '',
-        pw: '',
-        pwCheck: '',
-        nickName: '',
-    });
-
-    // 유저의 input 필드값 사용여부
-    const [touched, setTouched] = useState<{ [key: string]: boolean }>({
-        email: false,
-        pw: false,
-        pwCheck: false,
-        nickName: false,
-    });
-
-    // handleBlur 함수에 의해 실행, 유효성 검사 및 에러메세지 업데이트
-    const handleBlur = (field: string) => {
-        setTouched((prev) => ({ ...prev, [field]: true }));
-
-        let newError = '';
-
-        switch (field) {
-            case 'email':
-                newError = validateEmail(email);
-                break;
-            case 'pw':
-                newError = validatePassword(pw);
-                break;
-            case 'pwCheck':
-                newError = validatePasswordCheck(pw, pwCheck);
-                break;
-            case 'nickName':
-                newError = validateNickname(nickName);
-                break;
-            default:
-                break;
-        }
-
-        setErrors((prev) => ({ ...prev, [field]: newError }));
-    };
-
-    // 포커스된 필드의 에러메세지 초기화
-    const clearFieldError = (field: string) => {
-        setErrors((prev) => ({ ...prev, [field]: '' }));
-    };
-
-    // 에러메세지가 없을 때 api와 추후통신
-    const handleSubmit = () => {
-        const newErrors = validateAllFields(email, pw, pwCheck, nickName);
-        setErrors(newErrors);
-
-        const hasErrors = Object.values(newErrors).some((error) => error !== '');
-
-        if (!hasErrors) {
-            const signupData = {
-                email,
-                password: pw,
-                nickname: nickName,
-            };
-
-            console.log('Signup data:', signupData);
-        }
-    };
-
-    // 모달 상태관리
-    const [isModalVisible, setIsModalVisible] = useState(false);
-
-    // 중복 확인 버튼을 눌렀을 때 모달 열기
-    const handleDuplicateCheck = () => {
-        setIsModalVisible(true); // 모달을 띄움
-    };
-
-    const handleClose = () => {
-        setIsModalVisible(false);
-    };
+    const { isModalVisible, openModal, closeModal } = useModal();
 
     return (
         <Layout>
@@ -200,13 +123,13 @@ const Signup: React.FC = () => {
                         <ErrorMessage visible={!!errors.nickName && touched.nickName}>{errors.nickName}</ErrorMessage>
                     </LeftWrapper>
                     <RightWrapper>
-                        <Button onClick={handleDuplicateCheck}>중복확인</Button>
+                        <Button onClick={openModal}>중복확인</Button>
                     </RightWrapper>
                 </CombineWrapper>
                 <Button onClick={handleSubmit}>회원가입</Button>
 
                 {isModalVisible && (
-                    <Modal visible={isModalVisible} onClose={handleClose} buttons={[{ label: '확인', onClick: handleClose }]}>
+                    <Modal visible={isModalVisible} onClose={closeModal} buttons={[{ label: '확인', onClick: closeModal }]}>
                         <h2>중복 확인</h2>
                         <p>이미 사용중인 이메일입니다.</p>
                     </Modal>

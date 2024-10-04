@@ -22,14 +22,14 @@ interface RecipeLimitProps {
 }
 
 export default function Popular({ limit, page }: RecipeLimitProps) {
-    const [recipes, setRecipes] = useState<string[]>([]);
-    useEffect(() => {
-        const fetchRecipes = async () => {
-            try {
-                const response = await axios.get('/recipes');
-            } catch (err) {}
-        };
-    }, [recipes]);
+    // const [recipes, setRecipes] = useState<string[]>([]);
+    // useEffect(() => {
+    //     const fetchRecipes = async () => {
+    //         try {
+    //             const response = await axios.get('/recipes');
+    //         } catch (err) {}
+    //     };
+    // }, [recipes]);
 
     return (
         <RecipeContainer>

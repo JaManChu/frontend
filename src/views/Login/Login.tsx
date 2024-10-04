@@ -6,6 +6,7 @@ import Modal from '../../components/Modal/Modal';
 import KakaoLoginButton from '../../components/KaKaoButton/KaKaoLoginButton';
 import { useModal } from '../Signup/hooks/useModal';
 import { useSignupForm } from '../Signup/hooks/useSignUpForm';
+// import axios from 'axios';
 
 const Wrapper = styled.div`
     width: 600px;
@@ -89,8 +90,22 @@ const ErrorMessage = styled.p<{ visible: boolean }>`
 `;
 const Login: React.FC = () => {
     const navigate = useNavigate();
-    const { email, setEmail, pw, setPw, nickName, setNickName, touched, handleBlur, clearFieldError, errors } = useSignupForm();
+    const {
+        email,
+        setEmail,
+        password,
+        setPassword,
+        nickname,
+        setNickname,
+        clickedButEmpty,
+        handleEmptyInput,
+        clearInputMessage,
+        inputMessage,
+        handleLogin,
+    } = useSignupForm();
     const { openModal, closeModal, handleConfirm, isModalVisible } = useModal();
+
+    // const handleCheckPassword = async() => {}
 
     return (
         <Layout>
@@ -101,24 +116,32 @@ const Login: React.FC = () => {
                         placeholder="이메일"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        onBlur={() => handleBlur('email')}
-                        onFocus={() => clearFieldError('email')}
-                        isError={!!errors.email && touched.email}
+                        onBlur={() => handleEmptyInput('email')}
+                        onFocus={() => clearInputMessage('email')}
+                        isError={!!inputMessage.email && clickedButEmpty.email}
                     />
-                    <ErrorMessage visible={!!errors.email && touched.email}>{errors.email}</ErrorMessage>
+                    <ErrorMessage visible={!!inputMessage.email && clickedButEmpty.email}>{inputMessage.email}</ErrorMessage>
                     <Input
                         placeholder="비밀번호"
                         type="password"
-                        value={pw}
-                        onChange={(e) => setPw(e.target.value)}
-                        onBlur={() => handleBlur('pw')}
-                        onFocus={() => clearFieldError('pw')}
-                        isError={!!errors.pw && touched.pw}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        onBlur={() => handleEmptyInput('pw')}
+                        onFocus={() => clearInputMessage('pw')}
+                        isError={!!inputMessage.pw && clickedButEmpty.pw}
                     />
-                    <ErrorMessage visible={!!errors.pw && touched.pw}>{errors.pw}</ErrorMessage>
+                    <ErrorMessage visible={!!inputMessage.pw && clickedButEmpty.pw}>{inputMessage.pw}</ErrorMessage>
                 </InputWrapper>
-                <Button title={'로그인'}>로그인</Button>
-                <PwSearch onClick={openModal}>비밀번호 찾기</PwSearch>
+                <Button type="button" title={'로그인'} onClick={handleLogin}>
+                    로그인
+                </Button>
+                <PwSearch
+                    onClick={() => {
+                        openModal();
+                    }}
+                >
+                    비밀번호 찾기
+                </PwSearch>
                 {isModalVisible && (
                     <Modal
                         visible={isModalVisible}
@@ -132,21 +155,21 @@ const Login: React.FC = () => {
                         <Input
                             placeholder="이메일"
                             value={email}
-                            onChange={(e) => setNickName(e.target.value)}
-                            onBlur={() => handleBlur('email')}
-                            onFocus={() => clearFieldError('email')}
-                            isError={!!errors.email && touched.email}
+                            onChange={(e) => setNickname(e.target.value)}
+                            onBlur={() => handleEmptyInput('email')}
+                            onFocus={() => clearInputMessage('email')}
+                            isError={!!inputMessage.email && clickedButEmpty.email}
                         />
-                        <ErrorMessage visible={!!errors.email && touched.email}>{errors.email}</ErrorMessage>
+                        <ErrorMessage visible={!!inputMessage.email && clickedButEmpty.email}>{inputMessage.email}</ErrorMessage>
                         <Input
                             placeholder="닉네임"
-                            value={nickName}
-                            onChange={(e) => setNickName(e.target.value)}
-                            onBlur={() => handleBlur('nickName')}
-                            onFocus={() => clearFieldError('nickName')}
-                            isError={!!errors.nickName && touched.nickName}
+                            value={nickname}
+                            onChange={(e) => setNickname(e.target.value)}
+                            onBlur={() => handleEmptyInput('nickName')}
+                            onFocus={() => clearInputMessage('nickName')}
+                            isError={!!inputMessage.nickname && clickedButEmpty.nickname}
                         />
-                        <ErrorMessage visible={!!errors.nickName && touched.nickName}>{errors.nickName}</ErrorMessage>
+                        <ErrorMessage visible={!!inputMessage.nickname && clickedButEmpty.nickname}>{inputMessage.nickname}</ErrorMessage>
                     </Modal>
                 )}
                 <Hr></Hr>

@@ -1,8 +1,8 @@
-// import React, { useState } from 'react';
+// import { useState } from 'react';
 import styled from 'styled-components';
-import { FaRegStar } from 'react-icons/fa';
-// import { FaRegStar, FaStarHalfAlt, FaStar } from 'react-icons/fa';
-// import { FaRegStar, FaStarHalfAlt, FaStar } from 'react-icons/fa';
+import { FaRegStar, FaStar } from 'react-icons/fa';
+// import { FaStarHalfAlt, FaStar } from 'react-icons/fa';
+import reviewFake from '../../fakeData/reviewFake';
 
 const CommentsContainer = styled.section`
     margin-top: 24px;
@@ -37,12 +37,7 @@ const ReviewerFigcaption = styled.figcaption`
     margin: 16px 0 0px;
 `;
 const CommentsWrapper = styled.div``;
-const RateIcon = styled(FaRegStar)`
-    &:hover {
-        color: #efb63f;
-    }
-    cursor: pointer;
-`;
+// const RateIcon = styled(FaRegStar)``;
 const CommentsText = styled.div`
     margin: 16px 0px;
     padding: 16px;
@@ -55,29 +50,28 @@ const CommentsText = styled.div`
 export default function ViewComments() {
     // const [rate, setRate] = useState<number>(0);
     // 작성날짜 post
-    const handleRating = () => {};
 
     return (
         <CommentsContainer>
-            <h4>Reviewer</h4>
-            <CommentsContents>
-                <ReviewerFigure>
-                    <img src="" alt="유저이미지" />
-                    <ReviewerFigcaption>UserId</ReviewerFigcaption>
-                </ReviewerFigure>
-                <CommentsWrapper>
-                    <div>
+            <h4>리뷰보기</h4>
+            {reviewFake.map((review) => (
+                <CommentsContents>
+                    <ReviewerFigure>
+                        <img src="" alt="유저이미지" />
+                        <ReviewerFigcaption>UserId</ReviewerFigcaption>
+                    </ReviewerFigure>
+                    <CommentsWrapper>
                         {Array(5)
                             .fill(0)
-                            .map((_, idx) => (
-                                <RateIcon key={idx} onClick={handleRating} />
-                            ))}
-                    </div>
-                    <CommentsText>
-                        <p>Comments는 comments...</p>
-                    </CommentsText>
-                </CommentsWrapper>
-            </CommentsContents>
+                            .map((_, idx) => {
+                                return review.rate <= idx ? <FaRegStar /> : <FaStar />;
+                            })}
+                        <CommentsText>
+                            <p>{review.comment}</p>
+                        </CommentsText>
+                    </CommentsWrapper>
+                </CommentsContents>
+            ))}
         </CommentsContainer>
     );
 }

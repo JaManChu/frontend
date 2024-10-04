@@ -6,6 +6,7 @@ import { BsCartCheckFill } from 'react-icons/bs';
 import fakeData from '../../../fakeData/recipeFake';
 import RecipeMetaData from '../Recipe/RecipeMetaData';
 import ViewComments from '../../Comments/ViewComments';
+import Review from '../../Comments/Review';
 
 const DetailRecipeContainer = styled.section`
     padding: 50px;
@@ -181,6 +182,7 @@ export default function DetailRecipe() {
                     <RecipeMetaData time={recipe.time} level={recipe.level} rate={recipe.rate} />
                 </DetailRecipeInfo>
             </DetailRecipeContents>
+            <Review />
             <ViewComments />
         </DetailRecipeContainer>
     );

@@ -3,10 +3,11 @@ import { Layout } from '../../styles/layout';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../../components/Modal/Modal';
-import KakaoLoginButton from '../../components/KaKaoButton/KaKaoLoginButton';
+// import KakaoLoginButton from '../../components/KaKaoButton/KaKaoLoginButton';
 import { useModal } from '../Signup/hooks/useModal';
 import { useSignupForm } from '../Signup/hooks/useSignUpForm';
 // import axios from 'axios';
+import SocialKakao from './SocialKakao';
 
 const Wrapper = styled.div`
     width: 600px;
@@ -179,7 +180,8 @@ const Login: React.FC = () => {
                         회원가입
                     </SignupText>
                 </SignUpWrapper>
-                <KakaoLoginButton />
+                {/* <KakaoLoginButton /> */}
+                <SocialKakao />
             </Wrapper>
         </Layout>
     );

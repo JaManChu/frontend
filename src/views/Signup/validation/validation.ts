@@ -27,12 +27,19 @@ export const validateNickname = (nickName: string): string => {
     return '';
 };
 
-// 모든 필드 유효성 검사
-export const validateAllFields = (email: string, pw: string, pwCheck: string, nickName: string) => {
+// 유효성 검사 결과 (success or fail)
+export const validateSignupResult = (email: string, pw: string, pwCheck: string, nickName: string) => {
     return {
         email: validateEmail(email),
         pw: validatePassword(pw),
         pwCheck: validatePasswordCheck(pw, pwCheck),
         nickName: validateNickname(nickName),
+    };
+};
+
+export const validateLoginResult = (email: string, pw: string) => {
+    return {
+        email: validateEmail(email),
+        pw: validatePassword(pw),
     };
 };

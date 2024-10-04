@@ -1,7 +1,7 @@
 // src/components/signup/hooks/useSignupForm.ts
 
 import { useState } from 'react';
-import { validateEmail, validatePassword, validatePasswordCheck, validateNickname, validateAllFields } from '../../Signup/validation/validation.ts';
+import { validateEmail, validatePassword, validatePasswordCheck, validateNickname, validationResult } from '../../Signup/validation/validation.ts';
 
 export const useUpdateForm = () => {
     const [email, setEmail] = useState('');
@@ -55,7 +55,7 @@ export const useUpdateForm = () => {
     };
 
     const handleSubmit = () => {
-        const newErrors = validateAllFields(email, pw, pwCheck, nickName);
+        const newErrors = validationResult(email, pw, pwCheck, nickName);
         setErrors(newErrors);
 
         const hasErrors = Object.values(newErrors).some((error) => error !== '');

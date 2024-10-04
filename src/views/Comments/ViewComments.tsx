@@ -2,6 +2,7 @@
 import styled from 'styled-components';
 import { FaRegStar } from 'react-icons/fa';
 // import { FaRegStar, FaStarHalfAlt, FaStar } from 'react-icons/fa';
+// import { FaRegStar, FaStarHalfAlt, FaStar } from 'react-icons/fa';
 
 const CommentsContainer = styled.section`
     margin-top: 24px;

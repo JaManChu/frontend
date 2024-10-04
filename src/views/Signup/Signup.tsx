@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Layout } from '../../styles/layout';
 import Modal from '../../components/Modal/Modal';
 import { useSignupForm } from './hooks/useSignUpForm.ts';
 import { useModal } from './hooks/useModal.ts';
+import axios from 'axios';
 
 const Wrapper = styled.div`
     display: flex;
@@ -69,10 +70,39 @@ const ErrorMessage = styled.p<{ visible: boolean }>`
 `;
 
 const Signup: React.FC = () => {
-    const { email, setEmail, pw, setPw, pwCheck, setPwCheck, nickName, setNickName, errors, touched, handleBlur, clearFieldError, handleSubmit } =
-        useSignupForm();
+    const [message, setMessage] = useState<string>('');
+    const {
+        email,
+        setEmail,
+        password,
+        setPassword,
+        pwCheck,
+        setPwCheck,
+        nickname,
+        setNickname,
+        inputMessage,
+        clickedButEmpty,
+        handleEmptyInput,
+        clearInputMessage,
+        handleSubmit,
+    } = useSignupForm();
 
     const { isModalVisible, openModal, closeModal } = useModal();
+
+    const handleCheckEmail = async () => {
+        try {
+            const response: any = await axios.get(`/auth/email-check?email=${email}`);
+            if (response.data === true) {
+                alert(response.message);
+                setMessage(response.meesage);
+            } else {
+                alert(response.message);
+                setMessage(response.meesage);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     return (
         <Layout>
@@ -84,46 +114,56 @@ const Signup: React.FC = () => {
                             placeholder="이메일을 입력하세요"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            onBlur={() => handleBlur('email')}
-                            onFocus={() => clearFieldError('email')}
-                            isError={!!errors.email && touched.email}
+                            onBlur={() => handleEmptyInput('email')}
+                            onFocus={() => clearInputMessage('email')}
+                            // inputMessage에 값이 있을때 & clickedButEmpty가 true일때
+                            isError={!!inputMessage.email && clickedButEmpty.email}
                         />
-                        <ErrorMessage visible={!!errors.email && touched.email}>{errors.email}</ErrorMessage>
+                        <ErrorMessage visible={!!inputMessage.email && clickedButEmpty.email}>{inputMessage.email}</ErrorMessage>
 
                         <Input
                             type="password"
                             placeholder="비밀번호"
-                            value={pw}
-                            onChange={(e) => setPw(e.target.value)}
-                            onBlur={() => handleBlur('pw')}
-                            onFocus={() => clearFieldError('pw')}
-                            isError={!!errors.pw && touched.pw}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            onBlur={() => handleEmptyInput('pw')}
+                            onFocus={() => clearInputMessage('pw')}
+                            isError={!!inputMessage.password && clickedButEmpty.pw}
                         />
-                        <ErrorMessage visible={!!errors.pw && touched.pw}>{errors.pw}</ErrorMessage>
+                        <ErrorMessage visible={!!inputMessage.pw && clickedButEmpty.pw}>{inputMessage.password}</ErrorMessage>
 
                         <Input
                             type="password"
                             placeholder="비밀번호 확인"
                             value={pwCheck}
                             onChange={(e) => setPwCheck(e.target.value)}
-                            onBlur={() => handleBlur('pwCheck')}
-                            onFocus={() => clearFieldError('pwCheck')}
-                            isError={!!errors.pwCheck && touched.pwCheck}
+                            onBlur={() => handleEmptyInput('pwCheck')}
+                            onFocus={() => clearInputMessage('pwCheck')}
+                            isError={!!inputMessage.pwCheck && clickedButEmpty.pwCheck}
                         />
-                        <ErrorMessage visible={!!errors.pwCheck && touched.pwCheck}>{errors.pwCheck}</ErrorMessage>
+                        <ErrorMessage visible={!!inputMessage.pwCheck && clickedButEmpty.pwCheck}>{inputMessage.pwCheck}</ErrorMessage>
 
                         <Input
                             placeholder="닉네임"
-                            value={nickName}
-                            onChange={(e) => setNickName(e.target.value)}
-                            onBlur={() => handleBlur('nickName')}
-                            onFocus={() => clearFieldError('nickName')}
-                            isError={!!errors.nickName && touched.nickName}
+                            value={nickname}
+                            onChange={(e) => setNickname(e.target.value)}
+                            onBlur={() => handleEmptyInput('nickName')}
+                            onFocus={() => clearInputMessage('nickName')}
+                            isError={!!inputMessage.nickName && clickedButEmpty.nickName}
                         />
-                        <ErrorMessage visible={!!errors.nickName && touched.nickName}>{errors.nickName}</ErrorMessage>
+                        <ErrorMessage visible={!!inputMessage.nickName && clickedButEmpty.nickName}>{inputMessage.nickName}</ErrorMessage>
                     </LeftWrapper>
                     <RightWrapper>
-                        <Button onClick={openModal}>중복확인</Button>
+                        <Button
+                            // ! type button 이어야 하는지 확인하고 onClick 인지 onSubmit인지 체크하셈
+                            type="button"
+                            onClick={() => {
+                                openModal();
+                                handleCheckEmail();
+                            }}
+                        >
+                            중복확인
+                        </Button>
                     </RightWrapper>
                 </CombineWrapper>
                 <Button onClick={handleSubmit}>회원가입</Button>
@@ -131,7 +171,7 @@ const Signup: React.FC = () => {
                 {isModalVisible && (
                     <Modal visible={isModalVisible} onClose={closeModal} buttons={[{ label: '확인', onClick: closeModal }]}>
                         <h2>중복 확인</h2>
-                        <p>이미 사용중인 이메일입니다.</p>
+                        <p>{message}</p>
                     </Modal>
                 )}
             </Wrapper>

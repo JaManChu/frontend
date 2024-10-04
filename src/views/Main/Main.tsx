@@ -3,9 +3,9 @@ import Latest from '../Recipes/Latest/Latest';
 import Popular from '../Recipes/Popular/Popular';
 import Recommend from '../Recipes/Recommend/Recommend';
 import styled from 'styled-components';
-import axios from 'axios';
+// import axios from 'axios';
 import { CiSearch } from 'react-icons/ci';
-import { useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 import mainImage from '../../assets/img/spoon.jpg';
 import Visited from '../Visited/Visited';
 
@@ -57,7 +57,7 @@ export default function Main() {
     const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
     // const [message, setMessage] = useState<string>('');
 
-    const { pathname } = useLocation();
+    // const { pathname } = useLocation();
     // const isMain = pathname == '/main';
 
     const changeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {

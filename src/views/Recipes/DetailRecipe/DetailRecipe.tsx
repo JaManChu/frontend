@@ -118,13 +118,13 @@ export default function DetailRecipe() {
     const { id } = useParams();
     const [recipe, setRecipe] = useState<Props | null>(null);
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`/recipes/${id}`);
-            } catch (err) {
-                console.log(err);
-            }
-        };
+        // const fetchData = async () => {
+        //     try {
+        //         const response = await axios.get(`/recipes/${id}`);
+        //     } catch (err) {
+        //         console.log(err);
+        //     }
+        // };
 
         // ! fakeData 필터링하는 작업(추후 삭제)
         const filtered = fakeData.filter((data) => data.id == id);

@@ -55,10 +55,10 @@ const VisitedPopularWrapper = styled.div`
 export default function Main() {
     const [searched, setSearched] = useState<string>('');
     const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
-    const [message, setMessage] = useState<string>('');
+    // const [message, setMessage] = useState<string>('');
 
     const { pathname } = useLocation();
-    const isMain = pathname == '/main';
+    // const isMain = pathname == '/main';
 
     const changeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const search = e.target.value;
@@ -72,12 +72,12 @@ export default function Main() {
         } else {
             alert(selectedIngredients);
         }
-        const response = await axios.get('/recipes/search');
+        // const response = await axios.get('/recipes/search');
         // ! 데이터 들어오는 구조 확인 - 데이터 받아오면 setSelectedIngredients 데이터 가공해서 화면 렌더링 처리
         try {
         } catch (err: any) {
             console.log(err);
-            setMessage(err);
+            // setMessage(err);
         }
     };
 

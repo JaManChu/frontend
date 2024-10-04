@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import RecipeList from '../Recipe/RecipeList';
 import RecipePageHeader from '../Recipe/RecipePageHeader';
-import axios from 'axios';
+// import axios from 'axios';
 import fakeData from '../../../fakeData/recipeFake.js';
 import styled from 'styled-components';
 

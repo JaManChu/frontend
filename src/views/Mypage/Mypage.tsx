@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import Modal from '../../components/Modal/Modal';
-import { useState } from 'react';
+import { useModal } from './hooks/useModal';
+import { useUpdateForm } from './hooks/updateForm';
 const Row_layout = styled.div`
     min-width: 100vw;
     min-height: 100vh;
@@ -130,75 +131,20 @@ const user_info = {
 };
 
 const Mypage: React.FC = () => {
-    const [isNickModalVisible, setIsNickModalVisible] = useState(false);
-    const [isPwModalVisible, setIsPwModalVisible] = useState(false);
+    const {
+        isNickModalVisible,
+        setIsNickModalVisible,
+        isPwModalVisible,
+        setIsPwModalVisible,
+        handleNickClose,
+        handlePwClose,
+        handleNickUpdate,
+        handlePasswordUpdate,
+        updateNick,
+        setUpdateNick,
+    } = useModal();
 
-    const handleNickClose = () => {
-        setIsNickModalVisible(false);
-    };
-
-    const handlePwClose = () => {
-        setIsPwModalVisible(false);
-    };
-
-    const handleNickUpdate = () => {
-        console.log('닉네임수정 로직실행');
-    };
-
-    const handlePasswordUpdate = () => {
-        console.log('비밀번호수정 로직실행');
-    };
-
-    const [updateNick, setUpdateNick] = useState('');
-
-    //유효성검사
-    const [pw, setPw] = useState('');
-    const [pwCheck, setPwCheck] = useState('');
-    const [errors, setErrors] = useState<{ [key: string]: string }>({
-        pw: '',
-        pwCheck: '',
-    });
-
-    const [touched, setTouched] = useState<{ [key: string]: boolean }>({
-        pw: false,
-        pwCheck: false,
-    });
-
-    const validateField = (field: string) => {
-        const newErrors = { ...errors };
-        switch (field) {
-            case 'pw':
-                if (!pw) {
-                    newErrors.pw = '비밀번호를 입력하세요';
-                } else {
-                    newErrors.pw = '';
-                }
-                break;
-            case 'pwCheck':
-                if (!pwCheck) {
-                    newErrors.pwCheck = '비밀번호 확인을 입력하세요';
-                } else if (pw !== pwCheck) {
-                    newErrors.pwCheck = '비밀번호가 일치하지 않습니다.';
-                } else {
-                    newErrors.pwCheck = '';
-                }
-                break;
-            default:
-                break;
-        }
-        setErrors(newErrors);
-    };
-
-    const handleBlur = (field: string) => {
-        setTouched((prev) => ({ ...prev, [field]: true }));
-        validateField(field);
-    };
-
-    const clearFieldError = (field: string) => {
-        const newErrors = { ...errors };
-        newErrors[field] = '';
-        setErrors(newErrors);
-    };
+    const { pw, setPw, pwCheck, setPwCheck, errors, touched, handleBlur, clearFieldError } = useUpdateForm();
 
     return (
         <Row_layout>

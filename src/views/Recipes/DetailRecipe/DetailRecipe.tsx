@@ -5,6 +5,7 @@ import axios from 'axios';
 import { BsCartCheck, BsCartCheckFill } from 'react-icons/bs';
 import fakeData from '../../../fakeData/recipeFake';
 import RecipeMetaData from '../Recipe/RecipeMetaData';
+import Comments from '../../Comments/ViewComments';
 
 const DetailRecipeContainer = styled.section`
     padding: 50px;
@@ -180,6 +181,7 @@ export default function DetailRecipe() {
                     <RecipeMetaData time={recipe.time} level={recipe.level} rate={recipe.rate} />
                 </DetailRecipeInfo>
             </DetailRecipeContents>
+            <Comments />
         </DetailRecipeContainer>
     );
 }

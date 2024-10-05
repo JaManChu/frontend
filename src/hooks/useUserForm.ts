@@ -62,14 +62,16 @@ export const useUserForm = () => {
     };
 
     // 회원가입 버튼 눌렀을때 호출되는 함수
-    const handleSignup = async () => {
+    const handleSignup = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log(`API URL: ${import.meta.env.VITE_BASE_URL}/user/signup`);
         // 유효성 검사 결과 담아서 inputMessage에 반환
         const inputResult = validateResult({ email, password, passwordCheck, nickname });
         setInputMessage(inputResult);
-
+        console.log(email, password, nickname);
         // email, password, passwordCheck, nickName 중 어느 하나라도 ''값이 아닌 경우 false 반환
         const hasMessage = Object.values(inputResult).some((result) => result !== '');
-        console.log(email, password, passwordCheck);
+        console.log(email, password, nickname);
         // hasMessage가 false인 경우(모든 validation 통과한 경우)
         if (hasMessage) {
             alert('모든 필드값을 입력해주시기 바랍니다.');
@@ -77,14 +79,18 @@ export const useUserForm = () => {
         }
 
         try {
-            const response: any = await axios.post(`${process.env.REACT_APP_API_URL}/users/signup`, { email, password, nickname });
-            if (response.code == 200) {
+            const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/signup`, { email, password, nickname });
+
+            if (response.code == 201) {
+                console.log('success?');
                 console.log(response);
                 setMessage(response.data.message);
                 navigate('/login');
             }
             // !  response.code가 200이 아닌 경우 catch로 넘어가는지 확인
         } catch (err: any) {
+            console.log(`${import.meta.env.VITE_BASE_URL}/user/signup`);
+
             setMessage(err.message);
         }
     };
@@ -105,13 +111,13 @@ export const useUserForm = () => {
             alert('모든 필드값을 입력해주시기 바랍니다.');
         }
         try {
-            const response: any = await axios.post(`${process.env.REACT_APP_API_URL}/users/login`, { email, password });
+            const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/login`, { email, password });
 
             if (response.code == 200) {
                 console.log(response);
                 // ! 임시 저장(토큰 내려주는지 확인) - accessToken 인지 refreshToken인지
                 // ! HTTP only인지 , headers-cookie인지 check
-                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('token', JSON.stringify(response.data.token));
                 setMessage(response.message);
                 alert(response.message);
             }

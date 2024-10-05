@@ -104,7 +104,7 @@ export default function Signup(): JSX.Element {
         <Layout>
             <SingupContainer>
                 <SingupHeader>회원가입</SingupHeader>
-                <form action="/users/signup" method="post" onSubmit={handleSignup}>
+                <form method="POST" onSubmit={handleSignup}>
                     <SignupFieldset>
                         <legend>Welcome, Register your account</legend>
                         <SignupEmailWrapper>

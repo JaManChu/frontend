@@ -1,40 +1,31 @@
-// src/components/signup/hooks/useSignupForm.ts
-
-import { useState } from 'react';
-import {
-    validateEmail,
-    validatePassword,
-    validatePasswordCheck,
-    validateNickname,
-    validateSignupResult,
-    validateLoginResult,
-} from '../validation/validation.ts';
+import { FormEvent, useState } from 'react';
+import { validateEmail, validatePassword, validatePasswordCheck, validateNickname, validateResult } from '../utils/validation/validation.ts';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-export const useSignupForm = () => {
+export const useUserForm = () => {
     const navigate = useNavigate();
 
     const [message, setMessage] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [pwCheck, setPwCheck] = useState('');
+    const [passwordCheck, setPasswordCheck] = useState('');
     const [nickname, setNickname] = useState('');
 
-    // email, pw, pwCheck, nickName의 에러를 배열로 저장
+    // email, password, passwordCheck, nickname의 에러를 배열로 저장
     const [inputMessage, setInputMessage] = useState<{ [key: string]: string }>({
         email: '',
-        pw: '',
-        pwCheck: '',
-        nickName: '',
+        password: '',
+        passwordCheck: '',
+        nickname: '',
     });
 
     // 클릭했으나 입력하지 않고 다음 input창으로 넘어간 경우 : true로 갱신
     const [clickedButEmpty, setClickedButEmpty] = useState<{ [key: string]: boolean }>({
         email: false,
-        pw: false,
-        pwCheck: false,
-        nickName: false,
+        password: false,
+        passwordCheck: false,
+        nickname: false,
     });
 
     // 입력하지 않은 input에 대해서 각각 에러 메시지 호출
@@ -47,13 +38,13 @@ export const useSignupForm = () => {
             case 'email':
                 emptyInputMessage = validateEmail(email);
                 break;
-            case 'pw':
+            case 'password':
                 emptyInputMessage = validatePassword(password);
                 break;
-            case 'pwCheck':
-                emptyInputMessage = validatePasswordCheck(password, pwCheck);
+            case 'passwordCheck':
+                emptyInputMessage = validatePasswordCheck(password, passwordCheck);
                 break;
-            case 'nickName':
+            case 'nickname':
                 emptyInputMessage = validateNickname(nickname);
                 break;
             default:
@@ -71,23 +62,25 @@ export const useSignupForm = () => {
     };
 
     // 회원가입 버튼 눌렀을때 호출되는 함수
-    const handleSubmit = async () => {
+    const handleSignup = async () => {
         // 유효성 검사 결과 담아서 inputMessage에 반환
-        const inputResult = validateSignupResult(email, password, pwCheck, nickname);
+        const inputResult = validateResult({ email, password, passwordCheck, nickname });
         setInputMessage(inputResult);
 
-        // email, pw, pwCheck, nickName 중 어느 하나라도 ''값이 아닌 경우 false 반환
+        // email, password, passwordCheck, nickName 중 어느 하나라도 ''값이 아닌 경우 false 반환
         const hasMessage = Object.values(inputResult).some((result) => result !== '');
-
+        console.log(email, password, passwordCheck);
         // hasMessage가 false인 경우(모든 validation 통과한 경우)
         if (hasMessage) {
             alert('모든 필드값을 입력해주시기 바랍니다.');
+            return;
         }
 
         try {
-            const response: any = await axios.post('/users/signup', { email, password, nickname });
+            const response: any = await axios.post(`${process.env.REACT_APP_API_URL}/users/signup`, { email, password, nickname });
             if (response.code == 200) {
-                setMessage(response.message);
+                console.log(response);
+                setMessage(response.data.message);
                 navigate('/login');
             }
             // !  response.code가 200이 아닌 경우 catch로 넘어가는지 확인
@@ -95,24 +88,27 @@ export const useSignupForm = () => {
             setMessage(err.message);
         }
     };
-
+    console.log(message);
     // 로그인 버튼 눌렀을때 호출되는 함수
-    const handleLogin = async () => {
+    const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
         // 유효성 검사 결과 담아서 inputMessage에 반환
-        const inputResult = validateLoginResult(email, password);
+        const inputResult = validateResult({ email, password });
         setInputMessage(inputResult);
 
-        // email, pw중 어느 하나라도 ''값이 아닌 경우 false 반환
+        // email, password중 어느 하나라도 ''값이 아닌 경우 false 반환
         const hasMessage = Object.values(inputResult).some((result) => result !== '');
 
         // hasMessage가 false인 경우(모든 validation 통과한 경우)
         if (hasMessage) {
             alert('모든 필드값을 입력해주시기 바랍니다.');
         }
-
         try {
-            const response: any = await axios.post('/users/login', { email, password });
+            const response: any = await axios.post(`${process.env.REACT_APP_API_URL}/users/login`, { email, password });
+
             if (response.code == 200) {
+                console.log(response);
                 // ! 임시 저장(토큰 내려주는지 확인) - accessToken 인지 refreshToken인지
                 // ! HTTP only인지 , headers-cookie인지 check
                 localStorage.setItem('token', response.data.token);
@@ -130,15 +126,15 @@ export const useSignupForm = () => {
         setEmail,
         password,
         setPassword,
-        pwCheck,
-        setPwCheck,
+        passwordCheck,
+        setPasswordCheck,
         nickname,
         setNickname,
         inputMessage,
         clickedButEmpty,
         handleEmptyInput,
         clearInputMessage,
-        handleSubmit,
+        handleSignup,
         handleLogin,
     };
 };

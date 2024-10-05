@@ -1,8 +1,9 @@
-// import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { FaRegStar, FaStar } from 'react-icons/fa';
-// import { FaStarHalfAlt, FaStar } from 'react-icons/fa';
 import reviewFake from '../../fakeData/reviewFake';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const CommentsContainer = styled.section`
     margin-top: 24px;
@@ -50,6 +51,18 @@ const CommentsText = styled.div`
 export default function ViewComments() {
     // const [rate, setRate] = useState<number>(0);
     // 작성날짜 post
+    const [commentsData, setCommentsData] = useState([]);
+
+    const { id } = useParams();
+    useEffect(() => {
+        try {
+            const response: any = axios.get(`${process.env.REACT_APP_API_URL}/comments/${id}`);
+            console.log(response);
+            setCommentsData(response.data);
+        } catch (err) {
+            console.log(err);
+        }
+    }, [commentsData]);
 
     return (
         <CommentsContainer>

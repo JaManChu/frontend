@@ -1,32 +1,24 @@
-// src/components/signup/hooks/useSignupForm.ts
-
 import { useState } from 'react';
-import {
-    validateEmail,
-    validatePassword,
-    validatePasswordCheck,
-    validateNickname,
-    validateSignupResult,
-} from '../../Signup/validation/validation.ts';
+import { validateEmail, validatePassword, validatePasswordCheck, validateNickname, validateResult } from '../../../utils/validation/validation.ts';
 
 export const useUpdateForm = () => {
     const [email, setEmail] = useState('');
-    const [pw, setPw] = useState('');
-    const [pwCheck, setPwCheck] = useState('');
-    const [nickName, setNickName] = useState('');
+    const [password, setPassword] = useState('');
+    const [passwordCheck, setPasswordCheck] = useState('');
+    const [nickname, setNickname] = useState('');
 
     const [errors, setErrors] = useState<{ [key: string]: string }>({
         email: '',
-        pw: '',
-        pwCheck: '',
-        nickName: '',
+        password: '',
+        passwordCheck: '',
+        nickname: '',
     });
 
     const [touched, setTouched] = useState<{ [key: string]: boolean }>({
         email: false,
-        pw: false,
-        pwCheck: false,
-        nickName: false,
+        password: false,
+        passwordCheck: false,
+        nickname: false,
     });
 
     const handleBlur = (field: string) => {
@@ -38,14 +30,14 @@ export const useUpdateForm = () => {
             case 'email':
                 newError = validateEmail(email);
                 break;
-            case 'pw':
-                newError = validatePassword(pw);
+            case 'password':
+                newError = validatePassword(password);
                 break;
-            case 'pwCheck':
-                newError = validatePasswordCheck(pw, pwCheck);
+            case 'passwordCheck':
+                newError = validatePasswordCheck(password, passwordCheck);
                 break;
-            case 'nickName':
-                newError = validateNickname(nickName);
+            case 'nickname':
+                newError = validateNickname(nickname);
                 break;
             default:
                 break;
@@ -61,7 +53,7 @@ export const useUpdateForm = () => {
     };
 
     const handleSubmit = () => {
-        const newErrors = validateSignupResult(email, pw, pwCheck, nickName);
+        const newErrors = validateResult({ email, password, passwordCheck, nickname });
         setErrors(newErrors);
 
         const hasErrors = Object.values(newErrors).some((error) => error !== '');
@@ -69,8 +61,8 @@ export const useUpdateForm = () => {
         if (!hasErrors) {
             return {
                 email,
-                password: pw,
-                nickname: nickName,
+                password: password,
+                nickname: nickname,
             };
         }
 
@@ -80,12 +72,12 @@ export const useUpdateForm = () => {
     return {
         email,
         setEmail,
-        pw,
-        setPw,
-        pwCheck,
-        setPwCheck,
-        nickName,
-        setNickName,
+        password,
+        setPassword,
+        passwordCheck,
+        setPasswordCheck,
+        nickname,
+        setNickname,
         errors,
         touched,
         handleBlur,

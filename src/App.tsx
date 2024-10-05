@@ -1,4 +1,4 @@
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
 import Onboard from './views/Onboard/Onboard.tsx';
 import Login from './views/Login/Login.tsx';
 import Signup from './views/Signup/Signup.tsx';
@@ -10,14 +10,14 @@ import Latest from './views/Recipes/Latest/Latest.tsx';
 import Popular from './views/Recipes/Popular/Popular.tsx';
 import Recommend from './views/Recipes/Recommend/Recommend.tsx';
 import DetailRecipe from './views/Recipes/DetailRecipe/DetailRecipe.tsx';
-
+import { isLogin } from './utils/isLogin/isLogin.ts';
 function App() {
     return (
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Onboard />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
+                <Route path="/login" element={isLogin() ? <Navigate to="/main" /> : <Login />} />
+                <Route path="/signup" element={isLogin() ? <Navigate to="/main" /> : <Signup />} />
                 {/* Header 추가해야하는 컴포넌트는 Header 아래에 작성 */}
                 <Route element={<Header />}>
                     <Route path="/mypage" element={<Mypage />} />

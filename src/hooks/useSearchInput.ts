@@ -18,7 +18,7 @@ export const useSearchInput = () => {
             alert(selectedIngredients);
         }
         try {
-            // const response = await axios.get('/recipes/search');
+            // const response = await axios.get(`${process.env.REACT_APP_API_URL}/recipes/search`);
             // ! 데이터 들어오는 구조 확인 - 데이터 받아오면 setSelectedIngredients 데이터 가공해서 화면 렌더링 처리
         } catch (err: any) {
             console.log(err);

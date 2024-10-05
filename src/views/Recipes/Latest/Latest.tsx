@@ -14,7 +14,7 @@ export default function Latest({ limit, page }: RecipeLimitProps) {
     // useEffect(() => {
     //     const fetchRecipes = async () => {
     //         try {
-    //             const response = await axios.get('/recipes');
+    // const response = await axios.get(`${process.env.REACT_APP_API_URL}/recipes`);
     //         } catch (err) {}
     //     };
     // }, [recipes]);

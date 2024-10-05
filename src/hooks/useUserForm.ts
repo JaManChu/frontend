@@ -69,7 +69,7 @@ export const useUserForm = () => {
 
         // email, password, passwordCheck, nickName 중 어느 하나라도 ''값이 아닌 경우 false 반환
         const hasMessage = Object.values(inputResult).some((result) => result !== '');
-
+        console.log(email, password, passwordCheck);
         // hasMessage가 false인 경우(모든 validation 통과한 경우)
         if (hasMessage) {
             alert('모든 필드값을 입력해주시기 바랍니다.');
@@ -77,7 +77,7 @@ export const useUserForm = () => {
         }
 
         try {
-            const response: any = await axios.post('/users/signup', { email, password, nickname });
+            const response: any = await axios.post(`${process.env.REACT_APP_API_URL}/users/signup`, { email, password, nickname });
             if (response.code == 200) {
                 console.log(response);
                 setMessage(response.data.message);
@@ -88,7 +88,7 @@ export const useUserForm = () => {
             setMessage(err.message);
         }
     };
-
+    console.log(message);
     // 로그인 버튼 눌렀을때 호출되는 함수
     const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -105,7 +105,7 @@ export const useUserForm = () => {
             alert('모든 필드값을 입력해주시기 바랍니다.');
         }
         try {
-            const response: any = await axios.post('/users/login', { email, password });
+            const response: any = await axios.post(`${process.env.REACT_APP_API_URL}/users/login`, { email, password });
 
             if (response.code == 200) {
                 console.log(response);

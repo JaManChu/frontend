@@ -26,8 +26,14 @@ const SignupFieldset = styled.fieldset`
     border: 0;
     text-align: center;
 `;
+const SignupEmailWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
 const Input = styled.input<{ showErrorMessage: boolean }>`
     width: 100%;
+    min-width: 300px;
     height: 40px;
     margin-top: 10px;
     border-radius: 10px;
@@ -36,10 +42,10 @@ const Input = styled.input<{ showErrorMessage: boolean }>`
 `;
 
 const Button = styled.button`
+    min-width: 80px;
     width: 50%;
     height: 40px;
-    margin-top: 10px;
-    margin-left: 60px;
+    margin: 8px 0 0 20px;
     font-size: 1rem;
     border: none;
     border-radius: 10px;
@@ -80,13 +86,14 @@ export default function Signup(): JSX.Element {
 
     const handleCheckEmail = async () => {
         try {
-            const response: any = await axios.get(`/auth/email-check?email=${email}`);
+            const response: any = await axios.get(`${process.env.REACT_APP_API_URL}/auth/email-check?email=${email}`);
+            console.log(response);
             if (response.data === true) {
                 alert(response.message);
-                setMessage(response.meesage);
+                setMessage(response.message);
             } else {
                 alert(response.message);
-                setMessage(response.meesage);
+                setMessage(response.message);
             }
         } catch (err) {
             console.log(err);
@@ -100,16 +107,28 @@ export default function Signup(): JSX.Element {
                 <form action="/users/signup" method="post" onSubmit={handleSignup}>
                     <SignupFieldset>
                         <legend>Welcome, Register your account</legend>
-                        <Input
-                            name="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            onBlur={() => handleEmptyInput('email')}
-                            onFocus={() => clearInputMessage('email')}
-                            // inputMessage에 값이 있을때 & clickedButEmpty가 true일때
-                            showErrorMessage={!!inputMessage.email && clickedButEmpty.email}
-                            placeholder="이메일을 입력하세요"
-                        />
+                        <SignupEmailWrapper>
+                            <Input
+                                name="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                onBlur={() => handleEmptyInput('email')}
+                                onFocus={() => clearInputMessage('email')}
+                                // inputMessage에 값이 있을때 & clickedButEmpty가 true일때
+                                showErrorMessage={!!inputMessage.email && clickedButEmpty.email}
+                                placeholder="이메일을 입력하세요"
+                            />
+                            <Button
+                                type="button"
+                                onClick={() => {
+                                    openModal();
+                                    handleCheckEmail();
+                                }}
+                            >
+                                중복확인
+                            </Button>
+                        </SignupEmailWrapper>
+
                         <ErrorMessage visible={!!inputMessage.email && clickedButEmpty.email}>{inputMessage.email}</ErrorMessage>
                         <Input
                             name="password"
@@ -145,16 +164,6 @@ export default function Signup(): JSX.Element {
                         />
                         <ErrorMessage visible={!!inputMessage.nickname && clickedButEmpty.nickname}>{inputMessage.nickname}</ErrorMessage>
                     </SignupFieldset>
-                    {/* // ! type button 이어야 하는지 확인하고 onClick 인지 onSubmit인지 체크하셈 */}
-                    <Button
-                        type="submit"
-                        onClick={() => {
-                            openModal();
-                            handleCheckEmail();
-                        }}
-                    >
-                        중복확인
-                    </Button>
                     <Button type="submit">회원가입</Button>
                 </form>
 

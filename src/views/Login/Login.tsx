@@ -1,15 +1,14 @@
-import React from 'react';
 import { Layout } from '../../styles/layout';
-import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useModal } from '../../hooks/useModal';
+import { useUserForm } from '../../hooks/useUserForm';
 import Modal from '../../components/Modal/Modal';
-// import KakaoLoginButton from '../../components/KaKaoButton/KaKaoLoginButton';
-import { useModal } from '../Signup/hooks/useModal';
-import { useSignupForm } from '../Signup/hooks/useSignUpForm';
-// import axios from 'axios';
 import SocialKakao from './SocialKakao';
+import styled from 'styled-components';
+// import KakaoLoginButton from '../../components/KaKaoButton/KaKaoLoginButton';
+// import axios from 'axios';
 
-const Wrapper = styled.div`
+const LoginContainer = styled.section`
     width: 600px;
     height: 600px;
     border: 1px solid black;
@@ -20,30 +19,30 @@ const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
 `;
-
-const InputWrapper = styled.div`
-    width: 100%;
-    height: 150px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+const LoginHeader = styled.h1`
+    font-size: 2.5rem;
 `;
-const Input = styled.input<{ isError: boolean }>`
-    width: 400px;
+const LoginFieldset = styled.fieldset`
+    padding: 0;
+    margin: 0 auto;
+    border: 0;
+    text-align: center;
+`;
+const Input = styled.input<{ showErrorMessage: boolean }>`
+    display: block;
+    width: 100%;
     height: 45px;
     color: gray;
     margin-top: 20px;
     border-radius: 10px;
     font-size: 1rem;
-    border: ${(props) => (props.isError ? '2px solid red' : '1px solid #ccc')};
+    border: ${(props) => (props.showErrorMessage ? '2px solid red' : '2px solid #ccc')};
 `;
-
-const Button = styled.button<{ title: string }>`
-    width: 400px;
+const LoginButton = styled.button`
+    width: 50%;
     height: 45px;
-    background-color: ${(props) => (props.title === '로그인' ? '#F59910' : '#FFF500')};
-    color: ${(props) => (props.title === '로그인' ? 'white' : 'black')};
+    background-color: #f59910;
+    color: #ffffff;
     margin-top: 30px;
     border: none;
     border-radius: 10px;
@@ -70,26 +69,22 @@ const SignUpWrapper = styled.div`
     justify-content: space-between;
     margin-top: 15px;
 `;
-
-const SignupText = styled.h1<{ text: string }>`
+const SignupBtn = styled.button`
     font-size: 1.25rem;
-    color: ${(props) => (props.text === '버튼' ? '#F59910' : 'black')};
-    cursor: ${(props) => (props.text === '버튼' ? 'pointer' : '')};
+    background-color: transparent;
+    border: none;
+    color: #f59910;
+    cursor: pointer;
 `;
-
-const Title = styled.h1`
-    font-size: 2.5rem;
-`;
-
 const ErrorMessage = styled.p<{ visible: boolean }>`
     color: red;
     font-size: 0.8rem;
     margin-top: 5px;
-    margin-right: 260px;
     min-height: 20px;
-    visibility: ${(props) => (props.visible ? 'visible' : 'hidden')};
+    text-align: left;
+    visibility: ${(props) => (props.visible ? 'visible' : 'none')};
 `;
-const Login: React.FC = () => {
+export default function Login(): JSX.Element {
     const navigate = useNavigate();
     const {
         email,
@@ -103,39 +98,42 @@ const Login: React.FC = () => {
         clearInputMessage,
         inputMessage,
         handleLogin,
-    } = useSignupForm();
+    } = useUserForm();
     const { openModal, closeModal, handleConfirm, isModalVisible } = useModal();
 
     // const handleCheckPassword = async() => {}
 
     return (
         <Layout>
-            <Wrapper>
-                <Title>로그인</Title>
-                <InputWrapper>
-                    <Input
-                        placeholder="이메일"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        onBlur={() => handleEmptyInput('email')}
-                        onFocus={() => clearInputMessage('email')}
-                        isError={!!inputMessage.email && clickedButEmpty.email}
-                    />
-                    <ErrorMessage visible={!!inputMessage.email && clickedButEmpty.email}>{inputMessage.email}</ErrorMessage>
-                    <Input
-                        placeholder="비밀번호"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        onBlur={() => handleEmptyInput('pw')}
-                        onFocus={() => clearInputMessage('pw')}
-                        isError={!!inputMessage.pw && clickedButEmpty.pw}
-                    />
-                    <ErrorMessage visible={!!inputMessage.pw && clickedButEmpty.pw}>{inputMessage.pw}</ErrorMessage>
-                </InputWrapper>
-                <Button type="button" title={'로그인'} onClick={handleLogin}>
-                    로그인
-                </Button>
+            <LoginContainer>
+                <LoginHeader>로그인</LoginHeader>
+                <form action="/users/login" method="post" onSubmit={handleLogin}>
+                    <LoginFieldset>
+                        <legend>Welcome back! Please login to your account.</legend>
+                        <Input
+                            name="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            onBlur={() => handleEmptyInput('email')}
+                            onFocus={() => clearInputMessage('email')}
+                            showErrorMessage={!!inputMessage.email && clickedButEmpty.email}
+                            placeholder="이메일을 입력해주세요."
+                        />
+                        <ErrorMessage visible={!!inputMessage.email && clickedButEmpty.email}>{inputMessage.email}</ErrorMessage>
+                        <Input
+                            name="password"
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            onBlur={() => handleEmptyInput('password')}
+                            onFocus={() => clearInputMessage('password')}
+                            showErrorMessage={!!inputMessage.password && clickedButEmpty.password}
+                            placeholder="비밀번호를 입력해주세요."
+                        />
+                        <ErrorMessage visible={!!inputMessage.password && clickedButEmpty.password}>{inputMessage.password}</ErrorMessage>
+                    </LoginFieldset>
+                    <LoginButton type="submit">로그인</LoginButton>
+                </form>
                 <PwSearch
                     onClick={() => {
                         openModal();
@@ -159,32 +157,28 @@ const Login: React.FC = () => {
                             onChange={(e) => setNickname(e.target.value)}
                             onBlur={() => handleEmptyInput('email')}
                             onFocus={() => clearInputMessage('email')}
-                            isError={!!inputMessage.email && clickedButEmpty.email}
+                            showErrorMessage={!!inputMessage.email && clickedButEmpty.email}
                         />
                         <ErrorMessage visible={!!inputMessage.email && clickedButEmpty.email}>{inputMessage.email}</ErrorMessage>
                         <Input
                             placeholder="닉네임"
                             value={nickname}
                             onChange={(e) => setNickname(e.target.value)}
-                            onBlur={() => handleEmptyInput('nickName')}
-                            onFocus={() => clearInputMessage('nickName')}
-                            isError={!!inputMessage.nickname && clickedButEmpty.nickname}
+                            onBlur={() => handleEmptyInput('nickname')}
+                            onFocus={() => clearInputMessage('nickname')}
+                            showErrorMessage={!!inputMessage.nickname && clickedButEmpty.nickname}
                         />
                         <ErrorMessage visible={!!inputMessage.nickname && clickedButEmpty.nickname}>{inputMessage.nickname}</ErrorMessage>
                     </Modal>
                 )}
                 <Hr></Hr>
                 <SignUpWrapper>
-                    <SignupText text={''}>아직 회원이 아니세요?</SignupText>
-                    <SignupText text={'버튼'} onClick={() => navigate('/signup')}>
-                        회원가입
-                    </SignupText>
+                    <p>아직 회원이 아니세요?</p>
+                    <SignupBtn onClick={() => navigate('/signup')}>회원가입</SignupBtn>
                 </SignUpWrapper>
                 {/* <KakaoLoginButton /> */}
                 <SocialKakao />
-            </Wrapper>
+            </LoginContainer>
         </Layout>
     );
-};
-
-export default Login;
+}

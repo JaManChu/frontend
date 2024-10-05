@@ -10,8 +10,9 @@ export default function SocialKakao() {
         const idToken = data.response.access_token;
         console.log(data);
         try {
-            const response: any = await axios.post('', { access_token: idToken });
+            const response: any = await axios.post('', { access_token: idToken, authProvider: 'kakao' });
             if (response.code == 200) {
+                console.log(response);
                 localStorage.setItem('kakao_access_token', response.data);
                 navigate('/main');
             }

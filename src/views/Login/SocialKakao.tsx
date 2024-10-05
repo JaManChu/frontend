@@ -10,7 +10,7 @@ export default function SocialKakao() {
             window.Kakao.init(javaScriptKey); // App Key를 사용하여 초기화
         }
     }, [javaScriptKey]);
-    const kakaoOnSuccess = async (data) => {
+    const kakaoOnSuccess = async (data: any) => {
         const idToken = data.response.access_token;
         console.log(data);
         try {
@@ -28,7 +28,7 @@ export default function SocialKakao() {
             alert('로그인에 실패했습니다.');
         }
     };
-    const kakaoOnFailure = (err) => {
+    const kakaoOnFailure = (err: any) => {
         console.log(err);
     };
     return <KakaoLogin token={javaScriptKey} onSuccess={kakaoOnSuccess} onFail={kakaoOnFailure} />;

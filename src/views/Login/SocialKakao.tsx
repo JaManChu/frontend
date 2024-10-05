@@ -21,7 +21,7 @@ export default function SocialKakao() {
             }
         } catch (err) {
             console.log(err);
-            alert('로그인에 실패했습니다. 다시 시도해주세요.');
+            alert('로그인에 실패했습니다.');
         }
     };
     const kakaoOnFailure = (err: any) => {

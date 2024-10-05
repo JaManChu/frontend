@@ -71,6 +71,7 @@ const DetailIngredientsWrapper = styled.div`
         font-weight: 400;
     }
 `;
+
 const DetailIngredientsTable = styled.table`
     border-collapse: collapse;
     width: 100%;
@@ -184,6 +185,7 @@ export default function DetailRecipe() {
             </DetailRecipeContents>
             <Review />
             <ViewComments />
+            <div>테스트용, 테스트 입니다. Pr용 수정 사항 반영입니다.</div>
         </DetailRecipeContainer>
     );
 }

@@ -64,7 +64,7 @@ export const useUserForm = () => {
     // 회원가입 버튼 눌렀을때 호출되는 함수
     const handleSignup = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(`API URL: ${import.meta.env.VITE_BASE_URL}/user/signup`);
+        console.log(`API URL: ${import.meta.env.VITE_BASE_URL}/users/signup`);
         // 유효성 검사 결과 담아서 inputMessage에 반환
         const inputResult = validateResult({ email, password, passwordCheck, nickname });
         setInputMessage(inputResult);
@@ -89,7 +89,7 @@ export const useUserForm = () => {
             }
             // !  response.code가 200이 아닌 경우 catch로 넘어가는지 확인
         } catch (err: any) {
-            console.log(`${import.meta.env.VITE_BASE_URL}/user/signup`);
+            console.log(`${import.meta.env.VITE_BASE_URL}/users/signup`);
 
             setMessage(err.message);
         }
@@ -111,7 +111,7 @@ export const useUserForm = () => {
             alert('모든 필드값을 입력해주시기 바랍니다.');
         }
         try {
-            const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/login`, { email, password });
+            const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, { email, password });
 
             if (response.code == 200) {
                 console.log(response);

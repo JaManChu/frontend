@@ -79,7 +79,7 @@ export const useUserForm = () => {
         }
 
         try {
-            const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/signup`, { email, password, nickname });
+            const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/signup`, { email, password, nickname });
 
             if (response.code == 201) {
                 console.log('success?');

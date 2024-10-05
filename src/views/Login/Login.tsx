@@ -107,7 +107,7 @@ export default function Login(): JSX.Element {
         <Layout>
             <LoginContainer>
                 <LoginHeader>로그인</LoginHeader>
-                <form action="/users/login" method="post" onSubmit={handleLogin}>
+                <form method="POST" onSubmit={handleLogin}>
                     <LoginFieldset>
                         <legend>Welcome back! Please login to your account.</legend>
                         <Input

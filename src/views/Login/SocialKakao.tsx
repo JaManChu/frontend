@@ -2,14 +2,16 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import KakaoLogin from 'react-kakao-login';
 import axios from 'axios';
+
 export default function SocialKakao() {
     const navigate = useNavigate();
-    const javaScriptKey = import.meta.env.VITE_JAVASCRIPT_KEY;
+    const restApiKey = import.meta.env.VITE_REST_API_KEY; // REST API 키로 변경
     useEffect(() => {
         if (window.Kakao) {
-            window.Kakao.init(javaScriptKey); // App Key를 사용하여 초기화
+            window.Kakao.init(restApiKey); // REST API Key로 초기화
         }
-    }, [javaScriptKey]);
+    }, [restApiKey]);
+
     const kakaoOnSuccess = async (data: any) => {
         const idToken = data.response.access_token;
         console.log(data);
@@ -28,8 +30,10 @@ export default function SocialKakao() {
             alert('로그인에 실패했습니다.');
         }
     };
+
     const kakaoOnFailure = (err: any) => {
         console.log(err);
     };
-    return <KakaoLogin token={javaScriptKey} onSuccess={kakaoOnSuccess} onFail={kakaoOnFailure} />;
+
+    return <KakaoLogin token={restApiKey} onSuccess={kakaoOnSuccess} onFail={kakaoOnFailure} />;
 }

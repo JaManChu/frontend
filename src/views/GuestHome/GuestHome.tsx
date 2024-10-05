@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { CiSearch } from 'react-icons/ci';
 import { useNavigate } from 'react-router-dom';
 import MainLogo from '../../assets/img/spoon.jpg';
-import { useSearchInput } from './hooks/useSearchInput';
+import { useSearchInput } from '../../hooks/useSearchInput';
 const GuestContainer = styled.section`
     background-color: #f5f4f3;
     height: 100%;

@@ -39,7 +39,7 @@ const Input = styled.input<{ showErrorMessage: boolean }>`
     border: ${(props) => (props.showErrorMessage ? '2px solid red' : '2px solid #ccc')};
 `;
 const LoginButton = styled.button`
-    width: 50%;
+    width: 100%;
     height: 45px;
     background-color: #f59910;
     color: #ffffff;

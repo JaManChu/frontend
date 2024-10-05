@@ -144,7 +144,7 @@ const Mypage: React.FC = () => {
         setUpdateNick,
     } = useModal();
 
-    const { pw, setPw, pwCheck, setPwCheck, errors, touched, handleBlur, clearFieldError } = useUpdateForm();
+    const { password, setPassword, passwordCheck, setPasswordCheck, errors, touched, handleBlur, clearFieldError } = useUpdateForm();
 
     return (
         <Row_layout>
@@ -206,23 +206,23 @@ const Mypage: React.FC = () => {
                                 <h1>비밀번호 수정</h1>
                                 <p>이메일 : {user_info.email}</p>
                                 <Input
-                                    value={pw}
+                                    value={password}
                                     placeholder="기존 비밀번호를 입력하세요"
-                                    onChange={(e) => setPw(e.target.value)}
-                                    isError={!!errors.pw && touched.pw}
-                                    onFocus={() => clearFieldError('pw')}
-                                    onBlur={() => handleBlur('pw')}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    isError={!!errors.password && touched.password}
+                                    onFocus={() => clearFieldError('password')}
+                                    onBlur={() => handleBlur('password')}
                                 />
-                                <ErrorMessage visible={!!errors.pw && touched.pw}>{errors.pw}</ErrorMessage>
+                                <ErrorMessage visible={!!errors.password && touched.password}>{errors.password}</ErrorMessage>
                                 <Input
-                                    value={pwCheck}
+                                    value={passwordCheck}
                                     placeholder="변경할 비밀번호를 입력하세요"
-                                    onChange={(e) => setPwCheck(e.target.value)}
-                                    isError={!!errors.pw && touched.pw}
-                                    onFocus={() => clearFieldError('pwCheck')}
-                                    onBlur={() => handleBlur('pwCheck')}
+                                    onChange={(e) => setPasswordCheck(e.target.value)}
+                                    isError={!!errors.password && touched.password}
+                                    onFocus={() => clearFieldError('passwordCheck')}
+                                    onBlur={() => handleBlur('passwordCheck')}
                                 />
-                                <ErrorMessage visible={!!errors.pwCheck && touched.pwCheck}>{errors.pwCheck}</ErrorMessage>
+                                <ErrorMessage visible={!!errors.passwordCheck && touched.passwordCheck}>{errors.passwordCheck}</ErrorMessage>
                             </Modal>
                         )}
                     </Update_button>

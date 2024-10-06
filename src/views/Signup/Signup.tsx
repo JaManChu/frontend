@@ -6,64 +6,6 @@ import { useUserForm } from '../../hooks/useUserForm.ts';
 import { useModal } from '../../hooks/useModal.ts';
 import axios from 'axios';
 
-const SingupContainer = styled.section`
-    width: 800px;
-    height: 600px;
-    border: 2px solid black;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-`;
-const SingupHeader = styled.h1`
-    font-size: 2.5rem;
-`;
-const SignupFieldset = styled.fieldset`
-    width: 100%;
-    padding: 0;
-    margin: 10px auto;
-    border: 0;
-    text-align: center;
-`;
-const SignupEmailWrapper = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`;
-const Input = styled.input<{ showErrorMessage: boolean }>`
-    width: 100%;
-    min-width: 300px;
-    height: 40px;
-    margin-top: 10px;
-    border-radius: 10px;
-    font-size: 1rem;
-    border: ${(props) => (props.showErrorMessage ? '2px solid red' : '1px solid #ccc')};
-`;
-
-const Button = styled.button`
-    min-width: 80px;
-    width: 50%;
-    height: 40px;
-    margin: 8px 0 0 20px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 10px;
-    color: white;
-    background-color: #f59910;
-    cursor: pointer;
-`;
-
-// `visible` : 에러메세지가 있을 때 boolean으로 style적용
-const ErrorMessage = styled.p<{ visible: boolean }>`
-    min-height: 20px;
-    margin-top: 5px;
-    color: red;
-    font-size: 0.8rem;
-    text-align: start;
-    visibility: ${(props) => (props.visible ? 'visible' : 'none')}; /* 에러가 없을 때는 숨김 */
-`;
-
 export default function Signup(): JSX.Element {
     const [message, setMessage] = useState<string>('');
     const {
@@ -177,3 +119,61 @@ export default function Signup(): JSX.Element {
         </Layout>
     );
 }
+
+const SingupContainer = styled.section`
+    width: 800px;
+    height: 600px;
+    border: 2px solid black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
+const SingupHeader = styled.h1`
+    font-size: 2.5rem;
+`;
+const SignupFieldset = styled.fieldset`
+    width: 100%;
+    padding: 0;
+    margin: 10px auto;
+    border: 0;
+    text-align: center;
+`;
+const SignupEmailWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
+const Input = styled.input<{ showErrorMessage: boolean }>`
+    width: 100%;
+    min-width: 300px;
+    height: 40px;
+    margin-top: 10px;
+    border-radius: 10px;
+    font-size: 1rem;
+    border: ${(props) => (props.showErrorMessage ? '2px solid red' : '1px solid #ccc')};
+`;
+
+const Button = styled.button`
+    min-width: 80px;
+    width: 50%;
+    height: 40px;
+    margin: 8px 0 0 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    background-color: #f59910;
+    cursor: pointer;
+`;
+
+// `visible` : 에러메세지가 있을 때 boolean으로 style적용
+const ErrorMessage = styled.p<{ visible: boolean }>`
+    min-height: 20px;
+    margin-top: 5px;
+    color: red;
+    font-size: 0.8rem;
+    text-align: start;
+    visibility: ${(props) => (props.visible ? 'visible' : 'none')}; /* 에러가 없을 때는 숨김 */
+`;

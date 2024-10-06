@@ -1,12 +1,20 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import KakoLogin from 'react-kakao-login';
+import KakaoLogin from 'react-kakao-login';
 import axios from 'axios';
 
-export default function SocialKakao() {
+export default function SocialKakao(): JSX.Element {
     const navigate = useNavigate();
+
     const javaScriptKey = import.meta.env.VITE_JAVASCRIPT_KEY;
     const restApiKey = import.meta.env.VITE_REST_API_KEY;
     const redirectUri = import.meta.env.VITE_REDIRECT_URI;
+
+    useEffect(() => {
+        if (window.Kakao) {
+            window.Kakao.init(restApiKey); // REST API Key로 초기화
+        }
+    }, [restApiKey]);
 
     // ? 프론트에서 토큰 발급해 보내주는 경우
     const kakaoOnSuccess = async (data: any) => {
@@ -21,6 +29,7 @@ export default function SocialKakao() {
             if (response.code == 200) {
                 console.log(response);
                 localStorage.setItem('kakaoToken', JSON.stringify(response.data));
+
                 navigate('/main');
             }
         } catch (err) {
@@ -28,6 +37,7 @@ export default function SocialKakao() {
             alert('로그인에 실패했습니다.');
         }
     };
+
     const kakaoOnFailure = (err: any) => {
         console.log(err);
         console.log('카카오 접속 자체 실패');
@@ -41,7 +51,7 @@ export default function SocialKakao() {
 
     return (
         <>
-            <KakoLogin token={javaScriptKey} onSuccess={kakaoOnSuccess} onFail={kakaoOnFailure} />
+            <KakaoLogin token={javaScriptKey} onSuccess={kakaoOnSuccess} onFail={kakaoOnFailure} />
             <button onClick={handleLogin}>코드만 보내는 카카오 로그인</button>
         </>
     );

@@ -1,13 +1,6 @@
 import RecipeCard from './RecipeCard';
 import styled from 'styled-components';
 
-const RecipeContainer = styled.section<{ page?: string }>`
-    display: grid;
-    gap: 16px;
-    padding: ${(props) => (props.page == 'latest' ? '0px' : props.page == 'recommended' || props.page == 'popular' ? '8px 50px 50px' : '30px;')};
-    grid-template-columns: ${(props) => (props.page == 'latest' ? '1fr' : props.page == 'recommended' ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)')};
-`;
-
 interface RecipeProps {
     id: string;
     title: string;
@@ -22,7 +15,7 @@ interface RecipeListProps {
     limit?: number;
     page?: string;
 }
-export default function RecipeList({ recipes, limit, page }: RecipeListProps) {
+export default function RecipeList({ recipes, limit, page }: RecipeListProps): JSX.Element {
     const displayRecipes = limit ? recipes.slice(0, limit) : recipes;
 
     return (
@@ -34,3 +27,10 @@ export default function RecipeList({ recipes, limit, page }: RecipeListProps) {
         </RecipeContainer>
     );
 }
+
+const RecipeContainer = styled.section<{ page?: string }>`
+    display: grid;
+    gap: 16px;
+    padding: ${(props) => (props.page == 'latest' ? '0px' : props.page == 'recommended' || props.page == 'popular' ? '8px 50px 50px' : '30px;')};
+    grid-template-columns: ${(props) => (props.page == 'latest' ? '1fr' : props.page == 'recommended' ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)')};
+`;

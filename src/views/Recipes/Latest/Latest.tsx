@@ -9,7 +9,7 @@ interface RecipeLimitProps {
     page?: string;
 }
 
-export default function Latest({ limit, page }: RecipeLimitProps) {
+export default function Latest({ limit, page }: RecipeLimitProps): JSX.Element {
     // const [recipes, setRecipes] = useState<string[]>([]);
     // useEffect(() => {
     //     const fetchRecipes = async () => {

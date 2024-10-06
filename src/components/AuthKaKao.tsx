@@ -9,6 +9,7 @@ export default function AuthKaKao() {
 
     useEffect(() => {
         const fetch = async () => {
+            console.log('code', code);
             try {
                 const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/oauth2/authorization/kakao`, {
                     code: code,

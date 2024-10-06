@@ -5,6 +5,46 @@ import reviewFake from '../../fakeData/reviewFake';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
+export default function ViewComments(): JSX.Element {
+    // const [rate, setRate] = useState<number>(0);
+    // 작성날짜 post
+    const [commentsData, setCommentsData] = useState([]);
+
+    const { id } = useParams();
+    useEffect(() => {
+        try {
+            const response: any = axios.get(`${process.env.REACT_APP_API_URL}/comments/${id}`);
+            console.log(response);
+            setCommentsData(response.data);
+        } catch (err) {
+            console.log(err);
+        }
+    }, [commentsData]);
+
+    return (
+        <CommentsContainer>
+            <h4>리뷰보기</h4>
+            {reviewFake.map((review) => (
+                <CommentsContents>
+                    <ReviewerFigure>
+                        <img src="" alt="유저이미지" />
+                        <ReviewerFigcaption>UserId</ReviewerFigcaption>
+                    </ReviewerFigure>
+                    <CommentsWrapper>
+                        {Array(5)
+                            .fill(0)
+                            .map((_, idx) => {
+                                return review.rate <= idx ? <FaRegStar /> : <FaStar />;
+                            })}
+                        <CommentsText>
+                            <p>{review.comment}</p>
+                        </CommentsText>
+                    </CommentsWrapper>
+                </CommentsContents>
+            ))}
+        </CommentsContainer>
+    );
+}
 const CommentsContainer = styled.section`
     margin-top: 24px;
     h4 {
@@ -47,44 +87,3 @@ const CommentsText = styled.div`
     background-color: lightgray;
     border-radius: 16px;
 `;
-
-export default function ViewComments() {
-    // const [rate, setRate] = useState<number>(0);
-    // 작성날짜 post
-    const [commentsData, setCommentsData] = useState([]);
-
-    const { id } = useParams();
-    useEffect(() => {
-        try {
-            const response: any = axios.get(`${process.env.REACT_APP_API_URL}/comments/${id}`);
-            console.log(response);
-            setCommentsData(response.data);
-        } catch (err) {
-            console.log(err);
-        }
-    }, [commentsData]);
-
-    return (
-        <CommentsContainer>
-            <h4>리뷰보기</h4>
-            {reviewFake.map((review) => (
-                <CommentsContents>
-                    <ReviewerFigure>
-                        <img src="" alt="유저이미지" />
-                        <ReviewerFigcaption>UserId</ReviewerFigcaption>
-                    </ReviewerFigure>
-                    <CommentsWrapper>
-                        {Array(5)
-                            .fill(0)
-                            .map((_, idx) => {
-                                return review.rate <= idx ? <FaRegStar /> : <FaStar />;
-                            })}
-                        <CommentsText>
-                            <p>{review.comment}</p>
-                        </CommentsText>
-                    </CommentsWrapper>
-                </CommentsContents>
-            ))}
-        </CommentsContainer>
-    );
-}

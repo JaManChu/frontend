@@ -6,6 +6,41 @@ import styled from 'styled-components';
 
 // main 페이지가 아닌 Latest에서 isMain을 콘솔에 찍으면 false값이 찍힘 -> 최적화 방안 생각(RecipeCard에서는 4번 : main, latest, recipeList, recipeCard인듯
 
+interface CardProps {
+    page?: string;
+    id: string;
+    title: string;
+    image: string;
+    time: string;
+    level: string;
+    rate: string;
+    desc: string;
+}
+
+export default function RecipeCard({ page = '', id, title, image, time, level, rate, desc }: CardProps): JSX.Element {
+    const [marked, setMarked] = useState<boolean>(false);
+
+    return (
+        <RecipeCardFigure page={page}>
+            <img src={image} alt="레시피이미지" />
+            <RecipeFigcaption page={page}>
+                {page == 'latest' ? <RecipePageTitle>{page.replace(/\b[a-z]/, (letter) => letter.toUpperCase())} Rcipes</RecipePageTitle> : null}
+                <h4>
+                    <Linked to={`/recipes/${id}`}>{title}</Linked>
+                </h4>
+                <BookmarkIcons mark={marked} onClick={() => setMarked(!marked)}>
+                    {marked ? <FaBookmark /> : <FaRegBookmark />}
+                </BookmarkIcons>
+                <RecipeMetaData page={page} time={time} level={level} rate={rate} />
+                {page == 'popular' || page == 'recommended' ? null : <RecipeDescription>{desc}</RecipeDescription>}
+                <span>
+                    <Linked to={`/recipes/${id}`}>view more</Linked>
+                </span>
+            </RecipeFigcaption>
+        </RecipeCardFigure>
+    );
+}
+
 const RecipeCardFigure = styled.figure<{ page: string }>`
     margin: 8px;
     height: ${({ page }) => (page ? '300px' : '200px')};
@@ -59,38 +94,3 @@ const BookmarkIcons = styled.span<{ mark: boolean }>`
     }
     color: ${({ mark }) => (mark ? '#efb63e' : 'inherit')};
 `;
-
-interface CardProps {
-    page?: string;
-    id: string;
-    title: string;
-    image: string;
-    time: string;
-    level: string;
-    rate: string;
-    desc: string;
-}
-
-export default function RecipeCard({ page = '', id, title, image, time, level, rate, desc }: CardProps) {
-    const [marked, setMarked] = useState<boolean>(false);
-
-    return (
-        <RecipeCardFigure page={page}>
-            <img src={image} alt="레시피이미지" />
-            <RecipeFigcaption page={page}>
-                {page == 'latest' ? <RecipePageTitle>{page.replace(/\b[a-z]/, (letter) => letter.toUpperCase())} Rcipes</RecipePageTitle> : null}
-                <h4>
-                    <Linked to={`/recipes/${id}`}>{title}</Linked>
-                </h4>
-                <BookmarkIcons mark={marked} onClick={() => setMarked(!marked)}>
-                    {marked ? <FaBookmark /> : <FaRegBookmark />}
-                </BookmarkIcons>
-                <RecipeMetaData page={page} time={time} level={level} rate={rate} />
-                {page == 'popular' || page == 'recommended' ? null : <RecipeDescription>{desc}</RecipeDescription>}
-                <span>
-                    <Linked to={`/recipes/${id}`}>view more</Linked>
-                </span>
-            </RecipeFigcaption>
-        </RecipeCardFigure>
-    );
-}

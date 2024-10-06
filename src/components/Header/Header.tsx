@@ -4,48 +4,7 @@ import styled from 'styled-components';
 import { FiLogOut, FiUser } from 'react-icons/fi';
 import logo from '../../assets/img/logo.png';
 
-const HeaderSection = styled.section`
-    height: 70px;
-    padding: 16px;
-    font-size: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-`;
-const Logo = styled.img`
-    margin-top: 5px;
-    width: 150px;
-`;
-const MenuList = styled.ul`
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    justify-content: flex-end;
-    display: flex;
-    flex-grow: 1;
-`;
-const MenuItem = styled.li<{ active: boolean }>`
-    margin: 10px;
-    cursor: pointer;
-    &:hover {
-        border-bottom: 3px solid #efb63f;
-    }
-    border-bottom: ${(props) => (props.active ? '3px solid #efb63f' : 'none')};
-`;
-const StyledLink = styled(Link)`
-    text-decoration: none;
-    margin: 10px;
-    color: inherit;
-`;
-const UserAction = styled.div`
-    flex-grow: 1;
-    display: flex;
-    justify-content: flex-end;
-    cursor: pointer;
-`;
-
-export default function Header() {
+export default function Header(): JSX.Element {
     const [isActive, setIsActive] = useState<string>();
     useEffect(() => {
         const getMenu = localStorage.getItem('menu') || 'Home';
@@ -89,3 +48,43 @@ export default function Header() {
         </>
     );
 }
+const HeaderSection = styled.section`
+    height: 70px;
+    padding: 16px;
+    font-size: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`;
+const Logo = styled.img`
+    margin-top: 5px;
+    width: 150px;
+`;
+const MenuList = styled.ul`
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    justify-content: flex-end;
+    display: flex;
+    flex-grow: 1;
+`;
+const MenuItem = styled.li<{ active: boolean }>`
+    margin: 10px;
+    cursor: pointer;
+    &:hover {
+        border-bottom: 3px solid #efb63f;
+    }
+    border-bottom: ${(props) => (props.active ? '3px solid #efb63f' : 'none')};
+`;
+const StyledLink = styled(Link)`
+    text-decoration: none;
+    margin: 10px;
+    color: inherit;
+`;
+const UserAction = styled.div`
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+    cursor: pointer;
+`;

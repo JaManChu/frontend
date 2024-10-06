@@ -1,9 +1,95 @@
-import React from 'react';
 import styled from 'styled-components';
 import { CiSearch } from 'react-icons/ci';
 import { useNavigate } from 'react-router-dom';
 import MainLogo from '../../assets/img/spoon.jpg';
 import { useSearchInput } from '../../hooks/useSearchInput';
+
+export default function GuestHome(): JSX.Element {
+    const { searched, changeInputHandler, handleActiveEnter, handleSubmit } = useSearchInput();
+    //추후 api통신을통해 받은 값으로 대체
+    const LatestInfo = {
+        img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg',
+        title: 'Recipe Title',
+        time: '60min',
+        level: 'easy',
+        content:
+            '배추김치는 사방 1cm 크기로 자르고, 양파는 굵게 다져주세요. 실파는 송송 썰고, 베이컨은 한입 크기로 잘라주세요. 볼에 양념 재료를 넣어 섞어주세요.',
+    };
+
+    const VisitedInfo = {
+        total: '5,015',
+        Yesterday: '500',
+        Today: '15',
+    };
+
+    const navigate = useNavigate();
+
+    return (
+        <GuestContainer>
+            <GusetImage src={MainLogo} alt="메인페이지 이미지" />
+            <SearchArea>
+                <SearchBox
+                    type="text"
+                    value={searched}
+                    onChange={(e) => changeInputHandler(e)}
+                    onKeyDown={(e) => handleActiveEnter(e)}
+                    placeholder="재료를 입력해주세요."
+                />
+                <SearchIcon onClick={handleSubmit} />
+            </SearchArea>
+            <RecommendArea>
+                <Title>Recommend for You</Title>
+                <RecommendSection>
+                    <Notice>회원이 되시면 레시피를 추천 받으실 수 있습니다.</Notice>
+                </RecommendSection>
+                <Button onClick={() => navigate('/recipes/recommended')}>view more</Button>
+            </RecommendArea>
+            <LatestArea>
+                <LatestImgSection>
+                    <img src={LatestInfo.img}></img>
+                </LatestImgSection>
+                <LatestContent>
+                    <Title>Latest Recipe</Title>
+                    <h1>{LatestInfo.title}</h1>
+                    <RecipeStatus>
+                        <span>{LatestInfo.time}</span>
+                        <span>{LatestInfo.level}</span>
+                    </RecipeStatus>
+                    <RecipeSteps>{LatestInfo.content}</RecipeSteps>
+                    <Button onClick={() => navigate('/recipes/latest')}>view more latest recipes</Button>
+                </LatestContent>
+            </LatestArea>
+            <PopularArea>
+                <PopularRecipesArea>
+                    <Title>Popular Recipes</Title>
+                    <PopularRecipesImgArea>
+                        <img src="https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg"></img>
+                        <img src="https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg"></img>
+                    </PopularRecipesImgArea>
+                    <Button onClick={() => navigate('/recipes/popular')}>view more popular recipes</Button>
+                </PopularRecipesArea>
+                <VisitedArea>
+                    <Title>Visited</Title>
+                    <VisitedInfoArea>
+                        <VisitedSection>
+                            <p>Total</p>
+                            <p>{VisitedInfo.total}</p>
+                        </VisitedSection>
+                        <VisitedSection>
+                            <p>YesterDay</p>
+                            <p>{VisitedInfo.Yesterday}</p>
+                        </VisitedSection>
+                        <VisitedSection>
+                            <p>Today</p>
+                            <p>{VisitedInfo.Today}</p>
+                        </VisitedSection>
+                    </VisitedInfoArea>
+                </VisitedArea>
+            </PopularArea>
+        </GuestContainer>
+    );
+}
+
 const GuestContainer = styled.section`
     background-color: #f5f4f3;
     height: 100%;
@@ -165,90 +251,3 @@ const VisitedSection = styled.div`
         margin-bottom: 10px;
     }
 `;
-const GuestHome: React.FC = () => {
-    const { searched, changeInputHandler, handleActiveEnter, handleSubmit } = useSearchInput();
-    //추후 api통신을통해 받은 값으로 대체
-    const LatestInfo = {
-        img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg',
-        title: 'Recipe Title',
-        time: '60min',
-        level: 'easy',
-        content:
-            '배추김치는 사방 1cm 크기로 자르고, 양파는 굵게 다져주세요. 실파는 송송 썰고, 베이컨은 한입 크기로 잘라주세요. 볼에 양념 재료를 넣어 섞어주세요.',
-    };
-
-    const VisitedInfo = {
-        total: '5,015',
-        Yesterday: '500',
-        Today: '15',
-    };
-
-    const navigate = useNavigate();
-
-    return (
-        <GuestContainer>
-            <GusetImage src={MainLogo} alt="메인페이지 이미지" />
-            <SearchArea>
-                <SearchBox
-                    type="text"
-                    value={searched}
-                    onChange={(e) => changeInputHandler(e)}
-                    onKeyDown={(e) => handleActiveEnter(e)}
-                    placeholder="재료를 입력해주세요."
-                />
-                <SearchIcon onClick={handleSubmit} />
-            </SearchArea>
-            <RecommendArea>
-                <Title>Recommend for You</Title>
-                <RecommendSection>
-                    <Notice>회원이 되시면 레시피를 추천 받으실 수 있습니다.</Notice>
-                </RecommendSection>
-                <Button onClick={() => navigate('/recipes/recommended')}>view more</Button>
-            </RecommendArea>
-            <LatestArea>
-                <LatestImgSection>
-                    <img src={LatestInfo.img}></img>
-                </LatestImgSection>
-                <LatestContent>
-                    <Title>Latest Recipe</Title>
-                    <h1>{LatestInfo.title}</h1>
-                    <RecipeStatus>
-                        <span>{LatestInfo.time}</span>
-                        <span>{LatestInfo.level}</span>
-                    </RecipeStatus>
-                    <RecipeSteps>{LatestInfo.content}</RecipeSteps>
-                    <Button onClick={() => navigate('/recipes/latest')}>view more latest recipes</Button>
-                </LatestContent>
-            </LatestArea>
-            <PopularArea>
-                <PopularRecipesArea>
-                    <Title>Popular Recipes</Title>
-                    <PopularRecipesImgArea>
-                        <img src="https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg"></img>
-                        <img src="https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg"></img>
-                    </PopularRecipesImgArea>
-                    <Button onClick={() => navigate('/recipes/popular')}>view more popular recipes</Button>
-                </PopularRecipesArea>
-                <VisitedArea>
-                    <Title>Visited</Title>
-                    <VisitedInfoArea>
-                        <VisitedSection>
-                            <p>Total</p>
-                            <p>{VisitedInfo.total}</p>
-                        </VisitedSection>
-                        <VisitedSection>
-                            <p>YesterDay</p>
-                            <p>{VisitedInfo.Yesterday}</p>
-                        </VisitedSection>
-                        <VisitedSection>
-                            <p>Today</p>
-                            <p>{VisitedInfo.Today}</p>
-                        </VisitedSection>
-                    </VisitedInfoArea>
-                </VisitedArea>
-            </PopularArea>
-        </GuestContainer>
-    );
-};
-
-export default GuestHome;

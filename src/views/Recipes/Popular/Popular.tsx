@@ -21,7 +21,7 @@ interface RecipeLimitProps {
     page?: string;
 }
 
-export default function Popular({ limit, page }: RecipeLimitProps) {
+export default function Popular({ limit, page }: RecipeLimitProps): JSX.Element {
     // const [recipes, setRecipes] = useState<string[]>([]);
     // useEffect(() => {
     //     const fetchRecipes = async () => {

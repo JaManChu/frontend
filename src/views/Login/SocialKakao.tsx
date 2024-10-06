@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import KakaoLogin from 'react-kakao-login';
 import axios from 'axios';
 
-export default function SocialKakao() {
+export default function SocialKakao(): JSX.Element {
     const navigate = useNavigate();
     const restApiKey = import.meta.env.VITE_REST_API_KEY; // REST API 키로 변경
     useEffect(() => {

@@ -8,6 +8,93 @@ import RecipeMetaData from '../Recipe/RecipeMetaData';
 import ViewComments from '../../Comments/ViewComments';
 import Review from '../../Comments/Review';
 
+interface Props {
+    id: string;
+    title: string;
+    image: string;
+    thumbnail: string;
+    time: string;
+    level: string;
+    rate: string;
+    desc: string;
+    ingredients: Record<string, string | number>[];
+    overview: string;
+    instructions: Record<string, number | string>[];
+}
+
+export default function DetailRecipe(): JSX.Element {
+    const { id } = useParams();
+    const [recipe, setRecipe] = useState<Props | null>(null);
+    useEffect(() => {
+        // const fetchData = async () => {
+        //     try {
+        // const response = await axios.get(`${process.env.REACT_APP_API_URL}/recipes/${id}`);
+        //     } catch (err) {
+        //         console.log(err);
+        //     }
+        // };
+
+        // ! fakeData 필터링하는 작업(추후 삭제)
+        const filtered = fakeData.filter((data) => data.id == id);
+        if (filtered.length > 0) {
+            setRecipe(filtered[0]);
+        }
+    }, []);
+
+    if (!recipe) {
+        return <div>Loading</div>;
+    }
+    return (
+        <DetailRecipeContainer>
+            <DetailRecipeName>{recipe.title}</DetailRecipeName>
+            <DetailRecipeContents>
+                <DetailRecipeInstruction>
+                    <img src={recipe.thumbnail} alt="썸네일 이미지" />
+                    {recipe.instructions.map((step, idx) => (
+                        <DetailRecipeFigure key={idx}>
+                            <img src={`${step.image}`} alt="단계별 이미지" />
+                            <DetailRecipeFigcapton>{`${idx + 1}. ${step.content}`}</DetailRecipeFigcapton>
+                        </DetailRecipeFigure>
+                    ))}
+                </DetailRecipeInstruction>
+
+                <DetailRecipeInfo>
+                    <DetailOverview>
+                        <h3>OverView</h3>
+                        <p>{recipe.overview}</p>
+                    </DetailOverview>
+                    <DetailIngredientsWrapper>
+                        <h3>Ingredients</h3>
+                        <DetailIngredientsTable>
+                            <thead>
+                                <tr>
+                                    <th>재료</th>
+                                    <th>개수</th>
+                                    <th>구매</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {recipe.ingredients.map((ingredient, idx) => (
+                                    <tr key={`${ingredient.name}+${idx}`}>
+                                        <td>{ingredient.name}</td>
+                                        <td>{ingredient.count}</td>
+                                        <td>
+                                            <CartIcon />
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </DetailIngredientsTable>
+                    </DetailIngredientsWrapper>
+                    <RecipeMetaData time={recipe.time} level={recipe.level} rate={recipe.rate} />
+                </DetailRecipeInfo>
+            </DetailRecipeContents>
+            <Review />
+            <ViewComments />
+        </DetailRecipeContainer>
+    );
+}
+
 const DetailRecipeContainer = styled.section`
     padding: 50px;
     height: 100vh;
@@ -101,91 +188,3 @@ const CartIcon = styled(BsCartCheckFill)`
     }
     cursor: pointer;
 `;
-
-interface Props {
-    id: string;
-    title: string;
-    image: string;
-    thumbnail: string;
-    time: string;
-    level: string;
-    rate: string;
-    desc: string;
-    ingredients: Record<string, string | number>[];
-    overview: string;
-    instructions: Record<string, number | string>[];
-}
-
-export default function DetailRecipe() {
-    const { id } = useParams();
-    const [recipe, setRecipe] = useState<Props | null>(null);
-    useEffect(() => {
-        // const fetchData = async () => {
-        //     try {
-        // const response = await axios.get(`${process.env.REACT_APP_API_URL}/recipes/${id}`);
-        //     } catch (err) {
-        //         console.log(err);
-        //     }
-        // };
-
-        // ! fakeData 필터링하는 작업(추후 삭제)
-        const filtered = fakeData.filter((data) => data.id == id);
-        if (filtered.length > 0) {
-            setRecipe(filtered[0]);
-        }
-    }, []);
-
-    if (!recipe) {
-        return <div>Loading</div>;
-    }
-    return (
-        <DetailRecipeContainer>
-            <DetailRecipeName>{recipe.title}</DetailRecipeName>
-            <DetailRecipeContents>
-                <DetailRecipeInstruction>
-                    <img src={recipe.thumbnail} alt="썸네일 이미지" />
-                    {recipe.instructions.map((step, idx) => (
-                        <DetailRecipeFigure key={idx}>
-                            <img src={`${step.image}`} alt="단계별 이미지" />
-                            <DetailRecipeFigcapton>{`${idx + 1}. ${step.content}`}</DetailRecipeFigcapton>
-                        </DetailRecipeFigure>
-                    ))}
-                </DetailRecipeInstruction>
-
-                <DetailRecipeInfo>
-                    <DetailOverview>
-                        <h3>OverView</h3>
-                        <p>{recipe.overview}</p>
-                    </DetailOverview>
-                    <DetailIngredientsWrapper>
-                        <h3>Ingredients</h3>
-                        <DetailIngredientsTable>
-                            <thead>
-                                <tr>
-                                    <th>재료</th>
-                                    <th>개수</th>
-                                    <th>구매</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {recipe.ingredients.map((ingredient, idx) => (
-                                    <tr key={`${ingredient.name}+${idx}`}>
-                                        <td>{ingredient.name}</td>
-                                        <td>{ingredient.count}</td>
-                                        <td>
-                                            <CartIcon />
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </DetailIngredientsTable>
-                    </DetailIngredientsWrapper>
-                    <RecipeMetaData time={recipe.time} level={recipe.level} rate={recipe.rate} />
-                </DetailRecipeInfo>
-            </DetailRecipeContents>
-            <Review />
-            <ViewComments />
-            <div>테스트용, 테스트 입니다. Pr용 수정 사항 반영입니다.</div>
-        </DetailRecipeContainer>
-    );
-}

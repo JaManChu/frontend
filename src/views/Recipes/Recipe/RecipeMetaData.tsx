@@ -1,23 +1,13 @@
 import { FaStairs, FaRegClock, FaRegStar } from 'react-icons/fa6';
 import styled from 'styled-components';
 
-const RecipeInfo = styled.div`
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
-const RecipeInfoItem = styled.span`
-    margin: 0 8px 0 5px;
-`;
-
 interface Props {
     page?: string;
     time: string;
     level: string;
     rate: string;
 }
-export default function RecipeMetaData({ page = '', time, level, rate }: Props) {
+export default function RecipeMetaData({ page = '', time, level, rate }: Props): JSX.Element {
     return (
         <>
             {page != 'popular' ? (
@@ -33,3 +23,13 @@ export default function RecipeMetaData({ page = '', time, level, rate }: Props) 
         </>
     );
 }
+
+const RecipeInfo = styled.div`
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+const RecipeInfoItem = styled.span`
+    margin: 0 8px 0 5px;
+`;

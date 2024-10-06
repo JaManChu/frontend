@@ -10,6 +10,7 @@ import Latest from './views/Recipes/Latest/Latest.tsx';
 import Popular from './views/Recipes/Popular/Popular.tsx';
 import Recommend from './views/Recipes/Recommend/Recommend.tsx';
 import DetailRecipe from './views/Recipes/DetailRecipe/DetailRecipe.tsx';
+import AuthKaKao from './components/AuthKaKao.tsx';
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                 <Route path="/" element={<Onboard />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
+                <Route path="/auth/kakao/callback" element={<AuthKaKao />} />
                 {/* Header 추가해야하는 컴포넌트는 Header 아래에 작성 */}
                 <Route element={<Header />}>
                     <Route path="/mypage" element={<Mypage />} />

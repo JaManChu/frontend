@@ -5,17 +5,11 @@ import RecipePageHeader from '../Recipe/RecipePageHeader';
 import fakeData from '../../../fakeData/recipeFake.js';
 import styled from 'styled-components';
 
-const RecipePageTitle = styled.h2`
-    margin: 36px 16px 0px;
-    color: #622b18;
-    font-size: 40px;
-    text-align: center;
-`;
 interface RecipeLimitProps {
     limit?: number;
     page?: string;
 }
-export default function Recommend({ limit, page }: RecipeLimitProps) {
+export default function Recommend({ limit, page }: RecipeLimitProps): JSX.Element {
     // const [recipes, setRecipes] = useState<string[]>([]);
     // useEffect(() => {
     //     const fetchRecipes = async () => {
@@ -32,3 +26,10 @@ export default function Recommend({ limit, page }: RecipeLimitProps) {
         </>
     );
 }
+
+const RecipePageTitle = styled.h2`
+    margin: 36px 16px 0px;
+    color: #622b18;
+    font-size: 40px;
+    text-align: center;
+`;

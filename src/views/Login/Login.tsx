@@ -8,82 +8,6 @@ import styled from 'styled-components';
 // import KakaoLoginButton from '../../components/KaKaoButton/KaKaoLoginButton';
 // import axios from 'axios';
 
-const LoginContainer = styled.section`
-    width: 600px;
-    height: 600px;
-    border: 1px solid black;
-    box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-`;
-const LoginHeader = styled.h1`
-    font-size: 2.5rem;
-`;
-const LoginFieldset = styled.fieldset`
-    padding: 0;
-    margin: 0 auto;
-    border: 0;
-    text-align: center;
-`;
-const Input = styled.input<{ showErrorMessage: boolean }>`
-    display: block;
-    width: 100%;
-    height: 45px;
-    color: gray;
-    margin-top: 20px;
-    border-radius: 10px;
-    font-size: 1rem;
-    border: ${(props) => (props.showErrorMessage ? '2px solid red' : '2px solid #ccc')};
-`;
-const LoginButton = styled.button`
-    width: 100%;
-    height: 45px;
-    background-color: #f59910;
-    color: #ffffff;
-    margin-top: 30px;
-    border: none;
-    border-radius: 10px;
-    font-size: 1.5rem;
-    font-weight: bold;
-    cursor: pointer;
-`;
-
-const PwSearch = styled.p`
-    font-size: 1rem;
-    margin-top: 20px;
-    cursor: pointer;
-`;
-
-const Hr = styled.hr`
-    width: 100%;
-    color: #cacaca;
-    margin-top: 20px;
-`;
-
-const SignUpWrapper = styled.div`
-    width: 80%;
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-`;
-const SignupBtn = styled.button`
-    font-size: 1.25rem;
-    background-color: transparent;
-    border: none;
-    color: #f59910;
-    cursor: pointer;
-`;
-const ErrorMessage = styled.p<{ visible: boolean }>`
-    color: red;
-    font-size: 0.8rem;
-    margin-top: 5px;
-    min-height: 20px;
-    text-align: left;
-    visibility: ${(props) => (props.visible ? 'visible' : 'none')};
-`;
 export default function Login(): JSX.Element {
     const navigate = useNavigate();
     const {
@@ -182,3 +106,80 @@ export default function Login(): JSX.Element {
         </Layout>
     );
 }
+
+const LoginContainer = styled.section`
+    width: 600px;
+    height: 600px;
+    border: 1px solid black;
+    box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
+const LoginHeader = styled.h1`
+    font-size: 2.5rem;
+`;
+const LoginFieldset = styled.fieldset`
+    padding: 0;
+    margin: 0 auto;
+    border: 0;
+    text-align: center;
+`;
+const Input = styled.input<{ showErrorMessage: boolean }>`
+    display: block;
+    width: 100%;
+    height: 45px;
+    color: gray;
+    margin-top: 20px;
+    border-radius: 10px;
+    font-size: 1rem;
+    border: ${(props) => (props.showErrorMessage ? '2px solid red' : '2px solid #ccc')};
+`;
+const LoginButton = styled.button`
+    width: 100%;
+    height: 45px;
+    background-color: #f59910;
+    color: #ffffff;
+    margin-top: 30px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+`;
+
+const PwSearch = styled.p`
+    font-size: 1rem;
+    margin-top: 20px;
+    cursor: pointer;
+`;
+
+const Hr = styled.hr`
+    width: 100%;
+    color: #cacaca;
+    margin-top: 20px;
+`;
+
+const SignUpWrapper = styled.div`
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+`;
+const SignupBtn = styled.button`
+    font-size: 1.25rem;
+    background-color: transparent;
+    border: none;
+    color: #f59910;
+    cursor: pointer;
+`;
+const ErrorMessage = styled.p<{ visible: boolean }>`
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    min-height: 20px;
+    text-align: left;
+    visibility: ${(props) => (props.visible ? 'visible' : 'none')};
+`;

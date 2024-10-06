@@ -9,50 +9,7 @@ import { CiSearch } from 'react-icons/ci';
 import mainImage from '../../assets/img/spoon.jpg';
 import Visited from '../Visited/Visited';
 
-const MainContainer = styled.section`
-    background-color: #f5f4f3;
-    min-height: 100vh;
-`;
-const MainImage = styled.img`
-    display: block;
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-`;
-const SearchWrapper = styled.div`
-    width: 50%;
-    margin: 16px auto;
-    position: relative;
-`;
-const SearchBox = styled.input`
-    display: block;
-    width: 90%;
-    height: 40px;
-    padding-left: 16px;
-    border: transparent;
-    border-radius: 16px;
-    color: black;
-    background-color: rgba(239, 182, 63, 0.2);
-`;
-const SearchIcon = styled(CiSearch)`
-    position: absolute;
-    right: 15%;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 20px;
-    cursor: pointer;
-`;
-const RecipeWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-`;
-const VisitedPopularWrapper = styled.div`
-    display: flex;
-    height: auto;
-`;
-
-export default function Main() {
+export default function Main(): JSX.Element {
     const [searched, setSearched] = useState<string>('');
     const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
     // const [message, setMessage] = useState<string>('');
@@ -113,3 +70,46 @@ export default function Main() {
         </MainContainer>
     );
 }
+
+const MainContainer = styled.section`
+    background-color: #f5f4f3;
+    min-height: 100vh;
+`;
+const MainImage = styled.img`
+    display: block;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+`;
+const SearchWrapper = styled.div`
+    width: 50%;
+    margin: 16px auto;
+    position: relative;
+`;
+const SearchBox = styled.input`
+    display: block;
+    width: 90%;
+    height: 40px;
+    padding-left: 16px;
+    border: transparent;
+    border-radius: 16px;
+    color: black;
+    background-color: rgba(239, 182, 63, 0.2);
+`;
+const SearchIcon = styled(CiSearch)`
+    position: absolute;
+    right: 15%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    cursor: pointer;
+`;
+const RecipeWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+`;
+const VisitedPopularWrapper = styled.div`
+    display: flex;
+    height: auto;
+`;

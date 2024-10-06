@@ -1,96 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '../../styles/layout';
+import styled from 'styled-components';
+import logo from '../../assets/img/logo.png';
 
-// 스타일드 컴포넌트 부분 시작 //
-
-//로고영역
-
-//로고div
-const LogoDiv = styled.div`
-    width: 100%;
-    height: 100px;
-    display: flex;
-    gap: 200px;
-    margin-left: 500px;
-
-    .title-wrapper {
-        display: flex;
-        flex-direction: column;
-    }
-    span {
-        color: gray;
-        text-align: left;
-    }
-
-    strong {
-        color: black;
-        text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
-    }
-`;
-
-//로고
-const LogoBtn = styled.button`
-    width: 80px;
-    height: 50px;
-    margin-left: 220px;
-    background-color: white;
-
-    color: black;
-    border: 1px solid black;
-    font-weight: bold;
-`;
-
-//버튼
-const Button = styled.button`
-    width: 150px;
-    height: 50px;
-    background-color: black;
-    color: white;
-    border-radius: 10px;
-    cursor: pointer;
-`;
-
-//추천아이템 섹션
-const RecomendItems = styled.section`
-    display: flex;
-    justify-content: center;
-    align-items: stretch;
-    gap: 20px;
-    width: 100%;
-    max-width: 1200px;
-    margin-top: 20px;
-`;
-
-const RecomendItem = styled.div`
-    border: 1px solid black;
-    border-radius: 10px;
-    width: 350px;
-    padding: 20px;
-    flex-shrink: 0;
-
-    span {
-        color: black;
-    }
-
-    img {
-        width: 100%;
-        height: auto;
-    }
-`;
-
-//버튼섹션
-const ButtonSection = styled.section`
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    margin-top: 200px;
-`;
-
-// 스타일드 컴포넌트 부분 끝//
-
-const Onboard: React.FC = () => {
+export default function Onboard(): JSX.Element {
     const navigate = useNavigate();
 
     const RecomendItemsArray = [
@@ -106,30 +19,86 @@ const Onboard: React.FC = () => {
         },
     ];
     return (
-        <>
-            <Layout>
-                <LogoDiv>
-                    <LogoBtn>Logo</LogoBtn>
-                    <div className="title-wrapper">
+        <Layout>
+            <OnboardContainer>
+                <OnboardHeader>
+                    <img src={logo} alt="Logo" />
+                    <HeaderText>
                         <span>자만추에서는</span>
                         <strong>한번의 클릭으로, 다양한 요리를!</strong>
-                    </div>
-                </LogoDiv>
-                <RecomendItems>
+                    </HeaderText>
+                </OnboardHeader>
+
+                <OnboardSlider>
                     {RecomendItemsArray.map((item, idx) => (
-                        <RecomendItem key={idx}>
+                        <OnboardFigure key={idx}>
                             <img src={item.imgUrl} />
-                            <span>{item.content}</span>
-                        </RecomendItem>
+                            <OnboardFigcaption>{item.content}</OnboardFigcaption>
+                        </OnboardFigure>
                     ))}
-                </RecomendItems>
-                <ButtonSection>
+                </OnboardSlider>
+                <ButtonWrapper>
                     <Button onClick={() => navigate('/login')}>Join</Button>
                     <Button onClick={() => navigate('/guesthome')}>둘러보기</Button>
-                </ButtonSection>
-            </Layout>
-        </>
+                </ButtonWrapper>
+            </OnboardContainer>
+        </Layout>
     );
-};
+}
 
-export default Onboard;
+const OnboardContainer = styled.section``;
+const OnboardHeader = styled.header`
+    width: 60%;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    img {
+        display: block;
+        width: 150px;
+    }
+`;
+const HeaderText = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+//슬라이더 섹션
+const OnboardSlider = styled.section`
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+`;
+const OnboardFigure = styled.figure`
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 350px;
+    padding: 20px;
+    flex-shrink: 0;
+
+    img {
+        width: 100%;
+        height: auto;
+    }
+`;
+const OnboardFigcaption = styled.figcaption`
+    font-size: 16px;
+`;
+
+const ButtonWrapper = styled.div`
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 100px;
+`;
+const Button = styled.button`
+    width: 150px;
+    height: 50px;
+    color: white;
+    background-color: black;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+`;

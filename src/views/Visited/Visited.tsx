@@ -1,5 +1,18 @@
 import styled from 'styled-components';
 
+export default function Visited() {
+    return (
+        <VisitedContainer>
+            <VisitedTitle>Visited</VisitedTitle>
+            <VisitedContents>
+                <VistedDiv>Total</VistedDiv>
+                <VistedDiv>Daily</VistedDiv>
+                <VistedDiv>Monthly</VistedDiv>
+            </VisitedContents>
+        </VisitedContainer>
+    );
+}
+
 const VisitedContainer = styled.section`
     width: 40%;
 `;
@@ -21,16 +34,3 @@ const VistedDiv = styled.div`
     padding-right: 16px;
     margin-right: 16px;
 `;
-
-export default function Visited() {
-    return (
-        <VisitedContainer>
-            <VisitedTitle>Visited</VisitedTitle>
-            <VisitedContents>
-                <VistedDiv>Total</VistedDiv>
-                <VistedDiv>Daily</VistedDiv>
-                <VistedDiv>Monthly</VistedDiv>
-            </VisitedContents>
-        </VisitedContainer>
-    );
-}

@@ -6,7 +6,6 @@ import Modal from '../../components/Modal/Modal';
 import SocialKakao from './SocialKakao';
 import styled from 'styled-components';
 // import KakaoLoginButton from '../../components/KaKaoButton/KaKaoLoginButton';
-// import axios from 'axios';
 
 export default function Login(): JSX.Element {
     const navigate = useNavigate();

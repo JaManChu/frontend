@@ -1,14 +1,7 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import KakaoLogin from 'react-kakao-login';
-import axios from 'axios';
 
 export default function SocialKakao(): JSX.Element {
-    const navigate = useNavigate();
-
-    const javaScriptKey = import.meta.env.VITE_JAVASCRIPT_KEY;
     const restApiKey = import.meta.env.VITE_REST_API_KEY;
-    const redirectUri = import.meta.env.VITE_REDIRECT_URI;
 
     useEffect(() => {
         if (window.Kakao) {
@@ -16,42 +9,24 @@ export default function SocialKakao(): JSX.Element {
         }
     }, [restApiKey]);
 
-    // ? 프론트에서 토큰 발급해 보내주는 경우
-    const kakaoOnSuccess = async (data: any) => {
-        console.log('카카오 data 조회: ', data);
-        const accessToken = data.response.access_token;
-        try {
-            console.log('try문 들어오는지 check');
-            const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/oauth2/authorization/kakao`, {
-                access_token: accessToken,
-                authProvider: 'kakao',
-            });
-            if (response.code == 200) {
-                console.log(response);
-                localStorage.setItem('kakaoToken', JSON.stringify(response.data));
+    //  인가코드만 보내는 경우
+    // const redirectUri = import.meta.env.VITE_REDIRECT_URI;
+    // const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${restApiKey}&redirect_uri=${redirectUri}&response_type=code`;
+    // const handleLogin = () => {
+    //     window.location.href = kakaoURL;
+    // };
 
-                navigate('/main');
-            }
-        } catch (err) {
-            console.log(err);
-            alert('로그인에 실패했습니다.');
-        }
-    };
-
-    const kakaoOnFailure = (err: any) => {
-        console.log(err);
-        console.log('카카오 접속 자체 실패');
-    };
-
-    // ? 인가코드만 보내는 경우
-    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${restApiKey}&redirect_uri=${redirectUri}&response_type=code`;
+    // ? 백엔드에서 처리하는 경우 : redirectUri 백엔드로 설정
     const handleLogin = () => {
-        window.location.href = kakaoURL;
+        const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${restApiKey}&redirect_uri=${
+            import.meta.env.VITE_BASE_URL
+        }/oauth2/authorization/kakao&response_type=code`;
+        console.log('dd', kakaoAuthUrl);
+        window.location.href = kakaoAuthUrl;
     };
 
     return (
         <>
-            <KakaoLogin token={javaScriptKey} onSuccess={kakaoOnSuccess} onFail={kakaoOnFailure} />
             <button onClick={handleLogin}>코드만 보내는 카카오 로그인</button>
         </>
     );

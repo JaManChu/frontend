@@ -8,13 +8,19 @@ export default function AuthKaKao() {
     console.log(code);
 
     useEffect(() => {
+        if (!code) {
+            alert('카카오 인증에 실패했습니다.');
+            return;
+        }
+
         const fetch = async () => {
             console.log('code', code);
+
             try {
-                const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/oauth2/authorization/kakao`, {
-                    code: code,
-                    authProvider: 'kakao',
+                const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/oauth2/authorization/kakao`, {
+                    params: { code: code },
                 });
+                console.log(response.data);
 
                 if (response.code === 200) {
                     localStorage.setItem('kakaoToken', JSON.stringify(response.data));

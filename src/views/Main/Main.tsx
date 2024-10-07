@@ -29,7 +29,7 @@ export default function Main(): JSX.Element {
         } else {
             alert(selectedIngredients);
         }
-        // const response = await axios.get(`${process.env.REACT_APP_API_URL}/recipes/search`);
+        // const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes/search`);
         // ! 데이터 들어오는 구조 확인 - 데이터 받아오면 setSelectedIngredients 데이터 가공해서 화면 렌더링 처리
         try {
         } catch (err: any) {

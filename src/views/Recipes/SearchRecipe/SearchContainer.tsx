@@ -1,34 +1,40 @@
+import { ChangeEvent, KeyboardEvent } from 'react';
 import { SearchResult } from './SearchResult';
 import SearchCondition from './SearchCondition';
-import useSearchRecipe from '../../../hooks/useSearchRecipe';
 
-export default function SearchContainer(): JSX.Element {
-    const {
-        handleChange,
-        handleSubmit,
-        handleKeyDown,
-        searching,
-        recipes,
-        searchIngredients,
-        ingredientsList,
-        handleChangeLevel,
-        handleChangeTime,
-        level,
-        time,
-    } = useSearchRecipe();
+interface ContainerProps {
+    value: string;
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    handleKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
+    handleSubmit: () => Promise<void>;
+    handleTime: (e: ChangeEvent<HTMLSelectElement>) => void;
+    handleLevel: (e: ChangeEvent<HTMLSelectElement>) => void;
+    ingredientsList: string[];
+    recipes: Record<string, string | number>[]; // ! api통신 후 키와 타입 재정의
+    searching: boolean;
+}
 
+export default function SearchContainer({
+    value,
+    onChange,
+    handleSubmit,
+    handleKeyDown,
+    handleLevel,
+    handleTime,
+    ingredientsList,
+    recipes,
+    searching,
+}: ContainerProps): JSX.Element {
     return (
         <>
             <SearchCondition
-                value={searchIngredients}
-                onChange={handleChange}
+                value={value}
+                onChange={onChange}
                 handleSubmit={handleSubmit}
                 handleKeyDown={handleKeyDown}
-                handleChangeLevel={handleChangeLevel}
-                handleChangeTime={handleChangeTime}
+                handleLevel={handleLevel}
+                handleTime={handleTime}
                 ingredientsList={ingredientsList}
-                level={level}
-                time={time}
             />
             <SearchResult recipes={recipes} searching={searching} />
         </>

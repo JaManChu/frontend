@@ -8,11 +8,9 @@ interface SearchConditionProps {
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
     handleKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
     handleSubmit: () => Promise<void>;
-    handleChangeTime: (e: ChangeEvent<HTMLSelectElement>) => void;
-    handleChangeLevel: (e: ChangeEvent<HTMLSelectElement>) => void;
+    handleTime: (e: ChangeEvent<HTMLSelectElement>) => void;
+    handleLevel: (e: ChangeEvent<HTMLSelectElement>) => void;
     ingredientsList: string[];
-    level: string;
-    time: string;
 }
 
 export default function SearchCondition({
@@ -20,11 +18,9 @@ export default function SearchCondition({
     onChange,
     handleSubmit,
     handleKeyDown,
-    handleChangeTime,
-    handleChangeLevel,
+    handleTime,
+    handleLevel,
     ingredientsList,
-    level,
-    time,
 }: SearchConditionProps): JSX.Element {
     console.log(ingredientsList);
     return (
@@ -36,7 +32,7 @@ export default function SearchCondition({
                 </SearchItem>
                 <SearchItem>
                     <label htmlFor="recipeLevel">난이도</label>
-                    <select name="level" id="recipeLevel" onChange={handleChangeLevel}>
+                    <select name="level" id="recipeLevel" onChange={handleLevel}>
                         <option value="">선택해주세요</option>
                         <option value="high">상</option>
                         <option value="middle">중</option>
@@ -45,7 +41,7 @@ export default function SearchCondition({
                 </SearchItem>
                 <SearchItem>
                     <label htmlFor="recipeTime">조리시간</label>
-                    <select name="time" id="recipeTime" onChange={handleChangeTime}>
+                    <select name="time" id="recipeTime" onChange={handleTime}>
                         <option value="">선택해주세요</option>
                         <option value="10">10분</option>
                         <option value="15">15분</option>

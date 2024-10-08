@@ -4,7 +4,8 @@ import Login from './views/Login/Login.tsx';
 import Signup from './views/Signup/Signup.tsx';
 import Mypage from './views/Mypage/Mypage.tsx';
 import GuestHome from './views/GuestHome/GuestHome.tsx';
-import Header from './components/Header/Header.tsx';
+// import Header from './components/Header/Header.tsx';
+import HeaderView from './components/Header/HeaderView.tsx';
 import Main from './views/Main/Main.tsx';
 import Latest from './views/Recipes/Latest/Latest.tsx';
 import Popular from './views/Recipes/Popular/Popular.tsx';
@@ -17,11 +18,10 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Onboard />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/auth/kakao/callback" element={<AuthKaKao />} />
-                {/* Header 추가해야하는 컴포넌트는 Header 아래에 작성 */}
-                <Route element={<Header />}>
+                <Route element={<HeaderView />}>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/auth/kakao/callback" element={<AuthKaKao />} />
                     <Route path="/mypage" element={<Mypage />} />
                     <Route path="/guesthome" element={<GuestHome />} />
                     <Route path="/main" element={<Main />} />

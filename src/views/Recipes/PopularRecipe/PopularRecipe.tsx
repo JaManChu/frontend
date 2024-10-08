@@ -1,6 +1,6 @@
 // import { useEffect, useState } from 'react';
-import RecipeList from '../Recipe/RecipeList';
-import RecipePageHeader from '../Recipe/RecipePageHeader';
+import RecipeList from '../Recipe/RecipeList.js';
+import RecipePageHeader from '../Recipe/RecipePageHeader.js';
 // import axios from 'axios';
 import fakeData from '../../../fakeData/recipeFake.js';
 import styled from 'styled-components';

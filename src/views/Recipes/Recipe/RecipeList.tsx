@@ -19,16 +19,19 @@ export default function RecipeList({ recipes, limit, page }: RecipeListProps): J
     const displayRecipes = limit ? recipes.slice(0, limit) : recipes;
 
     return (
-        <RecipeContainer page={page}>
+        <RecipeUlist page={page}>
             {/* 데이터 연동하면 ...recipe로 코드 변경 필요 */}
             {displayRecipes.map((recipe: RecipeProps) => (
-                <RecipeCard key={recipe.id} {...recipe} page={page} />
+                <li key={recipe.id}>
+                    <RecipeCard key={recipe.id} {...recipe} page={page} />
+                </li>
             ))}
-        </RecipeContainer>
+        </RecipeUlist>
     );
 }
 
-const RecipeContainer = styled.section<{ page?: string }>`
+const RecipeUlist = styled.ul<{ page?: string }>`
+    list-style: none;
     display: grid;
     gap: 16px;
     padding: ${(props) => (props.page == 'latest' ? '0px' : props.page == 'recommended' || props.page == 'popular' ? '8px 50px 50px' : '30px;')};

@@ -30,7 +30,7 @@ function App() {
                     <Route path="/recipes/popular" element={<Popular />} />
                     <Route path="/recipes/latest" element={<Latest />} />
                     <Route path="/recipes/:id" element={<DetailRecipe />} />
-                    <Route path="/search-recipe" element={<SearchView />} />
+                    <Route path="/recipes/search" element={<SearchView />} />
                     <Route path="/recipes/create" element={<CreateRecipe />} />
                 </Route>
             </Routes>

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 // import axios from 'axios';
 import { BsCartCheckFill } from 'react-icons/bs';
 import fakeData from '../../../fakeData/recipeFake';
-import RecipeMetaData from '../Recipe/RecipeMetaData';
+import RecipeMetaData from '../../../components/Recipe/RecipeMetaData';
 import ViewComments from '../../Comments/ViewComments';
 import Review from '../../Comments/Review';
 

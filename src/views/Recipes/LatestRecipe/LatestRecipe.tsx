@@ -1,6 +1,6 @@
 // import { useEffect, useState } from 'react';
-import RecipeList from '../Recipe/RecipeList.js';
-import RecipePageHeader from '../Recipe/RecipePageHeader.js';
+import RecipeList from '../../../components/Recipe/RecipeList.js';
+import RecipePageHeader from '../../../components/Recipe/RecipePageHeader.js';
 // import axios from 'axios';
 import fakeData from '../../../fakeData/recipeFake.js';
 
@@ -9,7 +9,7 @@ interface RecipeLimitProps {
     page?: string;
 }
 
-export default function Latest({ limit, page }: RecipeLimitProps): JSX.Element {
+export default function LatestRecipe({ limit, page }: RecipeLimitProps): JSX.Element {
     // const [recipes, setRecipes] = useState<string[]>([]);
     // useEffect(() => {
     //     const fetchRecipes = async () => {

@@ -12,6 +12,7 @@ import Recommend from './views/Recipes/RecommendedRecipe/RecommendedRecipe.tsx';
 import DetailRecipe from './views/Recipes/DetailRecipe/DetailRecipe.tsx';
 import AuthKaKao from './components/AuthKaKao.tsx';
 import SearchView from './views/Recipes/SearchRecipe/SearchView.tsx';
+import RecipeWrite from './views/Recipes/RecipeWrite/RecipeWrite.tsx';
 
 function App() {
     return (
@@ -30,6 +31,7 @@ function App() {
                     <Route path="/recipes/latest" element={<Latest />} />
                     <Route path="/recipes/:id" element={<DetailRecipe />} />
                     <Route path="/search-recipe" element={<SearchView />} />
+                    <Route path="/recipes/write" element={<RecipeWrite />} />
                 </Route>
             </Routes>
         </BrowserRouter>

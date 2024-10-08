@@ -12,7 +12,7 @@ import Popular from './views/Recipes/Popular/Popular.tsx';
 import Recommend from './views/Recipes/Recommend/Recommend.tsx';
 import DetailRecipe from './views/Recipes/DetailRecipe/DetailRecipe.tsx';
 import AuthKaKao from './components/AuthKaKao.tsx';
-import RecipeWrite from './views/Recipes/RecipeWrite/RecipeWrite.tsx';
+import CreateRecipe from './views/Recipes/CreateRecipe/CreateRecipe.tsx';
 function App() {
     return (
         <BrowserRouter>
@@ -29,7 +29,7 @@ function App() {
                     <Route path="/recipes/popular" element={<Popular />} />
                     <Route path="/recipes/latest" element={<Latest />} />
                     <Route path="/recipes/:id" element={<DetailRecipe />} />
-                    <Route path="/recipes/write" element={<RecipeWrite />} />
+                    <Route path="/recipes/create" element={<CreateRecipe />} />
                 </Route>
             </Routes>
         </BrowserRouter>

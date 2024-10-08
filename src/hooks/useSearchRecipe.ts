@@ -58,11 +58,11 @@ export default function useSearchRecipe() {
     };
 
     // 난이도를 변경하는 핸들러
-    const handleChangeLevel = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleLevel = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setLevel(e.target.value);
     };
     // 소요시간을 변경하는 핸들러
-    const handleChangeTime = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleTime = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setTime(e.target.value);
     };
 
@@ -74,8 +74,8 @@ export default function useSearchRecipe() {
         recipes,
         searchIngredients,
         ingredientsList,
-        handleChangeLevel,
-        handleChangeTime,
+        handleLevel,
+        handleTime,
         time,
         level,
     };

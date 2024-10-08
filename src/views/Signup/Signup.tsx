@@ -28,7 +28,7 @@ export default function Signup(): JSX.Element {
 
     const handleCheckEmail = async () => {
         try {
-            const response: any = await axios.get(`${process.env.REACT_APP_API_URL}/auth/email-check?email=${email}`);
+            const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/email-check?email=${email}`);
             console.log(response);
             if (response.data === true) {
                 alert(response.message);

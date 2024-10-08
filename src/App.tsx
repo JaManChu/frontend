@@ -4,15 +4,16 @@ import Login from './views/Login/Login.tsx';
 import Signup from './views/Signup/Signup.tsx';
 import Mypage from './views/Mypage/Mypage.tsx';
 import GuestHome from './views/GuestHome/GuestHome.tsx';
-// import Header from './components/Header/Header.tsx';
 import HeaderView from './components/Header/HeaderView.tsx';
 import Main from './views/Main/Main.tsx';
-import Latest from './views/Recipes/Latest/Latest.tsx';
-import Popular from './views/Recipes/Popular/Popular.tsx';
-import Recommend from './views/Recipes/Recommend/Recommend.tsx';
+import Latest from './views/Recipes/LatestRecipe/LatestRecipe.tsx';
+import Popular from './views/Recipes/PopularRecipe/PopularRecipe.tsx';
+import Recommend from './views/Recipes/RecommendedRecipe/RecommendedRecipe.tsx';
 import DetailRecipe from './views/Recipes/DetailRecipe/DetailRecipe.tsx';
 import AuthKaKao from './components/AuthKaKao.tsx';
+import SearchView from './views/Recipes/SearchRecipe/SearchView.tsx';
 import CreateRecipe from './views/Recipes/CreateRecipe/CreateRecipe.tsx';
+
 function App() {
     return (
         <BrowserRouter>
@@ -29,6 +30,7 @@ function App() {
                     <Route path="/recipes/popular" element={<Popular />} />
                     <Route path="/recipes/latest" element={<Latest />} />
                     <Route path="/recipes/:id" element={<DetailRecipe />} />
+                    <Route path="/search-recipe" element={<SearchView />} />
                     <Route path="/recipes/create" element={<CreateRecipe />} />
                 </Route>
             </Routes>

@@ -4,7 +4,6 @@ import Login from './views/Login/Login.tsx';
 import Signup from './views/Signup/Signup.tsx';
 import Mypage from './views/Mypage/Mypage.tsx';
 import GuestHome from './views/GuestHome/GuestHome.tsx';
-// import Header from './components/Header/Header.tsx';
 import HeaderView from './components/Header/HeaderView.tsx';
 import Main from './views/Main/Main.tsx';
 import Latest from './views/Recipes/Latest/Latest.tsx';
@@ -12,6 +11,7 @@ import Popular from './views/Recipes/Popular/Popular.tsx';
 import Recommend from './views/Recipes/Recommend/Recommend.tsx';
 import DetailRecipe from './views/Recipes/DetailRecipe/DetailRecipe.tsx';
 import AuthKaKao from './components/AuthKaKao.tsx';
+import SearchView from './views/Search/SearchView.tsx';
 
 function App() {
     return (
@@ -29,6 +29,7 @@ function App() {
                     <Route path="/recipes/popular" element={<Popular />} />
                     <Route path="/recipes/latest" element={<Latest />} />
                     <Route path="/recipes/:id" element={<DetailRecipe />} />
+                    <Route path="/recipes/search" element={<SearchView />} />
                 </Route>
             </Routes>
         </BrowserRouter>

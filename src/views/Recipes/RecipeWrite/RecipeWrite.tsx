@@ -24,83 +24,85 @@ const RecipeWrite: React.FC = () => {
 
     return (
         <RecipeWriteContainer>
-            <FormSection>
-                <Title>레시피명</Title>
-                <Input value={recipeName} onChange={(e) => setRecipeName(e.target.value)} placeholder="레시피 이름을 입력하세요." />
+            <FormSections>
+                <FormSection>
+                    <Title>레시피명</Title>
+                    <Input value={recipeName} onChange={(e) => setRecipeName(e.target.value)} placeholder="레시피 이름을 입력하세요." />
 
-                <Title>레시피 난이도</Title>
-                <Select value={recipeLevel} onChange={(e) => setRecipeLevel(e.target.value)}>
-                    <option value="EASY">EASY</option>
-                    <option value="NORMAL">NORMAL</option>
-                    <option value="HIGH">HIGH</option>
-                </Select>
+                    <SubTitle>레시피 난이도</SubTitle>
+                    <Select value={recipeLevel} onChange={(e) => setRecipeLevel(e.target.value)}>
+                        <option value="EASY">EASY</option>
+                        <option value="NORMAL">NORMAL</option>
+                        <option value="HIGH">HIGH</option>
+                    </Select>
 
-                <Title>요리 시간 (분)</Title>
-                <Input
-                    type="number"
-                    value={recipeCookingTime}
-                    onChange={(e) => setRecipeCookingTime(e.target.value)}
-                    placeholder="요리 시간을 입력하세요."
-                    min={'0'}
-                />
+                    <SubTitle>요리 시간 (분)</SubTitle>
+                    <Input
+                        type="number"
+                        value={recipeCookingTime}
+                        onChange={(e) => setRecipeCookingTime(e.target.value)}
+                        placeholder="요리 시간을 입력하세요."
+                        min={'0'}
+                    />
 
-                <Button onClick={handleSubmit}>레시피 등록</Button>
-            </FormSection>
+                    <Button onClick={handleSubmit}>레시피 등록</Button>
+                </FormSection>
 
-            <FormSection>
-                <Title>재료</Title>
-                {ingredients.map((ingredient, index) => (
-                    <CardSection key={index}>
-                        <Title>재료 {index + 1}</Title>
-                        <Input
-                            value={ingredient.ingredientName}
-                            placeholder="재료 이름"
-                            onChange={(e) => {
-                                const newIngredients = [...ingredients];
-                                newIngredients[index].ingredientName = e.target.value;
-                                setIngredients(newIngredients);
-                            }}
-                        />
-                        <Input
-                            value={ingredient.ingredientQuantity}
-                            placeholder="재료 양"
-                            onChange={(e) => {
-                                const newIngredients = [...ingredients];
-                                newIngredients[index].ingredientQuantity = e.target.value;
-                                setIngredients(newIngredients);
-                            }}
-                        />
-                        <Button onClick={() => handleDeleteIngredient(index)}>재료 삭제</Button>
-                    </CardSection>
-                ))}
-                <Button onClick={handleAddIngredient}>재료 추가</Button>
-            </FormSection>
+                <FormSection>
+                    <Title>재료</Title>
+                    {ingredients.map((ingredient, index) => (
+                        <CardSection key={index}>
+                            <SubTitle>재료 {index + 1}</SubTitle>
+                            <Input
+                                value={ingredient.ingredientName}
+                                placeholder="재료 이름"
+                                onChange={(e) => {
+                                    const newIngredients = [...ingredients];
+                                    newIngredients[index].ingredientName = e.target.value;
+                                    setIngredients(newIngredients);
+                                }}
+                            />
+                            <Input
+                                value={ingredient.ingredientQuantity}
+                                placeholder="재료 양"
+                                onChange={(e) => {
+                                    const newIngredients = [...ingredients];
+                                    newIngredients[index].ingredientQuantity = e.target.value;
+                                    setIngredients(newIngredients);
+                                }}
+                            />
+                            <Button onClick={() => handleDeleteIngredient(index)}>재료 삭제</Button>
+                        </CardSection>
+                    ))}
+                    <Button onClick={handleAddIngredient}>재료 추가</Button>
+                </FormSection>
 
-            <FormSection>
-                <Title>조리 과정</Title>
-                {steps.map((step, index) => (
-                    <CardSection key={index}>
-                        <Title>단계 {index + 1}</Title>
-                        <Input
-                            value={step.content}
-                            placeholder="조리 과정을 입력하세요."
-                            onChange={(e) => {
-                                const newSteps = [...steps];
-                                newSteps[index].content = e.target.value;
-                                setSteps(newSteps);
-                            }}
-                        />
-                        <Input type="file" onChange={(e) => handleImageChange(e, index)} />
-                        <Button onClick={() => handleDeleteStep(index)}>단계 삭제</Button>
-                    </CardSection>
-                ))}
-                <Button onClick={handleAddStep}>단계 추가</Button>
-            </FormSection>
+                <FormSection>
+                    <Title>조리 과정</Title>
+                    {steps.map((step, index) => (
+                        <CardSection key={index}>
+                            <SubTitle>단계 {index + 1}</SubTitle>
+                            <Input
+                                value={step.content}
+                                placeholder="조리 과정을 입력하세요."
+                                onChange={(e) => {
+                                    const newSteps = [...steps];
+                                    newSteps[index].content = e.target.value;
+                                    setSteps(newSteps);
+                                }}
+                            />
+                            <Input type="file" onChange={(e) => handleImageChange(e, index)} />
+                            <Button onClick={() => handleDeleteStep(index)}>단계 삭제</Button>
+                        </CardSection>
+                    ))}
+                    <Button onClick={handleAddStep}>단계 추가</Button>
+                </FormSection>
+            </FormSections>
 
             <PreviewSection>
                 <Title>{recipeName} 미리보기</Title>
                 <IngredientsPreview>
-                    <Title>재료</Title>
+                    <SubTitle>재료</SubTitle>
                     <ul>
                         {ingredients.map((ingredient, index) => (
                             <li key={index}>
@@ -110,7 +112,7 @@ const RecipeWrite: React.FC = () => {
                     </ul>
                 </IngredientsPreview>
                 <StepsPreview>
-                    <Title>조리 과정</Title>
+                    <SubTitle>조리 과정</SubTitle>
 
                     {steps.map((step, index) => (
                         <StepPreviewCard key={index}>
@@ -127,26 +129,46 @@ const RecipeWrite: React.FC = () => {
 
 const RecipeWriteContainer = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(100px 100px 1fr 1fr);
+    gap: 20px;
+    padding: 40px;
+    width: 100%;
+    max-height: 1000px;
+    overflow: auto;
+`;
+
+const FormSections = styled.div`
+    display: grid;
+    grid-template-rows: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
     padding: 40px;
     width: 100%;
     overflow: auto;
-    max-height: 1000px;
 `;
-
 const FormSection = styled.div`
     background-color: #fff;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    overflow: auto;
+    margin-top: 40px;
 `;
 
 const Title = styled.h1`
     font-size: 1.5rem;
     font-weight: 500;
     margin-bottom: 10px;
+    width: auto;
+    display: inline-block;
+    background-color: #f8c407;
+    border-radius: 10px;
+`;
 
+const SubTitle = styled.h1`
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 10px;
     display: block;
 `;
 
@@ -208,7 +230,9 @@ const PreviewSection = styled.div`
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     overflow: auto;
+    width: 100%;
     max-height: 1000px;
+    overflow: auto;
 `;
 
 const IngredientsPreview = styled.div`

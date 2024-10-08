@@ -111,10 +111,10 @@ export const useRecipeWrite = () => {
 
         try {
             const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/recipes`, formData, {
-                headers: {
-                    'Access-Token': `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data',
-                },
+                // headers: {
+                //     'Access-Token': `Bearer ${token}`,
+                //     'Content-Type': 'multipart/form-data',
+                // },
             });
             console.log(response.data); // 요청 성공 후 처리
         } catch (error) {

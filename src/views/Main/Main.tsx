@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from 'react';
-import Latest from '../Recipes/Latest/Latest';
-import Popular from '../Recipes/Popular/Popular';
-import Recommend from '../Recipes/Recommend/Recommend';
+import Latest from '../Recipes/LatestRecipe/LatestRecipe';
+import Popular from '../Recipes/PopularRecipe/PopularRecipe';
+import Recommend from '../Recipes/RecommendedRecipe/RecommendedRecipe';
 import styled from 'styled-components';
 // import axios from 'axios';
 import { CiSearch } from 'react-icons/ci';

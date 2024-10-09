@@ -22,7 +22,7 @@ export default function SearchCondition({
     handleLevel,
     ingredientsList,
 }: SearchConditionProps): JSX.Element {
-    console.log(ingredientsList);
+    console.log(typeof ingredientsList.length);
     return (
         <>
             <ConditionList>
@@ -52,17 +52,19 @@ export default function SearchCondition({
                 </SearchItem>
                 <SearchIcon onClick={handleSubmit} />
             </ConditionList>
-            <ConditionContent>
-                <h4>선택하신 재료가 맞나요?</h4>
-                <ConditionContentList>
-                    {ingredientsList.map((ingredient, idx) => (
-                        <ConditionContentItem key={idx}>
-                            <span>선택재료{idx + 1}</span>
-                            <span>{ingredient}</span>
-                        </ConditionContentItem>
-                    ))}
-                </ConditionContentList>
-            </ConditionContent>
+            {ingredientsList.length != 0 && (
+                <ConditionContent>
+                    <h4>선택하신 재료가 맞나요?</h4>
+                    <ConditionContentList length={ingredientsList.length}>
+                        {ingredientsList.map((ingredient, idx) => (
+                            <ConditionContentItem key={idx}>
+                                <span>선택재료{idx + 1}</span>
+                                <span>{ingredient}</span>
+                            </ConditionContentItem>
+                        ))}
+                    </ConditionContentList>
+                </ConditionContent>
+            )}
         </>
     );
 }
@@ -114,24 +116,23 @@ const ConditionContent = styled.div`
         text-align: center;
     }
 `;
-const ConditionContentList = styled.ul`
+const ConditionContentList = styled.ul<{ length: number }>`
     margin: 0 auto;
-    width: 60%;
-    height: 70px;
+    padding: 10px;
+    width: 80%;
+    height: auto;
     border: 3px solid #efb63e;
     border-radius: 16px;
     list-style: none;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: ${({ length }) => `repeat(${length}, 1fr)`};
     label {
         display: block;
     }
 `;
 const ConditionContentItem = styled.li`
-    padding: 20px;
-
+    padding: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;

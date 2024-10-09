@@ -5,14 +5,19 @@ export default function useSearchRecipe() {
     const [searching, setSearching] = useState<boolean>(false); // 검색중 여부
     const [searchIngredients, setSearchIngredients] = useState<string>(''); // 사용자 입력 검색어
     const [ingredientsList, setIngredientsList] = useState<string[]>([]); // 공백 기준 검색어 리스트
-    const [recipes, setRecipes] = useState<Record<string, string | number>[]>([]); // 레시피 데이터 저장
+    const [recipes, setRecipes] = useState([]); // 레시피 데이터 저장
     const [time, setTime] = useState<string>(''); // 소요시간(select에서 선택)
     const [level, setLevel] = useState<string>(''); // 난이도(select에서 선택)
 
     // 재료 입력시에 검색어 리스트 입력 재료로 갱신
     useEffect(() => {
-        const ingredients = searchIngredients.split(' '); // 사용자 검색 재료 공백기준으로 배열로 저장
-        setIngredientsList([...ingredients]);
+        if (searchIngredients.trim()) {
+            // 입력값이 공백이 아닐 경우에만 처리
+            const ingredients = searchIngredients.split(' ').filter((ingredient) => ingredient); // 공백 필터링
+            setIngredientsList([...ingredients]);
+        } else {
+            setIngredientsList([]); // 입력값이 공백인 경우 빈 배열 설정
+        }
     }, [searchIngredients]);
 
     // 검색어 상태관리

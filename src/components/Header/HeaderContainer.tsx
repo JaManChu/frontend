@@ -1,7 +1,9 @@
+import { useState, MouseEvent } from 'react';
 import { Outlet, Link } from 'react-router-dom';
+import { FiLogOut, FiUser, FiBell } from 'react-icons/fi';
+import Alarm from '../Alarm/Alarm';
 import logo from '../../assets/img/logo.png';
 import styled from 'styled-components';
-import { FiLogOut, FiUser } from 'react-icons/fi';
 
 interface HeaderProps {
     menuItems: Record<string, string>[];
@@ -10,11 +12,17 @@ interface HeaderProps {
 }
 
 export default function HeaderContainer({ menuItems, handleClickMenu, isActive }: HeaderProps): JSX.Element {
+    const [showAlarm, setShowAlarm] = useState<boolean>(false);
     const isLogin = Boolean(localStorage.getItem('token'));
+
+    const handleShowAlarm = (e: MouseEvent) => {
+        e.stopPropagation();
+        setShowAlarm(!showAlarm);
+    };
 
     return (
         <>
-            <HeaderSection>
+            <HeaderSection onClick={() => setShowAlarm(false)}>
                 <Logo src={logo} alt="LOGO" />
                 <MenuList>
                     {menuItems.map((item, idx) => {
@@ -34,6 +42,7 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
                             <StyledLink to="/mypage">
                                 <FiUser />
                             </StyledLink>
+                            <FiBell onClick={handleShowAlarm} />
                         </>
                     ) : (
                         <>
@@ -43,6 +52,8 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
                             <HeaderButton>
                                 <Link to="signup">회원가입</Link>
                             </HeaderButton>
+                            <FiBell onClick={handleShowAlarm} />
+                            {showAlarm && <Alarm />}
                         </>
                     )}
                 </UserAction>

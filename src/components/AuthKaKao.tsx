@@ -40,7 +40,7 @@ export default function AuthKaKao() {
         const token = params.get('token');
 
         if (token) {
-            localStorage.setItem('kakaoToken', token);
+            localStorage.setItem('token', token);
             navigate('/main');
         }
     }, [navigate]);

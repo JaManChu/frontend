@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useRecipeWrite } from '../../../hooks/useRecipeWrite';
-
+import DefaultImg from '../../../assets/img/defaultImg.jpeg';
 const CreateRecipe: React.FC = () => {
     const {
         recipeName,
@@ -32,7 +32,7 @@ const CreateRecipe: React.FC = () => {
                 <RecipeSteps>
                     {steps.map((step, index) => (
                         <RecipeStep key={index}>
-                            <RecipeStepImage src={imagePreviews[index]} alt={`Step ${index + 1}`} />
+                            <RecipeStepImage src={imagePreviews[index] || DefaultImg} alt={`Step ${index + 1}`} />
                             <RecipeStepContent>
                                 <StepInput
                                     value={step.content}

@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from 'react';
-import Latest from '../Recipes/LatestRecipe/LatestRecipe';
-import Popular from '../Recipes/PopularRecipe/PopularRecipe';
-import Recommend from '../Recipes/RecommendedRecipe/RecommendedRecipe';
+import LatestRecipe from '../Recipes/LatestRecipe/LatestRecipe';
+import PopularRecipe from '../Recipes/PopularRecipe/PopularRecipe';
+import RecommendedRecipe from '../Recipes/RecommendedRecipe/RecommendedRecipe';
 import styled from 'styled-components';
 // import axios from 'axios';
 import { CiSearch } from 'react-icons/ci';
@@ -59,11 +59,11 @@ export default function Main(): JSX.Element {
             </SearchWrapper>
             {/* 리덕스 툴킷 도입 : 레시피페이지 전역상태관리 - RecipePageHeader + RecipeList 호출가능?  */}
             <RecipeWrapper>
-                <Recommend limit={4} page="recommended" />
-                <Latest limit={1} page="latest" />
+                <RecommendedRecipe limit={4} page="recommended" />
+                <LatestRecipe limit={1} page="latest" />
                 {/* Popular, Visited 분리 작업 후 VisitedWrapper는 float/position으로 css 변경처리 */}
                 <VisitedPopularWrapper>
-                    <Popular limit={2} page="popular" />
+                    <PopularRecipe limit={2} page="popular" />
                     <Visited />
                 </VisitedPopularWrapper>
             </RecipeWrapper>

@@ -26,12 +26,14 @@ export default function useHeaderLogic() {
               { name: 'Recommend', to: '/recipes/recommended' },
               { name: 'Popular', to: '/recipes/popular' },
               { name: 'Latest', to: '/recipes/latest' },
+              { name: 'Search', to: '/recipes/search' },
           ]
         : [
               { name: 'Onboard', to: '/' },
               { name: 'Home', to: '/guestHome' },
               { name: 'Popular', to: '/recipes/popular' },
               { name: 'Latest', to: '/recipes/latest' },
+              { name: 'Search', to: '/recipes/search' },
           ];
 
     return { handleClickMenu, isActive, menuItems };

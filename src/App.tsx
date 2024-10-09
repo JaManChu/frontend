@@ -6,9 +6,9 @@ import Mypage from './views/Mypage/Mypage.tsx';
 import GuestHome from './views/GuestHome/GuestHome.tsx';
 import HeaderView from './components/Header/HeaderView.tsx';
 import Main from './views/Main/Main.tsx';
-import Latest from './views/Recipes/LatestRecipe/LatestRecipe.tsx';
-import Popular from './views/Recipes/PopularRecipe/PopularRecipe.tsx';
-import Recommend from './views/Recipes/RecommendedRecipe/RecommendedRecipe.tsx';
+import LatestRecipe from './views/Recipes/LatestRecipe/LatestRecipe.tsx';
+import PopularRecipe from './views/Recipes/PopularRecipe/PopularRecipe.tsx';
+import RecommendedRecipe from './views/Recipes/RecommendedRecipe/RecommendedRecipe.tsx';
 import DetailRecipe from './views/Recipes/DetailRecipe/DetailRecipe.tsx';
 import AuthKaKao from './components/AuthKaKao.tsx';
 import SearchView from './views/Recipes/SearchRecipe/SearchView.tsx';
@@ -26,11 +26,11 @@ function App() {
                     <Route path="/mypage" element={<Mypage />} />
                     <Route path="/guesthome" element={<GuestHome />} />
                     <Route path="/main" element={<Main />} />
-                    <Route path="/recipes/recommended" element={<Recommend />} />
-                    <Route path="/recipes/popular" element={<Popular />} />
-                    <Route path="/recipes/latest" element={<Latest />} />
+                    <Route path="/recipes/recommended" element={<RecommendedRecipe />} />
+                    <Route path="/recipes/popular" element={<PopularRecipe />} />
+                    <Route path="/recipes/latest" element={<LatestRecipe />} />
                     <Route path="/recipes/:id" element={<DetailRecipe />} />
-                    <Route path="/search-recipe" element={<SearchView />} />
+                    <Route path="/recipes/search" element={<SearchView />} />
                     <Route path="/recipes/create" element={<CreateRecipe />} />
                 </Route>
             </Routes>

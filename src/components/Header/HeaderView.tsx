@@ -1,4 +1,4 @@
-import useHeaderLogic from '../../hooks/useHeader';
+import useHeaderLogic from '../../hooks/useHeaderLogic';
 import HeaderContainer from './HeaderContainer';
 
 export default function HeaderView(): JSX.Element {

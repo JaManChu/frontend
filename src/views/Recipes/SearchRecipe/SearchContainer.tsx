@@ -1,7 +1,21 @@
 import { ChangeEvent, KeyboardEvent } from 'react';
 import { SearchResult } from './SearchResult';
 import SearchCondition from './SearchCondition';
+import PopularRecipe from '../PopularRecipe/PopularRecipe';
 
+interface RecipeProps {
+    title: string;
+    id: string;
+    image: string;
+    thumbnail: string;
+    time: string;
+    level: string;
+    rate: string;
+    desc: string;
+    ingredients: Record<string, string | number>[];
+    overview: string;
+    instructions: Record<number | string, string>[];
+}
 interface ContainerProps {
     value: string;
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -10,7 +24,7 @@ interface ContainerProps {
     handleTime: (e: ChangeEvent<HTMLSelectElement>) => void;
     handleLevel: (e: ChangeEvent<HTMLSelectElement>) => void;
     ingredientsList: string[];
-    recipes: Record<string, string | number>[]; // ! api통신 후 키와 타입 재정의
+    recipes: RecipeProps[];
     searching: boolean;
 }
 
@@ -36,6 +50,7 @@ export default function SearchContainer({
                 handleTime={handleTime}
                 ingredientsList={ingredientsList}
             />
+            <PopularRecipe page="search" />
             <SearchResult recipes={recipes} searching={searching} />
         </>
     );

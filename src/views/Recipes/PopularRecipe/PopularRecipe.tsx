@@ -1,6 +1,6 @@
 // import { useEffect, useState } from 'react';
-import RecipeList from '../Recipe/RecipeList';
-import RecipePageHeader from '../Recipe/RecipePageHeader';
+import RecipeList from '../../../components/Recipe/RecipeList.js';
+import RecipePageHeader from '../../../components/Recipe/RecipePageHeader.js';
 // import axios from 'axios';
 import fakeData from '../../../fakeData/recipeFake.js';
 import styled from 'styled-components';
@@ -21,7 +21,7 @@ interface RecipeLimitProps {
     page?: string;
 }
 
-export default function Popular({ limit, page }: RecipeLimitProps): JSX.Element {
+export default function PopularRecipe({ limit, page }: RecipeLimitProps): JSX.Element {
     // const [recipes, setRecipes] = useState<string[]>([]);
     // useEffect(() => {
     //     const fetchRecipes = async () => {

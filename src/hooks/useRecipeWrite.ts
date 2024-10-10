@@ -64,7 +64,7 @@ export const useRecipeWrite = () => {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
 
-        // const token = JSON.parse(localStorage.getItem('token') || '');
+        // const token = JSON.parse(sessionStorage.getItem('token') || '');
 
         //유효성검사
         if (!recipeName || !recipeCookingTime) {

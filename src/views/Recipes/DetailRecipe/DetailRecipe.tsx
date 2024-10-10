@@ -27,7 +27,7 @@ export default function DetailRecipe(): JSX.Element {
     useEffect(() => {
         // const fetchData = async () => {
         //     try {
-        // const response = await axios.get(`${process.env.REACT_APP_API_URL}/recipes/${id}`);
+        // const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes/${id}`);
         //     } catch (err) {
         //         console.log(err);
         //     }

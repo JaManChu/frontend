@@ -5,8 +5,7 @@ import styled from 'styled-components';
 import { BsCartCheckFill } from 'react-icons/bs';
 import fakeData from '../../../fakeData/recipeFake';
 import RecipeMetaData from '../../../components/Recipe/RecipeMetaData';
-import ViewComments from '../../Comments/ViewComments';
-import Review from '../../Comments/Review';
+import CommentsView from '../../Comments/CommentsView';
 
 interface Props {
     id: string;
@@ -89,8 +88,7 @@ export default function DetailRecipe(): JSX.Element {
                     <RecipeMetaData time={recipe.time} level={recipe.level} rate={recipe.rate} />
                 </DetailRecipeInfo>
             </DetailRecipeContents>
-            <Review />
-            <ViewComments />
+            <CommentsView />
         </DetailRecipeContainer>
     );
 }

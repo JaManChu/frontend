@@ -111,22 +111,15 @@ export const useUserForm = () => {
             alert('모든 필드값을 입력해주시기 바랍니다.');
         }
         try {
-            const body = {
-                email: email,
-                password: password,
-            };
-
-            const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, body, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
+            const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, { email, password });
 
             if (response.status == 200) {
                 console.log(response);
                 // ! 임시 저장(토큰 내려주는지 확인) - accessToken 인지 refreshToken인지
                 // ! HTTP only인지 , headers-cookie인지 check
-                sessionStorage.setItem('token', JSON.stringify(response.data.token));
+                const accessToken = response.headers['Access-Token'];
+
+                sessionStorage.setItem('token', accessToken);
                 setMessage(response.message);
                 alert(response.message);
             }

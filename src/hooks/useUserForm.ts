@@ -81,7 +81,7 @@ export const useUserForm = () => {
         try {
             const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/signup`, { email, password, nickname });
 
-            if (response.code == 201) {
+            if (response.status == 201) {
                 console.log('success?');
                 console.log(response);
                 setMessage(response.data.message);
@@ -117,7 +117,7 @@ export const useUserForm = () => {
                 console.log(response);
                 // ! 임시 저장(토큰 내려주는지 확인) - accessToken 인지 refreshToken인지
                 // ! HTTP only인지 , headers-cookie인지 check
-                localStorage.setItem('token', JSON.stringify(response.data.token));
+                sessionStorage.setItem('token', JSON.stringify(response.data.token));
                 setMessage(response.message);
                 alert(response.message);
             }

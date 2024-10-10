@@ -13,7 +13,7 @@ interface HeaderProps {
 
 export default function HeaderContainer({ menuItems, handleClickMenu, isActive }: HeaderProps): JSX.Element {
     const [showAlarm, setShowAlarm] = useState<boolean>(false);
-    const isLogin = Boolean(localStorage.getItem('token'));
+    const isLogin = Boolean(sessionStorage.getItem('token'));
 
     const handleShowAlarm = (e: MouseEvent) => {
         e.stopPropagation();

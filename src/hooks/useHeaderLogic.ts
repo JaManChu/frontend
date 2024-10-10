@@ -3,21 +3,21 @@ import { useLocation } from 'react-router-dom';
 
 export default function useHeaderLogic() {
     const [isActive, setIsActive] = useState<string>('');
-    const isLogin = Boolean(localStorage.getItem('token'));
+    const isLogin = Boolean(sessionStorage.getItem('token'));
     const location = useLocation();
 
     useEffect(() => {
         if (location.pathname == '/login' || location.pathname == '/signup') {
             setIsActive('');
         } else {
-            const getMenu = localStorage.getItem('menu') || 'Home';
+            const getMenu = sessionStorage.getItem('menu') || 'Home';
             setIsActive(getMenu);
         }
     }, [location.pathname]);
 
     const handleClickMenu = (menu: string): void => {
         setIsActive(menu);
-        localStorage.setItem('menu', menu);
+        sessionStorage.setItem('menu', menu);
     };
 
     const menuItems = isLogin

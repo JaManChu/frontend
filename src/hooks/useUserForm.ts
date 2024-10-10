@@ -111,16 +111,7 @@ export const useUserForm = () => {
             alert('모든 필드값을 입력해주시기 바랍니다.');
         }
         try {
-            const body = {
-                email: email,
-                password: password,
-            };
-
-            const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, body, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
+            const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, { email, password });
 
             if (response.status == 200) {
                 console.log(response);

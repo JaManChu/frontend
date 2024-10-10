@@ -113,7 +113,7 @@ export const useUserForm = () => {
         try {
             const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, { email, password });
 
-            if (response.code == 200) {
+            if (response.status == 200) {
                 console.log(response);
                 // ! 임시 저장(토큰 내려주는지 확인) - accessToken 인지 refreshToken인지
                 // ! HTTP only인지 , headers-cookie인지 check
@@ -124,6 +124,7 @@ export const useUserForm = () => {
             // !  response.code가 200이 아닌 경우 catch로 넘어가는지 확인
         } catch (err: any) {
             setMessage(err.message);
+            console.log('에러? :', err);
         }
     };
 

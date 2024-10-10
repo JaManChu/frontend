@@ -111,7 +111,16 @@ export const useUserForm = () => {
             alert('모든 필드값을 입력해주시기 바랍니다.');
         }
         try {
-            const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, { email, password });
+            const body = {
+                email: email,
+                password: password,
+            };
+
+            const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, body, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
 
             if (response.status == 200) {
                 console.log(response);
@@ -125,6 +134,7 @@ export const useUserForm = () => {
         } catch (err: any) {
             setMessage(err.message);
             console.log('에러? :', err);
+            console.error('에러 정보:', err.response ? err.response.data : err.message);
         }
     };
 

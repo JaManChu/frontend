@@ -126,7 +126,9 @@ export const useUserForm = () => {
                 console.log(response);
                 // ! 임시 저장(토큰 내려주는지 확인) - accessToken 인지 refreshToken인지
                 // ! HTTP only인지 , headers-cookie인지 check
-                sessionStorage.setItem('token', JSON.stringify(response.data.token));
+                const accessToken = response.headers['Access-Token'];
+
+                sessionStorage.setItem('token', accessToken);
                 setMessage(response.message);
                 alert(response.message);
             }

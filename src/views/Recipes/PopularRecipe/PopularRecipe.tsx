@@ -26,7 +26,7 @@ export default function PopularRecipe({ limit, page }: RecipeLimitProps): JSX.El
     // useEffect(() => {
     //     const fetchRecipes = async () => {
     //         try {
-    // const response = await axios.get(`${process.env.REACT_APP_API_URL}/recipes`);
+    // const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes`);
     //         } catch (err) {}
     //     };
     // }, [recipes]);

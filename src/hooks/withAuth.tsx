@@ -6,7 +6,7 @@ export default function withAuth<P extends JSX.IntrinsicAttributes>(Component: C
         const navigate = useNavigate();
 
         useEffect(() => {
-            if (!localStorage.getItem('token')) {
+            if (!sessionStorage.getItem('token')) {
                 alert('로그인 후 이용 가능합니다.');
                 navigate('/');
             }

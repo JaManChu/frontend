@@ -24,7 +24,7 @@ export default function AuthKaKao() {
     //             console.log(response.data);
 
     //             if (response.code === 200) {
-    //                 localStorage.setItem('kakaoToken', JSON.stringify(response.data));
+    //                 sessionStorage.setItem('kakaoToken', JSON.stringify(response.data));
     //                 navigate('/main');
     //             }
     //         } catch (err) {
@@ -40,7 +40,7 @@ export default function AuthKaKao() {
         const token = params.get('token');
 
         if (token) {
-            localStorage.setItem('token', token);
+            sessionStorage.setItem('token', token);
             navigate('/main');
         }
     }, [navigate]);

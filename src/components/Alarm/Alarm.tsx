@@ -3,7 +3,11 @@ import useSSE from '../../hooks/useSSE';
 import styled from 'styled-components';
 
 export default function Alarm() {
-    const { alarmData } = useSSE();
+    const { alarmData, closeConnection } = useSSE();
+
+    const handleAlarmClick = () => {
+        closeConnection(); // 알람 클릭 시 연결 종료
+    };
 
     return (
         <AlarmContainer>
@@ -19,7 +23,9 @@ export default function Alarm() {
                         <span>nickname(reviewer)</span>
                         <span>새로운 댓글이 추가되었습니다</span>
                     </AlarmItemText>
-                    <Link to="/">확인</Link>
+                    <Link to="/" onClick={handleAlarmClick}>
+                        확인
+                    </Link>
                 </AlarmItem>
             </AlarmList>
         </AlarmContainer>

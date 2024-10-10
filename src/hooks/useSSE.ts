@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
 
 export default function useSSE() {
+    // stompjs sockjs
     const [alarmData, setAlarmData] = useState<string[]>([]); // 서버가 푸쉬한 데이터 저장
 
     const EventSource = EventSourcePolyfill || NativeEventSource; // request header에 token을 보내기 위해 EventSourcePolyfill
@@ -12,7 +13,7 @@ export default function useSSE() {
             // 새로운 EventSource생성
             eventSource.current = new EventSource(`${import.meta.env.VITE_BASE_URL}/notify`, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
                 },
                 withCredentials: true,
             });
@@ -46,5 +47,10 @@ export default function useSSE() {
         };
     }, []);
 
-    return { alarmData };
+    const closeConnection = () => {
+        eventSource.current?.close();
+        console.log('SSE 연결 종료');
+    };
+
+    return { alarmData, closeConnection };
 }

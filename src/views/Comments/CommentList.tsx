@@ -1,76 +1,50 @@
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useEffect, ChangeEvent } from 'react';
 import { useParams } from 'react-router-dom';
 import { FaRegStar, FaStar } from 'react-icons/fa';
 import reviewFake from '../../fakeData/reviewFake';
 import styled from 'styled-components';
-import axios from 'axios';
 
+interface UpdateProps {
+    commentId: number;
+    comment: string;
+    rating: number;
+}
 interface CommentsListProps {
     isEditing: boolean;
-    handleEditing: () => void;
+    handleEditing: ({ comments, commentId, commentRate }: { comments: string; commentId: number; commentRate: number }) => void;
+    commentId?: number;
+    updatedRate?: number;
+    updatedComment: string;
+    commentsList: Record<string, string | number>[];
+    handleFetch: (id: string) => Promise<void>;
+    handleUpdate: ({ commentId, comment, rating }: UpdateProps) => Promise<void>;
+    handleDelete: (commentId: number) => Promise<void>;
+    handleUpdateComment: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+    handleUpdateRate: (rate: number) => void;
 }
 
-export default function CommentList({ isEditing, handleEditing }: CommentsListProps): JSX.Element {
-    const [commentsData, setCommentsData] = useState([]);
-    const [responseMessage, setResponseMessage] = useState<string>();
-    const [commentId, setCommentId] = useState<number>(0);
-    const [commentRate, setCommentRate] = useState<number>();
-    const [commentBody, setCommentBody] = useState<string>();
+export default function CommentList({
+    isEditing,
+    handleEditing,
+    commentId,
+    updatedRate,
+    updatedComment,
+    commentsList,
+    handleFetch,
+    handleUpdate,
+    handleDelete,
+    handleUpdateComment,
+    handleUpdateRate,
+}: CommentsListProps): JSX.Element {
+    const { id } = useParams<{ id: string }>();
+    const nickName = sessionStorage.getItem('nickname');
 
-    const { id } = useParams();
-    // ! 리팩토링 진행 필요 -> comments가 작성되면 데이터 get
+    // fetchCommentsList : recipeId 기준 코멘트 조회 & commentsList가 바뀔때마다 handleFetch 호출
     useEffect(() => {
-        try {
-            const response: any = axios.get(`${import.meta.env.VITE_BASE_URL}/comments/${id}`); // id는 recipeId
-            console.log(response);
-            setCommentsData(response.data);
-        } catch (err) {
-            console.log(err);
+        if (id) {
+            handleFetch(id);
         }
-    }, [commentsData]);
-
-    const handleClickDelete = () => {
-        // ! 매개변수로 Idx를 받도록 처리(commentId)
-        try {
-            // ? delet 데이터에 commentId 넣어서 보내주기
-            const response: any = axios.delete(`${import.meta.env.VITE_BASE_URL}/comments`);
-            console.log(response);
-            setResponseMessage(response.data.message);
-            console.log(responseMessage); // 버셀 error 방지용
-            alert('댓글이 삭제되었습니다.');
-            //  ! comments 리렌더링 조건 생가해보기
-            // 현재는 comments를 새로 생성하지 않고 삭제만 했음 - useEffect 동작 이유 없음
-        } catch (err) {
-            console.log(err);
-            alert('댓글 삭제에 실패하였습니다.');
-        }
-    };
-    const handleClickUpdate = () => {
-        handleEditing(); // ? prev=> !prev가 나은지 vs 직접적으로 true/false 설정
-        // ! 매개변수로 comments 받기
-        // ! 보낼 데이터: id, comments, rating
-        try {
-            const response: any = axios.put(`${import.meta.env.VITE_BASE_URL}/comments`, {
-                commentId: commentId,
-                comments: commentBody,
-                rating: commentRate,
-            });
-            console.log(response);
-            setResponseMessage(response.data.message);
-            // 초기화 -> 안하면 다시 수정 버튼 눌렀을때 어떻게 반영되는지 확인
-            setCommentRate(0);
-            setCommentBody('');
-            setCommentId(0);
-            alert('댓글이 수정되었습니다.');
-        } catch (err) {
-            console.log(err);
-            alert('댓글 수정에 실패하였습니다.');
-        }
-    };
-
-    const handleChangeComment = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        setCommentBody(e.target.value);
-    };
+    }, [commentsList]);
 
     return (
         <>
@@ -80,41 +54,70 @@ export default function CommentList({ isEditing, handleEditing }: CommentsListPr
                     <CommentsContents>
                         <ReviewerFigure>
                             <img src="" alt="유저이미지" />
-                            <ReviewerFigcaption>nickname</ReviewerFigcaption>
+                            <ReviewerFigcaption>{review.nickname}</ReviewerFigcaption>
                         </ReviewerFigure>
                         <CommentsWrapper>
                             <CommentsRating>
                                 {Array(5)
                                     .fill(0)
                                     .map((_, idx) => {
-                                        return review.rate <= idx ? <FaRegStar /> : <FaStar />;
+                                        return review.rating <= idx ? <FaRegStar /> : <FaStar />;
                                     })}
                             </CommentsRating>
+                            <span>{review.createdAt}</span>
                             {
                                 // ! session에 저장된 nickname과 review.nickname이 일치할때만 버튼 보이게 구성
                                 // ! nickname과 일치하면서 isEditing이 true일때
                                 isEditing ? (
-                                    <button onClick={handleClickUpdate}>수정</button>
+                                    nickName == review.nickname && (
+                                        <div>
+                                            <button
+                                                onClick={() => {
+                                                    handleEditing({
+                                                        comments: review.content,
+                                                        commentId: review.commentId,
+                                                        commentRate: review.rating,
+                                                    });
+                                                }}
+                                            >
+                                                수정
+                                            </button>
+                                            <button onClick={() => commentId !== undefined && handleDelete(commentId)}>삭제</button>
+                                        </div>
+                                    )
                                 ) : (
-                                    <div>
-                                        <button
-                                            onClick={() => {
-                                                handleEditing();
-                                                setCommentBody(review.comment);
-                                                setCommentId(1); // ! 1로 설정했으나 데이터 받아오고 변경
-                                                setCommentRate(1); // 1로 설정했으나 데이터 받아오고 변경
-                                            }}
-                                        >
-                                            수정
-                                        </button>
-                                        <button onClick={() => handleClickDelete()}>삭제</button>
-                                    </div>
+                                    <>
+                                        {commentId !== undefined && updatedRate != undefined && (
+                                            <button
+                                                onClick={() =>
+                                                    handleUpdate({
+                                                        commentId: commentId,
+                                                        comment: updatedComment,
+                                                        rating: updatedRate,
+                                                    })
+                                                }
+                                            >
+                                                완료
+                                            </button>
+                                        )}
+                                    </>
                                 )
                             }
                             {isEditing ? (
-                                <CommentsTextarea value={commentBody} onChange={handleChangeComment}></CommentsTextarea>
+                                <>
+                                    {Array(5)
+                                        .fill(0)
+                                        .map((_, idx) => {
+                                            return updatedRate! >= idx ? (
+                                                <FaStar key={idx} onClick={() => handleUpdateRate(idx)} />
+                                            ) : (
+                                                <FaRegStar key={idx} onClick={() => handleUpdateRate(idx)} />
+                                            );
+                                        })}
+                                    <CommentsTextarea value={updatedComment} onChange={handleUpdateComment}></CommentsTextarea>
+                                </>
                             ) : (
-                                <CommentsText>{review.comment}</CommentsText>
+                                <CommentsText>{review.content}</CommentsText>
                             )}
                         </CommentsWrapper>
                     </CommentsContents>

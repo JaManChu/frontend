@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 // import axios from 'axios';
-import { useRecipeWrite } from '../../../hooks/useRecipeWrite';
+import { useRecipeCreate } from '../../../hooks/useRecipeCreate';
 import DefaultImg from '../../../assets/img/defaultImg.jpeg';
 
 const UpdateRecipe: React.FC = () => {
@@ -24,7 +24,7 @@ const UpdateRecipe: React.FC = () => {
         handleDeleteStep,
         handleImageChange,
         imagePreviews,
-    } = useRecipeWrite();
+    } = useRecipeCreate();
 
     // 레시피 데이터 가져오기
     useEffect(() => {

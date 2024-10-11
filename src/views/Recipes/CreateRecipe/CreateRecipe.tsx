@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useRecipeWrite } from '../../../hooks/useRecipeWrite';
+import { useRecipeCreate } from '../../../hooks/useRecipeCreate';
 import DefaultImg from '../../../assets/img/defaultImg.jpeg';
 const CreateRecipe: React.FC = () => {
     const {
@@ -20,7 +20,7 @@ const CreateRecipe: React.FC = () => {
         handleDeleteStep,
         handleImageChange,
         imagePreviews,
-    } = useRecipeWrite();
+    } = useRecipeCreate();
 
     return (
         <RecipeWriteContainer>

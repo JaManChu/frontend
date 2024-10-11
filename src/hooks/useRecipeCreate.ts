@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
-
-export const useRecipeWrite = () => {
+import { useNavigate } from 'react-router-dom';
+export const useRecipeCreate = () => {
+    const navigate = useNavigate();
     //steps의 객체는 각각 타입이다르므로 인터페이스로 타입정의.
     interface Step {
         order: number;
@@ -64,7 +65,11 @@ export const useRecipeWrite = () => {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
 
-        // const token = JSON.parse(sessionStorage.getItem('token') || '');
+        const token = JSON.parse(sessionStorage.getItem('token') || '');
+        if (!token) {
+            alert('잘못된 접근입니다. 로인해주세요.');
+            navigate('/login');
+        }
 
         //유효성검사
         if (!recipeName || !recipeCookingTime) {
@@ -111,12 +116,14 @@ export const useRecipeWrite = () => {
 
         try {
             const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/recipes`, formData, {
-                // headers: {
-                //     'Access-Token': `Bearer ${token}`,
-                //     'Content-Type': 'multipart/form-data',
-                // },
+                headers: {
+                    'Access-Token': `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                },
             });
-            console.log(response.data); // 요청 성공 후 처리
+            if (response.status === 201) {
+                console.log('성공', response.data); // 요청 성공 후 처리
+            }
         } catch (error) {
             console.error(error);
         }

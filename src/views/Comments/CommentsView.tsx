@@ -38,7 +38,7 @@ export default function CommentsView(): JSX.Element {
                 updateCommentHandler={updateCommentHandler}
                 deleteCommentHandler={deleteCommentHandler}
                 handleUpdateComment={handleMakeComment}
-                handleUpdateRate={handleMakeRate}
+                // handleUpdateRate={handleMakeRate}
             />
         </>
     );

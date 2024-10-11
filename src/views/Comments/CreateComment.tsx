@@ -2,6 +2,7 @@ import { FormEvent, ChangeEvent } from 'react';
 import { useParams } from 'react-router-dom';
 import { FaRegStar, FaStar } from 'react-icons/fa';
 import styled from 'styled-components';
+
 interface CreateHandlerProps {
     recipeId: number;
     comment: string;
@@ -10,7 +11,7 @@ interface CreateHandlerProps {
 interface CreateProps {
     createdRate: number;
     createdComment: string;
-    handleCreate: (e: FormEvent<HTMLFormElement>, { recipeId, comment, rating }: CreateHandlerProps) => Promise<void>;
+    createCommentHandler: (e: FormEvent<HTMLFormElement>, { recipeId, comment, rating }: CreateHandlerProps) => Promise<void>;
     handleCreateComment: (e: ChangeEvent<HTMLTextAreaElement>) => void;
     handleCreateRate: (rate: number) => void;
 }
@@ -18,7 +19,7 @@ interface CreateProps {
 export default function CreateComment({
     createdRate,
     createdComment,
-    handleCreate,
+    createCommentHandler,
     handleCreateComment,
     handleCreateRate,
 }: CreateProps): JSX.Element {
@@ -27,8 +28,11 @@ export default function CreateComment({
     return (
         <ReviewContainer>
             <h4>Leave a review</h4>
-            <ReviewForm method="post" onSubmit={(e) => handleCreate(e, { recipeId: Number(id), comment: createdComment, rating: createdRate })}>
-                <textarea name="comments" onChange={handleCreateComment}></textarea>
+            <ReviewForm
+                method="post"
+                onSubmit={(e) => createCommentHandler(e, { recipeId: Number(id), comment: createdComment, rating: createdRate })}
+            >
+                <textarea name="comments" value={createdComment} onChange={handleCreateComment}></textarea>
                 <ReviewBottom>
                     <span>your rating</span>
                     {Array(5)

@@ -6,14 +6,14 @@ export default function useSearchRecipe() {
     const [searchIngredients, setSearchIngredients] = useState<string>(''); // 사용자 입력 검색어
     const [ingredientsList, setIngredientsList] = useState<string[]>([]); // 공백 기준 검색어 리스트
     const [recipes, setRecipes] = useState([]); // 레시피 데이터 저장
-    const [time, setTime] = useState<string>(''); // 소요시간(select에서 선택)
-    const [level, setLevel] = useState<string>(''); // 난이도(select에서 선택)
+    const [time, setTime] = useState<string | null>(); // 소요시간(select에서 선택)
+    const [level, setLevel] = useState<string | null>(); // 난이도(select에서 선택)
 
     // 재료 입력시에 검색어 리스트 입력 재료로 갱신
     useEffect(() => {
         if (searchIngredients.trim()) {
             // 입력값이 공백이 아닐 경우에만 처리
-            const ingredients = searchIngredients.split(' ').filter((ingredient) => ingredient); // 공백 필터링
+            const ingredients = searchIngredients.split(' ').filter((ingredient) => ingredient);
             setIngredientsList([...ingredients]);
         } else {
             setIngredientsList([]); // 입력값이 공백인 경우 빈 배열 설정
@@ -25,6 +25,7 @@ export default function useSearchRecipe() {
         setSearchIngredients(e.target.value);
     };
 
+    const token = sessionStorage.getItem('token');
     // 검색 버튼 클릭시 api 통신
     const handleSubmit = async () => {
         setSearching(true); // 검색 중임을 나타내는 상태
@@ -36,17 +37,20 @@ export default function useSearchRecipe() {
 
         try {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}`, {
-                params: { ingredient: ingredientsList, time: time, level: level },
+                params: { ingredientName: ingredientsList, recipeCookingTime: time, recipeLevel: level },
+                headers: { 'Access-Token': `Bearer ${token}` },
             });
             if (response.code == 200) {
-                console.log(response.data);
+                console.log('search response.data: ', response.data);
+                console.log('search response: ', response);
                 setRecipes(response.data);
+                alert('검색 결과입니다.');
             } else {
+                console.log('status 200 아닐때');
                 alert('재료명을 다시 입력해주시기 바랍니다.');
             }
         } catch (err) {
             console.log(err);
-
             console.log('검색 오류입니다.');
             alert('검색 중 오류가 발생했습니다. 다시 시도해주세요.');
         } finally {

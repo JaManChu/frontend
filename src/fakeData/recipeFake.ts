@@ -1,11 +1,11 @@
 interface Props {
-    title: string;
-    id: string;
-    image: string;
-    thumbnail: string;
-    time: string;
-    level: string;
-    rate: string;
+    recipeId: number;
+    recipeName: string;
+    recipeAuthor: string;
+    recipeThumbnail: string;
+    recipeCookingTime: string;
+    recipeLevel: string;
+    recipeRating: number;
     desc: string;
     ingredients: Record<string, string | number>[];
     overview: string;
@@ -13,13 +13,13 @@ interface Props {
 }
 const fakeData: Props[] = [
     {
-        title: 'first',
-        id: '1',
-        image: '',
-        thumbnail: '',
-        time: '60min',
-        level: '상',
-        rate: '4.5',
+        recipeName: 'first',
+        recipeId: 1,
+        recipeThumbnail: '',
+        recipeCookingTime: '60min',
+        recipeAuthor: '',
+        recipeLevel: '상',
+        recipeRating: 4.5,
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },
@@ -40,13 +40,13 @@ const fakeData: Props[] = [
         ],
     },
     {
-        title: 'second',
-        id: '2',
-        image: '',
-        thumbnail: '',
-        time: '45min',
-        level: '상',
-        rate: '1.5',
+        recipeName: 'second',
+        recipeId: 2,
+        recipeThumbnail: '',
+        recipeCookingTime: '45min',
+        recipeLevel: '상',
+        recipeAuthor: '',
+        recipeRating: 1.5,
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },
@@ -67,13 +67,14 @@ const fakeData: Props[] = [
         ],
     },
     {
-        title: 'third',
-        id: '3',
-        image: '',
-        thumbnail: '',
-        time: '20min',
-        level: '상',
-        rate: '1.5',
+        recipeName: 'third',
+        recipeId: 3,
+
+        recipeThumbnail: '',
+        recipeCookingTime: '20min',
+        recipeLevel: '상',
+        recipeAuthor: '',
+        recipeRating: 1.5,
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },
@@ -94,13 +95,14 @@ const fakeData: Props[] = [
         ],
     },
     {
-        title: 'fourth',
-        id: '4',
-        image: '',
-        thumbnail: '',
-        time: '10min',
-        level: '상',
-        rate: '3.5',
+        recipeName: 'fourth',
+        recipeId: 4,
+
+        recipeThumbnail: '',
+        recipeCookingTime: '10min',
+        recipeLevel: '상',
+        recipeRating: 3.5,
+        recipeAuthor: '',
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },
@@ -121,13 +123,14 @@ const fakeData: Props[] = [
         ],
     },
     {
-        title: 'fifth',
-        id: '5',
-        image: '',
-        thumbnail: '',
-        time: '6min',
-        level: '상',
-        rate: '5.0',
+        recipeName: 'fifth',
+        recipeId: 5,
+
+        recipeThumbnail: '',
+        recipeCookingTime: '6min',
+        recipeLevel: '상',
+        recipeRating: 5.0,
+        recipeAuthor: '',
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },

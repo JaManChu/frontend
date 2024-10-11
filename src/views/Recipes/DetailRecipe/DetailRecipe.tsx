@@ -5,8 +5,7 @@ import styled from 'styled-components';
 import { BsCartCheckFill } from 'react-icons/bs';
 import fakeData from '../../../fakeData/recipeFake';
 import RecipeMetaData from '../../../components/Recipe/RecipeMetaData';
-import ViewComments from '../../Comments/ViewComments';
-import Review from '../../Comments/Review';
+import CommentsView from '../../Comments/CommentsView';
 
 interface Props {
     id: string;
@@ -28,7 +27,7 @@ export default function DetailRecipe(): JSX.Element {
     useEffect(() => {
         // const fetchData = async () => {
         //     try {
-        // const response = await axios.get(`${process.env.REACT_APP_API_URL}/recipes/${id}`);
+        // const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes/${id}`);
         //     } catch (err) {
         //         console.log(err);
         //     }
@@ -89,8 +88,7 @@ export default function DetailRecipe(): JSX.Element {
                     <RecipeMetaData time={recipe.time} level={recipe.level} rate={recipe.rate} />
                 </DetailRecipeInfo>
             </DetailRecipeContents>
-            <Review />
-            <ViewComments />
+            <CommentsView />
         </DetailRecipeContainer>
     );
 }

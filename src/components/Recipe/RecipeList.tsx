@@ -2,13 +2,14 @@ import RecipeCard from './RecipeCard';
 import styled from 'styled-components';
 
 interface RecipeProps {
-    id: string;
-    title: string;
-    image: string;
-    time: string;
-    level: string;
-    rate: string;
-    desc: string;
+    recipeId: number;
+    recipeName: string;
+    recipeAuthor: string;
+    recipeLevel: string;
+    recipeCookingTime: string;
+    recipeThumbnail: string;
+    // rate: string;
+    // desc: string;
 }
 interface RecipeListProps {
     recipes: RecipeProps[];
@@ -22,8 +23,8 @@ export default function RecipeList({ recipes, limit, page }: RecipeListProps): J
         <RecipeUlist page={page}>
             {/* 데이터 연동하면 ...recipe로 코드 변경 필요 */}
             {displayRecipes.map((recipe: RecipeProps) => (
-                <li key={recipe.id}>
-                    <RecipeCard key={recipe.id} {...recipe} page={page} />
+                <li key={recipe.recipeId}>
+                    <RecipeCard key={recipe.recipeId} {...recipe} page={page} />
                 </li>
             ))}
         </RecipeUlist>

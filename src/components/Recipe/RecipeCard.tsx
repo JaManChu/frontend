@@ -8,33 +8,34 @@ import styled from 'styled-components';
 
 interface CardProps {
     page?: string;
-    id: string;
-    title: string;
-    image: string;
-    time: string;
-    level: string;
-    rate: string;
-    desc: string;
+    recipeId: number;
+    recipeName: string;
+    recipeAuthor: string;
+    recipeLevel: string;
+    recipeCookingTime: string;
+    recipeThumbnail: string;
+    // rate: string;
+    // desc: string;
 }
 
-export default function RecipeCard({ page = '', id, title, image, time, level, rate, desc }: CardProps): JSX.Element {
+export default function RecipeCard({ page = '', recipeId, recipeName, recipeThumbnail, recipeCookingTime, recipeLevel }: CardProps): JSX.Element {
     const [marked, setMarked] = useState<boolean>(false);
 
     return (
         <RecipeCardFigure page={page}>
-            <img src={image} alt="레시피이미지" />
+            <img src={recipeThumbnail} alt="레시피이미지" />
             <RecipeFigcaption page={page}>
                 {page == 'latest' ? <RecipePageTitle>{page.replace(/\b[a-z]/, (letter) => letter.toUpperCase())} Rcipes</RecipePageTitle> : null}
                 <h4>
-                    <Linked to={`/recipes/${id}`}>{title}</Linked>
+                    <Linked to={`/recipes/${recipeId}`}>{recipeName}</Linked>
                 </h4>
                 <BookmarkIcons mark={marked} onClick={() => setMarked(!marked)}>
                     {marked ? <FaBookmark /> : <FaRegBookmark />}
                 </BookmarkIcons>
-                <RecipeMetaData page={page} time={time} level={level} rate={rate} />
-                {page == 'popular' || page == 'recommended' ? null : <RecipeDescription>{desc}</RecipeDescription>}
+                <RecipeMetaData page={page} time={recipeCookingTime} level={recipeLevel} rate="평점" />
+                {page == 'popular' || page == 'recommended' ? null : <RecipeDescription>간단한 설명이 필요...?</RecipeDescription>}
                 <span>
-                    <Linked to={`/recipes/${id}`}>view more</Linked>
+                    <Linked to={`/recipes/${recipeId}`}>view more</Linked>
                 </span>
             </RecipeFigcaption>
         </RecipeCardFigure>

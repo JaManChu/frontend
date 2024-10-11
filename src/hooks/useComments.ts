@@ -132,7 +132,14 @@ export default function useComments() {
 
     const deleteCommentHandler = async (commentId: number) => {
         try {
-            const response: any = await axios.delete(`${import.meta.env.VITE_BASE_URL}/comments`, { data: { commentId: commentId } });
+            const response: any = await axios.delete(`${import.meta.env.VITE_BASE_URL}/comments`, {
+                headers: {
+                    'Access-Token': `Bearer ${token}`,
+                },
+                data: {
+                    commentId: commentId,
+                },
+            });
             console.log('delete response: ', response);
             setResponseMessage(response.data.message);
             console.log(responseMessage);

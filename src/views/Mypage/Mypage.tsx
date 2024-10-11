@@ -2,7 +2,9 @@ import styled from 'styled-components';
 import Modal from '../../components/Modal/Modal';
 import { useModal } from './hooks/useModal';
 import { useUpdateForm } from './hooks/updateForm';
-
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Navigate, useNavigate } from 'react-router-dom';
 const favorites_recipe = [
     { name: '김치볶음밥', img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg' },
     { name: '계란말이', img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg' },
@@ -17,13 +19,37 @@ const post_list = [
     { name: '게시글4', img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg' },
 ];
 
-const user_info = {
-    email: 'abc@naver.com',
-    nickName: '제로베이스',
-    img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg',
-};
-
 export default function Mypage(): JSX.Element {
+    const [userInfo, setUserInfo] = useState({ email: '', nickname: '', img: '' });
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate('');
+    useEffect(() => {
+        const token = sessionStorage.getItem('token');
+        if (!token) {
+            setIsLoggedIn(false);
+            navigate('/login');
+        } else {
+            setIsLoggedIn(true);
+            const fetchUserInfo = async () => {
+                try {
+                    const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/users`, {
+                        headers: {
+                            'Access-Token': `Bearer ${sessionStorage.getItem('token')}`,
+                        },
+                    });
+                    const { email, nickname } = response.data.data;
+                    setUserInfo({
+                        email: email,
+                        nickname: nickname,
+                        img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg',
+                    });
+                } catch (error) {
+                    console.error('유저정보를 불러오는 데 실패했습니다', error);
+                }
+            };
+            fetchUserInfo();
+        }
+    }, []);
     const {
         isNickModalVisible,
         setIsNickModalVisible,
@@ -62,9 +88,9 @@ export default function Mypage(): JSX.Element {
             <MyInfo>
                 <Subtitle>내 정보</Subtitle>
                 <MyInfoText>
-                    <img src={user_info.img} alt="user-profile"></img>
-                    <span>이메일:{user_info.email}</span>
-                    <span>닉네임:{user_info.nickName}</span>
+                    <img src={userInfo.img} alt="user-profile"></img>
+                    <span>이메일:{userInfo.email}</span>
+                    <span>닉네임:{userInfo.nickname}</span>
                 </MyInfoText>
 
                 <ButtonWrapper>
@@ -79,7 +105,7 @@ export default function Mypage(): JSX.Element {
                             ]}
                         >
                             <h1>닉네임 수정</h1>
-                            <p>이메일 : {user_info.email}</p>
+                            <p>이메일 : {userInfo.email}</p>
                             <input value={updateNick} placeholder="변경할 닉네임을 입력하세요" onChange={(e) => setUpdateNick(e.target.value)} />
                         </Modal>
                     )}
@@ -95,7 +121,7 @@ export default function Mypage(): JSX.Element {
                                 ]}
                             >
                                 <h1>비밀번호 수정</h1>
-                                <p>이메일 : {user_info.email}</p>
+                                <p>이메일 : {userInfo.email}</p>
                                 <Input
                                     value={password}
                                     placeholder="기존 비밀번호를 입력하세요"

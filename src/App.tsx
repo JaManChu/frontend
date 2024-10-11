@@ -13,7 +13,7 @@ import DetailRecipe from './views/Recipes/DetailRecipe/DetailRecipe.tsx';
 import AuthKaKao from './components/AuthKaKao.tsx';
 import SearchView from './views/Recipes/SearchRecipe/SearchView.tsx';
 import CreateRecipe from './views/Recipes/CreateRecipe/CreateRecipe.tsx';
-
+import UpdateRecipe from './views/Recipes/UpdateRecipe/UpdateRecipe.tsx';
 function App() {
     return (
         <BrowserRouter>
@@ -32,6 +32,7 @@ function App() {
                     <Route path="/recipes/:id" element={<DetailRecipe />} />
                     <Route path="/recipes/search" element={<SearchView />} />
                     <Route path="/recipes/create" element={<CreateRecipe />} />
+                    <Route path="/recipes/update/:id" element={<UpdateRecipe />} />
                 </Route>
             </Routes>
         </BrowserRouter>

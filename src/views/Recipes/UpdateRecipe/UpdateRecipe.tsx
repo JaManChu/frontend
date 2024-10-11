@@ -1,7 +1,12 @@
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
+// import axios from 'axios';
 import { useRecipeWrite } from '../../../hooks/useRecipeWrite';
 import DefaultImg from '../../../assets/img/defaultImg.jpeg';
-const CreateRecipe: React.FC = () => {
+
+const UpdateRecipe: React.FC = () => {
+    const { recipeId } = useParams<{ recipeId: string }>(); // URL에서 recipeId를 가져옴
     const {
         recipeName,
         setRecipeName,
@@ -13,7 +18,6 @@ const CreateRecipe: React.FC = () => {
         setIngredients,
         handleAddIngredient,
         handleAddStep,
-        handleSubmit,
         steps,
         setSteps,
         handleDeleteIngredient,
@@ -22,12 +26,97 @@ const CreateRecipe: React.FC = () => {
         imagePreviews,
     } = useRecipeWrite();
 
+    // 레시피 데이터 가져오기
+    useEffect(() => {
+        //api호출 추후
+        // const fetchRecipeData = async () => {
+        //     try {
+        //         const response = await axios.get(`/recipes/${recipeId}`, {
+        //             headers: {
+        //                 'Access-Token': `Bearer ${sessionStorage.getItem('token')}`,
+        //             },
+        //         });
+        //         const recipeData = response.data;
+        //         // 데이터를 폼 필드에 채움
+        //         setRecipeName(recipeData.recipeName);
+        //         setRecipeLevel(recipeData.recipeLevel);
+        //         setRecipeCookingTime(recipeData.recipeCookingTime);
+        //         setIngredients(recipeData.recipeIngredient);
+        //         setSteps(recipeData.recipeOrderContent);
+        //     } catch (error) {
+        //         console.error('Failed to fetch recipe data', error);
+        //     }
+        // };
+
+        // fetchRecipeData();
+
+        const dummyData = {
+            recipeName: '더미 레시피',
+            recipeLevel: 'NORMAL',
+            recipeCookingTime: '30',
+            recipeIngredient: [
+                { ingredientName: '재료1', ingredientQuantity: '100g' },
+                { ingredientName: '재료2', ingredientQuantity: '200g' },
+            ],
+            recipeOrderContent: [
+                { order: 1, content: '단계 1 설명', picture: null },
+                { order: 2, content: '단계 2 설명', picture: null },
+            ],
+        };
+
+        // 더미 데이터를 상태에 설정
+        setRecipeName(dummyData.recipeName);
+        setRecipeLevel(dummyData.recipeLevel);
+        setRecipeCookingTime(dummyData.recipeCookingTime);
+        setIngredients(dummyData.recipeIngredient);
+        setSteps(dummyData.recipeOrderContent);
+    }, [recipeId, setRecipeName, setRecipeLevel, setRecipeCookingTime, setIngredients, setSteps]);
+
+    const handleUpdateRecipe = async () => {
+        alert('더미 데이터를 사용하여 레시피 수정 시도 (실제 서버 호출 없음)');
+    };
+
+    // // 수정된 레시피 데이터를 제출(api호출 추후)
+    // const handleUpdateRecipe = async () => {
+    //     try {
+    //         const formData = new FormData();
+    //         if (recipeId) {
+    //             formData.append('recipeId', recipeId);
+    //         }
+
+    //         formData.append('recipeName', recipeName);
+    //         formData.append('recipeLevel', recipeLevel);
+    //         formData.append('recipeCookingTime', recipeCookingTime);
+    //         ingredients.forEach((ingredient, index) => {
+    //             formData.append(`recipeIngredient[${index}].ingredientName`, ingredient.ingredientName);
+    //             formData.append(`recipeIngredient[${index}].ingredientQuantity`, ingredient.ingredientQuantity);
+    //         });
+    //         steps.forEach((step, index) => {
+    //             formData.append(`recipeOrderContent[${index}].order`, String(step.order));
+    //             formData.append(`recipeOrderContent[${index}].content`, step.content);
+    //             if (step.picture) {
+    //                 formData.append(`recipeOrderContent[${index}].picture`, step.picture);
+    //             }
+    //         });
+
+    //         await axios.put('/recipes', formData, {
+    //             headers: {
+    //                 'Access-Token': `Bearer ${sessionStorage.getItem('token')}`,
+    //                 'Content-Type': 'multipart/form-data',
+    //             },
+    //         });
+    //         alert('레시피가 성공적으로 수정되었습니다.');
+    //     } catch (error) {
+    //         console.error('Failed to update recipe', error);
+    //         alert('레시피 수정에 실패했습니다.');
+    //     }
+    // };
+
     return (
         <RecipeWriteContainer>
             <RecipeHeader>
-                <RecipeNameInput value={recipeName} onChange={(e) => setRecipeName(e.target.value)} placeholder="레시피 이름을 입력하세요." />
+                <RecipeNameInput value={recipeName} onChange={(e) => setRecipeName(e.target.value)} placeholder="레시피 이름을 수정하세요." />
             </RecipeHeader>
-
             <RecipeContent>
                 <RecipeSteps>
                     {steps.map((step, index) => (
@@ -50,25 +139,22 @@ const CreateRecipe: React.FC = () => {
                     ))}
                     <AddButton onClick={handleAddStep}>단계 추가</AddButton>
                 </RecipeSteps>
-
                 <RecipeSidebar>
                     <RecipeDetails>
-                        <h3>레시피 난이도</h3>
+                        <h3>레시피 수정</h3>
                         <RecipeSelect value={recipeLevel} onChange={(e) => setRecipeLevel(e.target.value)}>
                             <option value="EASY">EASY</option>
                             <option value="NORMAL">NORMAL</option>
                             <option value="HIGH">HIGH</option>
                         </RecipeSelect>
-
                         <h3>요리 시간 (분)</h3>
                         <RecipeInput
                             type="number"
                             value={recipeCookingTime}
                             onChange={(e) => setRecipeCookingTime(e.target.value)}
-                            placeholder="요리 시간을 입력하세요."
+                            placeholder="요리 시간을 수정하세요."
                         />
                     </RecipeDetails>
-
                     <RecipeIngredients>
                         <h3>재료</h3>
                         {ingredients.map((ingredient, index) => (
@@ -96,8 +182,7 @@ const CreateRecipe: React.FC = () => {
                         ))}
                         <AddButton onClick={handleAddIngredient}>재료 추가</AddButton>
                     </RecipeIngredients>
-
-                    <SubmitButton onClick={handleSubmit}>레시피 등록</SubmitButton>
+                    <SubmitButton onClick={handleUpdateRecipe}>레시피 수정</SubmitButton>
                 </RecipeSidebar>
             </RecipeContent>
         </RecipeWriteContainer>
@@ -254,4 +339,4 @@ const SubmitButton = styled.button`
     }
 `;
 
-export default CreateRecipe;
+export default UpdateRecipe;

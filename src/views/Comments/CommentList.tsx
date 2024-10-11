@@ -22,7 +22,7 @@ interface CommentsListProps {
     updateCommentHandler: ({ commentId, comment, rating }: UpdateProps) => Promise<void>;
     deleteCommentHandler: (commentId: number) => Promise<void>;
     handleUpdateComment: (e: ChangeEvent<HTMLTextAreaElement>) => void;
-    handleUpdateRate: (rate: number) => void;
+    // handleUpdateRate: (rate: number) => void;
 }
 // ! commentId! 강제로 넣어놓은 부분 데이터 연동 후 확인 & 다른 방식으로 구현할것
 export default function CommentList({
@@ -36,12 +36,13 @@ export default function CommentList({
     updateCommentHandler,
     deleteCommentHandler,
     handleUpdateComment,
-    handleUpdateRate,
-}: CommentsListProps): JSX.Element {
+}: // handleUpdateRate,
+CommentsListProps): JSX.Element {
     const { id } = useParams<{ id: string }>();
 
     // fetchCommentsList : recipeId 기준 코멘트 조회 & recipeId가 바뀔때마다 fetchCommentHandler 호출
     useEffect(() => {
+        console.log(commentDataList); // 안사용시 삭제
         if (id) {
             fetchCommentHandler(id);
         }

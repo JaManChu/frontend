@@ -4,7 +4,7 @@ import { useModal } from './hooks/useModal';
 import { useUpdateForm } from './hooks/updateForm';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 const favorites_recipe = [
     { name: '김치볶음밥', img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg' },
     { name: '계란말이', img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg' },
@@ -21,15 +21,13 @@ const post_list = [
 
 export default function Mypage(): JSX.Element {
     const [userInfo, setUserInfo] = useState({ email: '', nickname: '', img: '' });
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const navigate = useNavigate('');
+
+    const navigate = useNavigate();
     useEffect(() => {
         const token = sessionStorage.getItem('token');
         if (!token) {
-            setIsLoggedIn(false);
             navigate('/login');
         } else {
-            setIsLoggedIn(true);
             const fetchUserInfo = async () => {
                 try {
                     const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/users`, {

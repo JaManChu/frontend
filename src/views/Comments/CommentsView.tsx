@@ -5,15 +5,15 @@ import useComments from '../../hooks/useComments';
 export default function CommentsView(): JSX.Element {
     const {
         editing,
-        handleEditing,
+        handleClickEdit,
         commentId,
-        newRate,
-        newComment,
+        currentRate,
+        currentComment,
         commentDataList,
-        handleFetch,
-        handleCreate,
-        handleUpdate,
-        handleDelete,
+        fetchCommentHandler,
+        createCommentHandler,
+        updateCommentHandler,
+        deleteCommentHandler,
         handleMakeComment,
         handleMakeRate,
     } = useComments();
@@ -21,22 +21,22 @@ export default function CommentsView(): JSX.Element {
     return (
         <>
             <CreateComment
-                createdRate={newRate}
-                createdComment={newComment}
-                handleCreate={handleCreate}
+                createdRate={currentRate}
+                createdComment={currentComment}
+                createCommentHandler={createCommentHandler}
                 handleCreateComment={handleMakeComment}
                 handleCreateRate={handleMakeRate}
             />
             <CommentList
                 isEditing={editing}
-                handleEditing={handleEditing}
+                handleClickEdit={handleClickEdit}
                 commentId={commentId}
-                updatedRate={newRate}
-                updatedComment={newComment}
-                commentsList={commentDataList}
-                handleFetch={handleFetch}
-                handleUpdate={handleUpdate}
-                handleDelete={handleDelete}
+                currentRate={currentRate}
+                currentComment={currentComment}
+                commentDataList={commentDataList}
+                fetchCommentHandler={fetchCommentHandler}
+                updateCommentHandler={updateCommentHandler}
+                deleteCommentHandler={deleteCommentHandler}
                 handleUpdateComment={handleMakeComment}
                 handleUpdateRate={handleMakeRate}
             />

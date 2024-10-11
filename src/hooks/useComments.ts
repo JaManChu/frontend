@@ -18,19 +18,19 @@ interface EditingProps {
 }
 
 export default function useComments() {
+    const [editing, setEditing] = useState<boolean>(false); // 수정 중인지 check
     const [commentDataList, setCommentDataList] = useState<Record<string, string | number>[]>([]);
     const [recipeId, setRecipeId] = useState<number>();
     const [commentId, setCommentId] = useState<number>();
-    const [newComment, setNewComment] = useState<string>('');
-    const [newRate, setNewRate] = useState<number>(0);
-    const [editing, setEditing] = useState<boolean>(false); // 수정 중인지 check
+    const [currentComment, setCurrentComment] = useState<string>('');
+    const [currentRate, setCurrentRate] = useState<number>(0);
     const [responseMessage, setResponseMessage] = useState<string>(''); // 메시지 알람창
 
     // 세션에 저장된 토큰
     const token = sessionStorage.getItem('token');
 
     // get : recipeId
-    const handleFetch = async (recipeId: string) => {
+    const fetchCommentHandler = async (recipeId: string) => {
         try {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/comments/${recipeId}`, {
                 headers: {
@@ -46,13 +46,13 @@ export default function useComments() {
             alert('댓글을 가져오는데 실패했습니다.');
         }
     };
-
     console.log(recipeId);
+    console.log(currentComment);
     // create : recipeId, comment, rating
-    const handleCreate = async (e: FormEvent<HTMLFormElement>, { recipeId, comment, rating }: CreateHandlerProps) => {
+    const createCommentHandler = async (e: FormEvent<HTMLFormElement>, { recipeId, comment, rating }: CreateHandlerProps) => {
         e.preventDefault();
         setRecipeId(recipeId);
-        setNewRate(rating);
+        setCurrentRate(rating);
 
         try {
             const response = await axios.post(
@@ -72,8 +72,8 @@ export default function useComments() {
             console.log('comment response message:', response.data.message);
             setResponseMessage(response.data.message);
             // ! 초기화 : 필요여부 체크(test필요)
-            setNewComment('');
-            setNewRate(0);
+            setCurrentComment('');
+            setCurrentRate(0);
         } catch (err: any) {
             console.log(err);
             alert('댓글 작성에 실패하였습니다.');
@@ -81,7 +81,7 @@ export default function useComments() {
     };
 
     // update : commentId, comment, rating
-    const handleUpdate = async ({ commentId, comment, rating }: UpdateHandlerProps) => {
+    const updateCommentHandler = async ({ commentId, comment, rating }: UpdateHandlerProps) => {
         setEditing(false); // 수정완료 : false로 상태변경
         try {
             const response: any = await axios.put(
@@ -102,8 +102,8 @@ export default function useComments() {
                 console.log('update response: ', response);
                 setResponseMessage(response.data.message);
                 // 초기화 -> 안하면 다시 수정 버튼 눌렀을때 어떻게 반영되는지 확인
-                setNewRate(0);
-                setNewComment('');
+                setCurrentRate(0);
+                setCurrentComment('');
                 setCommentId(0);
                 alert('댓글이 수정되었습니다.');
             }
@@ -115,22 +115,31 @@ export default function useComments() {
 
     // 코멘트, 평점 update / create 핸들러
     const handleMakeComment = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        setNewComment(e.target.value);
+        setCurrentComment(e.target.value);
     };
     const handleMakeRate = (rate: number) => {
-        setNewRate(rate);
+        setCurrentRate(rate);
     };
-    // 코멘트 수정
-    const handleEditing = ({ comments, commentId, commentRate }: EditingProps) => {
+    console.log(currentRate);
+
+    // 코멘트 수정 버튼과 연결
+    const handleClickEdit = ({ comments, commentId, commentRate }: EditingProps) => {
         setEditing(true);
-        setNewComment(comments);
-        setCommentId(commentId);
-        setNewRate(commentRate);
+        setCommentId(commentId); // 수정버튼 누른 commentId값 저장 => commentsDataList에서 같은 commentid값을 가진 코멘트 filter하기 위함
+        setCurrentComment(comments);
+        setCurrentRate(commentRate);
     };
 
-    const handleDelete = async (commentId: number) => {
+    const deleteCommentHandler = async (commentId: number) => {
         try {
-            const response: any = await axios.delete(`${import.meta.env.VITE_BASE_URL}/comments`, { data: { commentId: commentId } });
+            const response: any = await axios.delete(`${import.meta.env.VITE_BASE_URL}/comments`, {
+                headers: {
+                    'Access-Token': `Bearer ${token}`,
+                },
+                data: {
+                    commentId: commentId,
+                },
+            });
             console.log('delete response: ', response);
             setResponseMessage(response.data.message);
             console.log(responseMessage);
@@ -145,15 +154,15 @@ export default function useComments() {
 
     return {
         editing,
-        handleEditing,
+        handleClickEdit,
         commentId,
-        newRate,
-        newComment,
+        currentRate,
+        currentComment,
         commentDataList,
-        handleFetch,
-        handleCreate,
-        handleUpdate,
-        handleDelete,
+        fetchCommentHandler,
+        createCommentHandler,
+        updateCommentHandler,
+        deleteCommentHandler,
         handleMakeComment,
         handleMakeRate,
     };

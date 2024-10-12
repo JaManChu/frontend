@@ -33,16 +33,14 @@ export default function Signup(): JSX.Element {
         try {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/email-check?email=${email}`);
             console.log('email check, response( 204 ok 전): ', response);
-            if (response.status === 204) {
+            if (response.data.code === 'NO_CONTENT') {
                 setEmailCheck(true);
                 setEmailCheckFailMessage(response.data.message);
                 alert(`response.data.message: ,${response.data.message}`);
-                alert(`response.message: ${response.message}`);
-            } else if (response.status === 409) {
+            } else if (response.data.code === 'CONFLICT') {
                 setEmailCheck(false);
                 setEmailCheckFailMessage(response.data.message);
                 alert(`response.data.message: ,${response.data.message}`);
-                alert(`response.message: ${response.message}`);
             }
         } catch (err) {
             console.log(err);
@@ -53,16 +51,14 @@ export default function Signup(): JSX.Element {
         try {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/nickname-check?nickname=${nickname}`);
             console.log('nickanme check, response( 204 ok 전): ', response);
-            if (response.status === 204) {
+            if (response.data.code === 'NO_CONTENT') {
                 setNicknameCheck(true);
                 setNicknameCheckFailMessage(response.data.message);
                 alert(`response.data.message: ,${response.data.message}`);
-                alert(`response.message: ${response.message}`);
-            } else if (response.status === 409) {
+            } else if (response.data.code === 'CONFLICT') {
                 setNicknameCheck(false);
                 setNicknameCheckFailMessage(response.data.message);
                 alert(`response.data.message: ,${response.data.message}`);
-                alert(`response.message: ${response.message}`);
             }
         } catch (err) {
             console.log(err);

@@ -20,7 +20,7 @@ export default function SocialKakao(): JSX.Element {
     const handleLogin = () => {
         const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${restApiKey}&redirect_uri=${
             import.meta.env.VITE_BASE_URL
-        }/users/login/auth/kakao/oauth2/authorization/kakao&response_type=code`;
+        }/users/login/auth/kakao&response_type=code`;
         console.log('kakaoAuthUrl: ', kakaoAuthUrl);
         window.location.href = kakaoAuthUrl;
     };

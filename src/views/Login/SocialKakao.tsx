@@ -1,13 +1,11 @@
-import { useEffect } from 'react';
-
 export default function SocialKakao(): JSX.Element {
     const restApiKey = import.meta.env.VITE_REST_API_KEY;
 
-    useEffect(() => {
-        if (window.Kakao) {
-            window.Kakao.init(restApiKey); // REST API Key로 초기화
-        }
-    }, [restApiKey]);
+    // useEffect(() => {
+    //     if (window.Kakao) {
+    //         window.Kakao.init(restApiKey); // REST API Key로 초기화
+    //     }
+    // }, [restApiKey]);
 
     //  인가코드만 보내는 경우
     // const redirectUri = import.meta.env.VITE_REDIRECT_URI;

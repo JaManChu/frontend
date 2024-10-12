@@ -37,7 +37,7 @@ export default function PopularRecipe({ limit, page }: RecipeLimitProps): JSX.El
             }
         };
         fetchRecipes();
-    }, [recipes]);
+    }, []);
     console.log('popular: ', message);
 
     return (

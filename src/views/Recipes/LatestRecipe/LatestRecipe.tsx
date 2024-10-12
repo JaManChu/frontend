@@ -38,7 +38,9 @@ export default function LatestRecipe({ limit, page }: RecipeLimitProps): JSX.Ele
         };
 
         fetchRecipes();
-    }, [recipes]);
+
+        return () => {};
+    }, []);
     console.log('all message: ', message);
 
     return (

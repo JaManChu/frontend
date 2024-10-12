@@ -130,6 +130,7 @@ export const useRecipeCreate = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
+            console.log('게시물작성 response', response);
 
             if (response.status === 201) {
                 console.log('성공', response.data);

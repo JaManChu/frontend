@@ -36,6 +36,7 @@ export const useUpdateRecipes = (id: string) => {
                         'Access-Token': `Bearer ${token}`,
                     },
                 });
+                console.log('게시물수정 유저정보', response);
                 setUserNickname(response.data.data.nickname);
             } catch (error) {
                 console.error('유저 정보를 불러오는 데 실패했습니다', error);
@@ -55,6 +56,7 @@ export const useUpdateRecipes = (id: string) => {
                         'Access-Token': `Bearer ${token}`,
                     },
                 });
+                console.log('게시물수정 레시피데이터', response);
 
                 const recipeData = response.data.data;
 

@@ -14,11 +14,16 @@ export const useGetUserInfo = () => {
         } else {
             const fetchUserInfo = async () => {
                 try {
-                    const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/users`, {
-                        headers: {
-                            'Access-Token': `Bearer ${token}`,
+                    const response = await axios.get(
+                        `${import.meta.env.VITE_BASE_URL}/users`,
+
+                        {
+                            headers: {
+                                'Access-Token': `Bearer ${token}`,
+                            },
                         },
-                    });
+                    );
+                    console.log('마이페이지 유저정보', response);
                     const { email, nickname } = response.data.data;
                     setUserInfo({
                         email: email,

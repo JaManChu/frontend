@@ -109,7 +109,8 @@ export const useUserForm = () => {
             const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, { email, password });
             console.log('login, response check(200 아님): ', response);
             if (response.data.code == 'OK') {
-                const accessToken = response.headers['access-token'];
+                const token = response.headers['access-token'];
+                const accessToken = token?.replace('Bearer ', '');
 
                 sessionStorage.setItem('token', accessToken);
                 sessionStorage.setItem('nickname', response.data.data);

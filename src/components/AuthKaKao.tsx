@@ -38,10 +38,11 @@ export default function AuthKaKao() {
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const token = params.get('token');
+        const accessToken = token?.replace('Bearer ', '');
         const nickname = params.get('nickname');
 
-        if (token) {
-            sessionStorage.setItem('token', token);
+        if (accessToken) {
+            sessionStorage.setItem('token', accessToken);
             if (nickname) {
                 sessionStorage.setItem('nickname', nickname);
             }

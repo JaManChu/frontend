@@ -108,7 +108,9 @@ export const useUserForm = () => {
         try {
             const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, { email, password });
             if (response.data.code == 'OK') {
-                const accessToken = response.headers['access-token'];
+                const token = response.headers['access-token'];
+                const accessToken = token?.replace('Bearer ', '');
+
                 sessionStorage.setItem('token', accessToken);
                 sessionStorage.setItem('nickname', response.data.data);
                 setMessage(response.data.message); // ! 모달로 빼기 - 성공안내 필요

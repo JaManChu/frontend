@@ -4,14 +4,14 @@ import SearchCondition from './SearchCondition';
 import PopularRecipe from '../PopularRecipe/PopularRecipe';
 
 interface RecipeProps {
-    title: string;
-    id: string;
-    image: string;
-    thumbnail: string;
-    time: string;
-    level: string;
-    rate: string;
-    desc: string;
+    recipeId: number;
+    recipeName: string;
+    recipeAuthor: string;
+    recipeLevel: string;
+    recipeCookingTime: string;
+    recipeThumbnail: string;
+    // rate: string;
+    // desc: string;
     ingredients: Record<string, string | number>[];
     overview: string;
     instructions: Record<number | string, string>[];

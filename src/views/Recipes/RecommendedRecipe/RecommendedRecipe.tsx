@@ -4,12 +4,13 @@ import RecipePageHeader from '../../../components/Recipe/RecipePageHeader.js';
 import fakeData from '../../../fakeData/recipeFake.js';
 import styled from 'styled-components';
 // import axios from 'axios';
+import withAuth from '../../../hooks/withAuth.js';
 
 interface RecipeLimitProps {
     limit?: number;
     page?: string;
 }
-export default function RecommendedRecipe({ limit, page }: RecipeLimitProps): JSX.Element {
+function RecommendedRecipe({ limit, page }: RecipeLimitProps): JSX.Element {
     // const [recipes, setRecipes] = useState<string[]>([]);
     // useEffect(() => {
     //     const fetchRecipes = async () => {
@@ -26,6 +27,8 @@ export default function RecommendedRecipe({ limit, page }: RecipeLimitProps): JS
         </>
     );
 }
+
+export default withAuth(RecommendedRecipe);
 
 const RecipePageTitle = styled.h2`
     margin: 36px 16px 0px;

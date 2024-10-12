@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { useRecipeCreate } from '../../../hooks/useRecipeCreate';
 import DefaultImg from '../../../assets/img/defaultImg.jpeg';
+import withAuth from '../../../hooks/withAuth';
+
 const CreateRecipe: React.FC = () => {
     const {
         recipeName,
@@ -103,6 +105,8 @@ const CreateRecipe: React.FC = () => {
         </RecipeWriteContainer>
     );
 };
+
+export default withAuth(CreateRecipe);
 
 const RecipeWriteContainer = styled.section`
     display: flex;
@@ -253,5 +257,3 @@ const SubmitButton = styled.button`
         background-color: #fa7602;
     }
 `;
-
-export default CreateRecipe;

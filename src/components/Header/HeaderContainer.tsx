@@ -20,6 +20,10 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
         setShowAlarm(!showAlarm);
     };
 
+    const logout = () => {
+        sessionStorage.removeItem('token');
+    };
+
     return (
         <>
             <HeaderSection onClick={() => setShowAlarm(false)}>
@@ -37,7 +41,7 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
                     {isLogin ? (
                         <>
                             <StyledLink to="/">
-                                <FiLogOut />
+                                <FiLogOut onClick={logout} />
                             </StyledLink>
                             <StyledLink to="/mypage">
                                 <FiUser />

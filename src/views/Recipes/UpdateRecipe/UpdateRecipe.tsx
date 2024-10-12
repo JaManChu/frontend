@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 import { useRecipeCreate } from '../../../hooks/useRecipeCreate';
 import DefaultImg from '../../../assets/img/defaultImg.jpeg';
 import { useUpdateRecipes } from '../../../hooks/useUpdateRecipe';
+import withAuth from '../../../hooks/withAuth';
+
 const UpdateRecipe: React.FC = () => {
     const { id } = useParams<{ id: string }>(); // URL에서 recipeId를 가져옴
 
@@ -107,6 +109,7 @@ const UpdateRecipe: React.FC = () => {
         </RecipeWriteContainer>
     );
 };
+export default withAuth(UpdateRecipe);
 
 const RecipeWriteContainer = styled.section`
     display: flex;
@@ -257,5 +260,3 @@ const SubmitButton = styled.button`
         background-color: #fa7602;
     }
 `;
-
-export default UpdateRecipe;

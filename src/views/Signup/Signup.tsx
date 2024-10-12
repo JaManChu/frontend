@@ -7,7 +7,10 @@ import { useModal } from '../../hooks/useModal.ts';
 import axios from 'axios';
 
 export default function Signup(): JSX.Element {
-    const [message, setMessage] = useState<string>('');
+    const [emailCheckFailMessage, setEmailCheckFailMessage] = useState<string>('');
+    const [nicknameCheckFailMessage, setNicknameCheckFailMessage] = useState<string>('');
+    const [emailCheck, setEmailCheck] = useState<boolean>(false);
+    const [nicknameCheck, setNicknameCheck] = useState<boolean>(false);
     const {
         email,
         setEmail,
@@ -29,16 +32,41 @@ export default function Signup(): JSX.Element {
     const handleCheckEmail = async () => {
         try {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/email-check?email=${email}`);
-            console.log(response);
-            if (response.data === true) {
-                alert(response.message);
-                setMessage(response.message);
-            } else {
-                alert(response.message);
-                setMessage(response.message);
+            console.log('email check, response( 204 ok 전): ', response);
+            if (response.status === 204) {
+                setEmailCheck(true);
+                setEmailCheckFailMessage(response.data.message);
+                alert(`response.data.message: ,${response.data.message}`);
+                alert(`response.message: ${response.message}`);
+            } else if (response.status === 409) {
+                setEmailCheck(false);
+                setEmailCheckFailMessage(response.data.message);
+                alert(`response.data.message: ,${response.data.message}`);
+                alert(`response.message: ${response.message}`);
             }
         } catch (err) {
             console.log(err);
+            alert();
+        }
+    };
+    const handleCheckNickname = async () => {
+        try {
+            const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/nickname-check?nickname=${nickname}`);
+            console.log('nickanme check, response( 204 ok 전): ', response);
+            if (response.status === 204) {
+                setNicknameCheck(true);
+                setNicknameCheckFailMessage(response.data.message);
+                alert(`response.data.message: ,${response.data.message}`);
+                alert(`response.message: ${response.message}`);
+            } else if (response.status === 409) {
+                setNicknameCheck(false);
+                setNicknameCheckFailMessage(response.data.message);
+                alert(`response.data.message: ,${response.data.message}`);
+                alert(`response.message: ${response.message}`);
+            }
+        } catch (err) {
+            console.log(err);
+            alert();
         }
     };
 
@@ -70,8 +98,35 @@ export default function Signup(): JSX.Element {
                                 중복확인
                             </Button>
                         </SignupEmailWrapper>
-
-                        <ErrorMessage visible={!!inputMessage.email && clickedButEmpty.email}>{inputMessage.email}</ErrorMessage>
+                        {emailCheck ? (
+                            <ErrorMessage visible={!!inputMessage.email && clickedButEmpty.email}>{inputMessage.email}</ErrorMessage>
+                        ) : (
+                            <ErrorMessage visible={true}>{emailCheckFailMessage}</ErrorMessage>
+                        )}
+                        <NicknameWrapper>
+                            <Input
+                                placeholder="닉네임"
+                                value={nickname}
+                                onChange={(e) => setNickname(e.target.value)}
+                                onBlur={() => handleEmptyInput('nickname')}
+                                onFocus={() => clearInputMessage('nickname')}
+                                showErrorMessage={!!inputMessage.nickname && clickedButEmpty.nickname}
+                            />
+                            <Button
+                                type="button"
+                                onClick={() => {
+                                    openModal();
+                                    handleCheckNickname();
+                                }}
+                            >
+                                중복확인
+                            </Button>
+                        </NicknameWrapper>
+                        {nicknameCheck ? (
+                            <ErrorMessage visible={!!inputMessage.nickname && clickedButEmpty.nickname}>{inputMessage.nickname}</ErrorMessage>
+                        ) : (
+                            <ErrorMessage visible={true}>{nicknameCheckFailMessage}</ErrorMessage>
+                        )}
                         <Input
                             name="password"
                             type="password"
@@ -96,15 +151,6 @@ export default function Signup(): JSX.Element {
                         <ErrorMessage visible={!!inputMessage.passwordCheck && clickedButEmpty.passwordCheck}>
                             {inputMessage.passwordCheck}
                         </ErrorMessage>
-                        <Input
-                            placeholder="닉네임"
-                            value={nickname}
-                            onChange={(e) => setNickname(e.target.value)}
-                            onBlur={() => handleEmptyInput('nickname')}
-                            onFocus={() => clearInputMessage('nickname')}
-                            showErrorMessage={!!inputMessage.nickname && clickedButEmpty.nickname}
-                        />
-                        <ErrorMessage visible={!!inputMessage.nickname && clickedButEmpty.nickname}>{inputMessage.nickname}</ErrorMessage>
                     </SignupFieldset>
                     <Button type="submit">회원가입</Button>
                 </form>
@@ -112,7 +158,7 @@ export default function Signup(): JSX.Element {
                 {isModalVisible && (
                     <Modal visible={isModalVisible} onClose={closeModal} buttons={[{ label: '확인', onClick: closeModal }]}>
                         <h2>중복 확인</h2>
-                        <p>{message}</p>
+                        <p> 사용할 수 있는 {emailCheck ? `이메일 (${email})` : `닉네임 (${nickname})`} 입니다. </p>
                     </Modal>
                 )}
             </SingupContainer>
@@ -141,6 +187,11 @@ const SignupFieldset = styled.fieldset`
     text-align: center;
 `;
 const SignupEmailWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
+const NicknameWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;

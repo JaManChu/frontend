@@ -21,6 +21,8 @@ interface CardProps {
 
 export default function RecipeCard({ page = '', recipeId, recipeName, recipeThumbnail, recipeCookingTime, recipeLevel }: CardProps): JSX.Element {
     const [marked, setMarked] = useState<boolean>(false);
+    const [message, setMessage] = useState<string>('');
+
     console.log('bookmark card - recipeId ? : ', recipeId);
     const token = sessionStorage.getItem('token');
 
@@ -38,19 +40,22 @@ export default function RecipeCard({ page = '', recipeId, recipeName, recipeThum
                         },
                     },
                 );
-                if (response.status == 200) {
+                console.log('scarp response: ', response);
+                if (response.data.code == 'OK') {
                     console.log('post scrap response: ', response);
                     console.log(response.data);
                     setMarked(true);
+                    setMessage(response.data.message);
                     alert(response.data.message);
                 }
             }
         } catch (err: any) {
             console.log(err);
             console.log('err.response: ', err.response);
-            alert(marked ? '찜한 레시피에서 삭제하였습니다.' : '레시피를 찜하지 못했습니다.');
+            setMessage(marked ? '찜한 레시피에서 삭제하였습니다.' : '레시피를 찜하지 못했습니다.');
         }
     };
+    console.log('scrap message: ', message);
 
     return (
         <RecipeCardFigure page={page}>

@@ -20,29 +20,26 @@ interface RecipeProps {
 
 export default function LatestRecipe({ limit, page }: RecipeLimitProps): JSX.Element {
     const [recipes, setRecipes] = useState<RecipeProps[]>([]);
+    const [message, setMessage] = useState<string>('');
 
     useEffect(() => {
         const fetchRecipes = async () => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes`);
-                console.log('전체레시피 response 확인중...:', response);
-                if (response.status == 200) {
-                    console.log('all recipes response : ', response);
-                    console.log('all recipes response.data: ', response.data);
-                    console.log('all recipes response.data.message: ', response.data.message);
-                    setRecipes(response.data);
-
-                    alert('전체 레시피 조회성공');
+                if (response.data.code == 'OK') {
+                    setRecipes(response.data.data);
+                    setMessage(response.data.message);
                 }
             } catch (err: any) {
                 console.log(err);
-                console.log(err.response.message);
-                alert('레ㅣㅅ피 조회에 실패했습니다.');
+                console.log(err.message);
+                setMessage(err.message);
             }
         };
 
         fetchRecipes();
     }, [recipes]);
+    console.log('all message: ', message);
 
     return (
         <>

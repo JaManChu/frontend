@@ -2,52 +2,15 @@ import styled from 'styled-components';
 import Modal from '../../components/Modal/Modal';
 import { useModal } from './hooks/useModal';
 import { useUpdateForm } from './hooks/updateForm';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-const favorites_recipe = [
-    { name: '김치볶음밥', img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg' },
-    { name: '계란말이', img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg' },
-    { name: '만두', img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg' },
-    { name: '짜장면', img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg' },
-];
-
-const post_list = [
-    { name: '게시글1', img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg' },
-    { name: '게시글2', img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg' },
-    { name: '게시글3', img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg' },
-    { name: '게시글4', img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg' },
-];
-
+import { GetUserInfo } from './hooks/getUserInfo';
+import { GetRecipes } from './hooks/getRecipes';
 export default function Mypage(): JSX.Element {
-    const [userInfo, setUserInfo] = useState({ email: '', nickname: '', img: '' });
+    //스크랩,작성게시물불러오는 hook
+    const { myRecipes, scrapedRecipes } = GetRecipes();
 
-    const navigate = useNavigate();
-    useEffect(() => {
-        const token = sessionStorage.getItem('token');
-        if (!token) {
-            navigate('/login');
-        } else {
-            const fetchUserInfo = async () => {
-                try {
-                    const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/users`, {
-                        headers: {
-                            'Access-Token': `Bearer ${sessionStorage.getItem('token')}`,
-                        },
-                    });
-                    const { email, nickname } = response.data.data;
-                    setUserInfo({
-                        email: email,
-                        nickname: nickname,
-                        img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg',
-                    });
-                } catch (error) {
-                    console.error('유저정보를 불러오는 데 실패했습니다', error);
-                }
-            };
-            fetchUserInfo();
-        }
-    }, []);
+    //유저정보 hook
+    const { userInfo } = GetUserInfo();
+
     const {
         isNickModalVisible,
         setIsNickModalVisible,
@@ -67,19 +30,19 @@ export default function Mypage(): JSX.Element {
         <MyContainer>
             <MyScrap>
                 <Subtitle>찜한 레시피</Subtitle>
-                {favorites_recipe.map((scrap) => (
-                    <MyFigure>
-                        <img src={scrap.img} alt="스크랩 이미지"></img>
-                        <MyFigcaption>{scrap.name}</MyFigcaption>
+                {scrapedRecipes.map((scrapedRecipe) => (
+                    <MyFigure key={scrapedRecipe.recipeId}>
+                        <img src={scrapedRecipe.recipeThumbnail} alt="스크랩 이미지"></img>
+                        <MyFigcaption>{scrapedRecipe.recipeName}</MyFigcaption>
                     </MyFigure>
                 ))}
             </MyScrap>
             <MyPosting>
                 <Subtitle>작성한 레시피</Subtitle>
-                {post_list.map((post) => (
-                    <MyFigure>
-                        <img src={post.img} alt="작성 레시피 이미지"></img>
-                        <MyFigcaption>{post.name}</MyFigcaption>
+                {myRecipes.map((myRecipe) => (
+                    <MyFigure key={myRecipe.myRecipeId}>
+                        <img src={myRecipe.myRecipeThumbnail} alt="작성 레시피 이미지"></img>
+                        <MyFigcaption>{myRecipe.myRecipeName}</MyFigcaption>
                     </MyFigure>
                 ))}
             </MyPosting>

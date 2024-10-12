@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-export const GetRecipes = () => {
+export const useGetMyRecipes = () => {
     const [myRecipes, setMyRecipes] = useState([{ myRecipeId: '', myRecipeName: '', myRecipeThumbnail: '' }]);
     const [scrapedRecipes, setScrapedRecipes] = useState([{ recipeId: '', recipeName: '', recipeAuthor: '', recipeThumbnail: '' }]);
     const navigate = useNavigate();

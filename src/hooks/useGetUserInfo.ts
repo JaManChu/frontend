@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-export const GetUserInfo = () => {
+export const useGetUserInfo = () => {
     const token = sessionStorage.getItem('token');
     const navigate = useNavigate();
     const [userInfo, setUserInfo] = useState({ email: '', nickname: '', img: '' });

@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-// import axios from 'axios';
 import { useRecipeCreate } from '../../../hooks/useRecipeCreate';
 import DefaultImg from '../../../assets/img/defaultImg.jpeg';
-
+import { useUpdateRecipes } from '../../../hooks/useUpdateRecipe';
 const UpdateRecipe: React.FC = () => {
-    const { recipeId } = useParams<{ recipeId: string }>(); // URL에서 recipeId를 가져옴
+    const { id } = useParams<{ id: string }>(); // URL에서 recipeId를 가져옴
+
     const {
         recipeName,
         setRecipeName,
@@ -25,92 +25,11 @@ const UpdateRecipe: React.FC = () => {
         handleImageChange,
         imagePreviews,
     } = useRecipeCreate();
-
-    // 레시피 데이터 가져오기
-    useEffect(() => {
-        //api호출 추후
-        // const fetchRecipeData = async () => {
-        //     try {
-        //         const response = await axios.get(`/recipes/${recipeId}`, {
-        //             headers: {
-        //                 'Access-Token': `Bearer ${sessionStorage.getItem('token')}`,
-        //             },
-        //         });
-        //         const recipeData = response.data;
-        //         // 데이터를 폼 필드에 채움
-        //         setRecipeName(recipeData.recipeName);
-        //         setRecipeLevel(recipeData.recipeLevel);
-        //         setRecipeCookingTime(recipeData.recipeCookingTime);
-        //         setIngredients(recipeData.recipeIngredient);
-        //         setSteps(recipeData.recipeOrderContent);
-        //     } catch (error) {
-        //         console.error('Failed to fetch recipe data', error);
-        //     }
-        // };
-
-        // fetchRecipeData();
-
-        const dummyData = {
-            recipeName: '더미 레시피',
-            recipeLevel: 'NORMAL',
-            recipeCookingTime: '30',
-            recipeIngredient: [
-                { ingredientName: '재료1', ingredientQuantity: '100g' },
-                { ingredientName: '재료2', ingredientQuantity: '200g' },
-            ],
-            recipeOrderContent: [
-                { order: 1, content: '단계 1 설명', picture: null },
-                { order: 2, content: '단계 2 설명', picture: null },
-            ],
-        };
-
-        // 더미 데이터를 상태에 설정
-        setRecipeName(dummyData.recipeName);
-        setRecipeLevel(dummyData.recipeLevel);
-        setRecipeCookingTime(dummyData.recipeCookingTime);
-        setIngredients(dummyData.recipeIngredient);
-        setSteps(dummyData.recipeOrderContent);
-    }, [recipeId, setRecipeName, setRecipeLevel, setRecipeCookingTime, setIngredients, setSteps]);
-
-    const handleUpdateRecipe = async () => {
-        alert('더미 데이터를 사용하여 레시피 수정 시도 (실제 서버 호출 없음)');
-    };
-
-    // // 수정된 레시피 데이터를 제출(api호출 추후)
-    // const handleUpdateRecipe = async () => {
-    //     try {
-    //         const formData = new FormData();
-    //         if (recipeId) {
-    //             formData.append('recipeId', recipeId);
-    //         }
-
-    //         formData.append('recipeName', recipeName);
-    //         formData.append('recipeLevel', recipeLevel);
-    //         formData.append('recipeCookingTime', recipeCookingTime);
-    //         ingredients.forEach((ingredient, index) => {
-    //             formData.append(`recipeIngredient[${index}].ingredientName`, ingredient.ingredientName);
-    //             formData.append(`recipeIngredient[${index}].ingredientQuantity`, ingredient.ingredientQuantity);
-    //         });
-    //         steps.forEach((step, index) => {
-    //             formData.append(`recipeOrderContent[${index}].order`, String(step.order));
-    //             formData.append(`recipeOrderContent[${index}].content`, step.content);
-    //             if (step.picture) {
-    //                 formData.append(`recipeOrderContent[${index}].picture`, step.picture);
-    //             }
-    //         });
-
-    //         await axios.put('/recipes', formData, {
-    //             headers: {
-    //                 'Access-Token': `Bearer ${sessionStorage.getItem('token')}`,
-    //                 'Content-Type': 'multipart/form-data',
-    //             },
-    //         });
-    //         alert('레시피가 성공적으로 수정되었습니다.');
-    //     } catch (error) {
-    //         console.error('Failed to update recipe', error);
-    //         alert('레시피 수정에 실패했습니다.');
-    //     }
-    // };
+    if (!id) {
+        return <div>잘못된 접근입니다.</div>; // recipeId가 없는 경우에 대한 처리
+    }
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { handleUpdateRecipe } = useUpdateRecipes(id);
 
     return (
         <RecipeWriteContainer>

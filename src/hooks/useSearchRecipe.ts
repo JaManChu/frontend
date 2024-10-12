@@ -8,6 +8,7 @@ export default function useSearchRecipe() {
     const [recipes, setRecipes] = useState([]); // 레시피 데이터 저장
     const [time, setTime] = useState<string | null>(); // 소요시간(select에서 선택)
     const [level, setLevel] = useState<string | null>(); // 난이도(select에서 선택)
+    const [message, setMessage] = useState<string>('');
 
     // 재료 입력시에 검색어 리스트 입력 재료로 갱신
     useEffect(() => {
@@ -40,24 +41,26 @@ export default function useSearchRecipe() {
                 params: { ingredientName: ingredientsList, recipeCookingTime: time, recipeLevel: level },
                 headers: { 'Access-Token': `Bearer ${token}` },
             });
-            if (response.code == 200) {
+            console.log('search response: ', response);
+            if (response.data.code == 'OK') {
                 console.log('search response.data: ', response.data);
                 console.log('search response: ', response);
-                setRecipes(response.data);
-                alert('검색 결과입니다.');
+                setRecipes(response.data.data);
+                setMessage(response.data.message);
             } else {
                 console.log('status 200 아닐때');
-                alert('재료명을 다시 입력해주시기 바랍니다.');
+                setMessage('재료명을 다시 입력해주시기 바랍니다.');
             }
         } catch (err) {
-            console.log(err);
+            console.log('search err: ', err);
             console.log('검색 오류입니다.');
-            alert('검색 중 오류가 발생했습니다. 다시 시도해주세요.');
+            setMessage('검색 중 오류가 발생했습니다. 다시 시도해주세요.');
         } finally {
             setSearching(false);
             setSearchIngredients('');
         }
     };
+    console.log(`search messag:${message}`);
 
     // 재료 입력후 enter 키를 누른 경우 handleSumbit 호출
     const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {

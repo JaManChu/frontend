@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
 export const useRecipeCreate = () => {
     const navigate = useNavigate();
     //steps의 객체는 각각 타입이다르므로 인터페이스로 타입정의.
@@ -64,7 +65,7 @@ export const useRecipeCreate = () => {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
 
-        const token = JSON.parse(sessionStorage.getItem('token') || '');
+        const token = sessionStorage.getItem('token');
         if (!token) {
             alert('잘못된 접근입니다. 로그인해주세요.');
             navigate('/login');
@@ -125,10 +126,11 @@ export const useRecipeCreate = () => {
         try {
             const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/recipes`, formData, {
                 headers: {
-                    'Access-Token': `Bearer ${token}`,
+                    'access-token': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
                 },
             });
+            console.log('게시물작성 response', response);
 
             if (response.status === 201) {
                 console.log('성공', response.data);

@@ -23,25 +23,27 @@ interface Props {
 export default function DetailRecipe(): JSX.Element {
     const { id } = useParams();
     const [recipe, setRecipe] = useState<Props | null>(null);
+    const [message, setMessage] = useState<string>();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes/${id}`);
-                if (response.status === 200) {
-                    console.log('detailpage response:', response);
-                    console.log(response.data);
-                    setRecipe(response.data);
-                    alert('상세페이지 조회 성공');
+                console.log('detalpage response:', response);
+                if (response.data.code === 'OK') {
+                    console.log('detailpage response: code에서 추출.....', response.data.data);
+                    setRecipe(response.data.data);
+                    setMessage(response.data.message);
                 }
             } catch (err: any) {
                 console.log(err);
                 console.log('err.data "detailpage": ', err.data);
-                alert('다시 시도해주시기 바랍니다');
+                setMessage(err.response.data.message);
             }
         };
         fetchData();
     }, []);
+    console.log('detailPage message:', message);
 
     if (!recipe) {
         return <div>Loading...</div>;

@@ -2,14 +2,14 @@ import styled from 'styled-components';
 import Modal from '../../components/Modal/Modal';
 import { useModal } from './hooks/useModal';
 import { useUpdateForm } from './hooks/updateForm';
-import { GetUserInfo } from './hooks/getUserInfo';
-import { GetRecipes } from './hooks/getRecipes';
+import { useGetMyRecipes } from '../../hooks/useGetMyRecipes';
+import { useGetUserInfo } from '../../hooks/useGetUserInfo';
 export default function Mypage(): JSX.Element {
     //스크랩,작성게시물불러오는 hook
-    const { myRecipes, scrapedRecipes } = GetRecipes();
+    const { myRecipes, scrapedRecipes } = useGetMyRecipes();
 
     //유저정보 hook
-    const { userInfo } = GetUserInfo();
+    const { userInfo } = useGetUserInfo();
 
     const {
         isNickModalVisible,

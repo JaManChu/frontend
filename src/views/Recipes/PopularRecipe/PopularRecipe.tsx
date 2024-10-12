@@ -21,23 +21,24 @@ interface RecipeProps {
 
 export default function PopularRecipe({ limit, page }: RecipeLimitProps): JSX.Element {
     const [recipes, setRecipes] = useState<RecipeProps[]>([]);
+    const [message, setMessage] = useState<string>();
     useEffect(() => {
         const fetchRecipes = async () => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes/popular`);
-                if (response.status == 200) {
+                if (response.data.code == 'OK') {
                     console.log('popular recipe response: ', response);
-                    console.log(response.data);
-                    setRecipes(response.data);
-                    alert('레시피 조회 성공');
+                    setRecipes(response.data.data);
+                    setMessage(response.data.message);
                 }
-            } catch (err) {
+            } catch (err: any) {
                 console.log('popular recipe 조회 err: ', err);
-                alert('레시피 조회에 싪패하였습니다.');
+                setMessage(err.message);
             }
         };
         fetchRecipes();
-    }, [recipes]);
+    }, []);
+    console.log('popular: ', message);
 
     return (
         <RecipeContainer>

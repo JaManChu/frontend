@@ -7,8 +7,7 @@ import { useModal } from '../../hooks/useModal.ts';
 import axios from 'axios';
 
 export default function Signup(): JSX.Element {
-    const [emailCheckFailMessage, setEmailCheckFailMessage] = useState<string>('');
-    const [nicknameCheckFailMessage, setNicknameCheckFailMessage] = useState<string>('');
+    const [checkFailMessage, setCheckFailMessage] = useState<string>('');
     const [emailCheck, setEmailCheck] = useState<boolean>(false);
     const [nicknameCheck, setNicknameCheck] = useState<boolean>(false);
     const {
@@ -34,17 +33,15 @@ export default function Signup(): JSX.Element {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/email-check?email=${email}`);
             console.log('email check, response( 204 ok 전): ', response);
             if (response.data.code === 'NO_CONTENT') {
+                console.log(response);
                 setEmailCheck(true);
-                setEmailCheckFailMessage(response.data.message);
-                alert(`response.data.message: ,${response.data.message}`);
+                setCheckFailMessage(response.data.message);
             } else if (response.data.code === 'CONFLICT') {
                 setEmailCheck(false);
-                setEmailCheckFailMessage(response.data.message);
-                alert(`response.data.message: ,${response.data.message}`);
+                setCheckFailMessage(response.data.message);
             }
         } catch (err) {
             console.log(err);
-            alert();
         }
     };
     const handleCheckNickname = async () => {
@@ -52,17 +49,15 @@ export default function Signup(): JSX.Element {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/nickname-check?nickname=${nickname}`);
             console.log('nickanme check, response( 204 ok 전): ', response);
             if (response.data.code === 'NO_CONTENT') {
+                console.log(response);
                 setNicknameCheck(true);
-                setNicknameCheckFailMessage(response.data.message);
-                alert(`response.data.message: ,${response.data.message}`);
+                setCheckFailMessage(response.data.message);
             } else if (response.data.code === 'CONFLICT') {
                 setNicknameCheck(false);
-                setNicknameCheckFailMessage(response.data.message);
-                alert(`response.data.message: ,${response.data.message}`);
+                setCheckFailMessage(response.data.message);
             }
         } catch (err) {
             console.log(err);
-            alert();
         }
     };
 
@@ -97,7 +92,7 @@ export default function Signup(): JSX.Element {
                         {emailCheck ? (
                             <ErrorMessage visible={!!inputMessage.email && clickedButEmpty.email}>{inputMessage.email}</ErrorMessage>
                         ) : (
-                            <ErrorMessage visible={true}>{emailCheckFailMessage}</ErrorMessage>
+                            <ErrorMessage visible={true}>{checkFailMessage}</ErrorMessage>
                         )}
                         <NicknameWrapper>
                             <Input
@@ -121,7 +116,7 @@ export default function Signup(): JSX.Element {
                         {nicknameCheck ? (
                             <ErrorMessage visible={!!inputMessage.nickname && clickedButEmpty.nickname}>{inputMessage.nickname}</ErrorMessage>
                         ) : (
-                            <ErrorMessage visible={true}>{nicknameCheckFailMessage}</ErrorMessage>
+                            <ErrorMessage visible={true}>{checkFailMessage}</ErrorMessage>
                         )}
                         <Input
                             name="password"
@@ -154,7 +149,7 @@ export default function Signup(): JSX.Element {
                 {isModalVisible && (
                     <Modal visible={isModalVisible} onClose={closeModal} buttons={[{ label: '확인', onClick: closeModal }]}>
                         <h2>중복 확인</h2>
-                        <p> 사용할 수 있는 {emailCheck ? `이메일 (${email})` : `닉네임 (${nickname})`} 입니다. </p>
+                        <p> {checkFailMessage} </p>
                     </Modal>
                 )}
             </SingupContainer>

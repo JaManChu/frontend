@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-export const GetUserInfo = () => {
+export const useGetUserInfo = () => {
     const token = sessionStorage.getItem('token');
     const navigate = useNavigate();
     const [userInfo, setUserInfo] = useState({ email: '', nickname: '', img: '' });
@@ -14,11 +14,16 @@ export const GetUserInfo = () => {
         } else {
             const fetchUserInfo = async () => {
                 try {
-                    const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/users`, {
-                        headers: {
-                            'Access-Token': `Bearer ${token}`,
+                    const response = await axios.get(
+                        `${import.meta.env.VITE_BASE_URL}/users`,
+
+                        {
+                            headers: {
+                                'access-token': `Bearer ${token}`,
+                            },
                         },
-                    });
+                    );
+                    console.log('마이페이지 유저정보', response);
                     const { email, nickname } = response.data.data;
                     setUserInfo({
                         email: email,

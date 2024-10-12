@@ -16,7 +16,7 @@ export const useGetMyRecipes = () => {
                 try {
                     const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/users/recipes`, {
                         headers: {
-                            'Access-Token': `Bearer ${token}`,
+                            'access-token': `Bearer ${token}`,
                         },
                     });
                     console.log('마이페이지 작성게시글,스크랩목록', response);

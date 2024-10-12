@@ -19,7 +19,7 @@ export const useGetUserInfo = () => {
 
                         {
                             headers: {
-                                'Access-Token': `Bearer ${token}`,
+                                'access-token': `Bearer ${token}`,
                             },
                         },
                     );

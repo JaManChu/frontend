@@ -25,6 +25,7 @@ export default function LatestRecipe({ limit, page }: RecipeLimitProps): JSX.Ele
         const fetchRecipes = async () => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes`);
+                console.log('전체레시피 response 확인중...:', response);
                 if (response.status == 200) {
                     console.log('all recipes response : ', response);
                     console.log('all recipes response.data: ', response.data);

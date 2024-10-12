@@ -48,18 +48,21 @@ export default function DetailRecipe(): JSX.Element {
     if (!recipe) {
         return <div>Loading...</div>;
     }
+
+    console.log(recipe);
     return (
         <DetailRecipeContainer>
             <DetailRecipeName>{recipe.recipeName}</DetailRecipeName>
             <DetailRecipeContents>
                 <DetailRecipeInstruction>
                     <img src={recipe.recipeThumbnail} alt="썸네일 이미지" />
-                    {recipe.recipeManuals.map((step, idx) => (
-                        <DetailRecipeFigure key={idx}>
-                            <img src={`${step.image}`} alt="단계별 이미지" />
-                            <DetailRecipeFigcapton>{`${idx + 1}. ${step.content}`}</DetailRecipeFigcapton>
-                        </DetailRecipeFigure>
-                    ))}
+                    {recipe.recipeManuals &&
+                        recipe.recipeManuals.map((step, idx) => (
+                            <DetailRecipeFigure key={idx}>
+                                <img src={`${step.recipeOrderImage}`} alt="단계별 이미지" />
+                                <DetailRecipeFigcapton>{`${idx + 1}. ${step.recipeOrderContent}`}</DetailRecipeFigcapton>
+                            </DetailRecipeFigure>
+                        ))}
                 </DetailRecipeInstruction>
 
                 <DetailRecipeInfo>
@@ -78,17 +81,18 @@ export default function DetailRecipe(): JSX.Element {
                                 </tr>
                             </thead>
                             <tbody>
-                                {recipe.recipeIngredients.map((ingredient, idx) => (
-                                    <tr key={`${ingredient.ingredientName}+${idx}`}>
-                                        <td>{ingredient.ingredientName}</td>
-                                        <td>{ingredient.ingredientQuantity}</td>
-                                        <td>
-                                            <Link to={`${ingredient.ingredientQuantity}`}>
-                                                <CartIcon />
-                                            </Link>
-                                        </td>
-                                    </tr>
-                                ))}
+                                {recipe.recipeIngredients &&
+                                    recipe.recipeIngredients.map((ingredient, idx) => (
+                                        <tr key={`${ingredient.ingredientName}+${idx}`}>
+                                            <td>{ingredient.ingredientName}</td>
+                                            <td>{ingredient.ingredientQuantity}</td>
+                                            <td>
+                                                <Link to={`${ingredient.ingredientQuantity}`}>
+                                                    <CartIcon />
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ))}
                             </tbody>
                         </DetailIngredientsTable>
                     </DetailIngredientsWrapper>

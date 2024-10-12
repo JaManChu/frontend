@@ -30,8 +30,8 @@ export default function DetailRecipe(): JSX.Element {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes/${id}`);
                 console.log('detalpage response:', response);
-                if (response.data.cdoe === 'OK') {
-                    console.log('detailpage response: code에서 추출.....', response);
+                if (response.data.code === 'OK') {
+                    console.log('detailpage response: code에서 추출.....', response.data.data);
                     setRecipe(response.data.data);
                     setMessage(response.data.message);
                 }

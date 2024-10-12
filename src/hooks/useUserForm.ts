@@ -107,23 +107,20 @@ export const useUserForm = () => {
         }
         try {
             const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, { email, password });
-            console.log('login, response check(200 아님): ', response);
             if (response.data.code == 'OK') {
                 const accessToken = response.headers['access-token'];
-
                 sessionStorage.setItem('token', accessToken);
                 sessionStorage.setItem('nickname', response.data.data);
-                setMessage(response.data.message);
+                setMessage(response.data.message); // ! 모달로 빼기 - 성공안내 필요
                 alert(response.data.message);
-                alert(`message 값은? , ${message}`);
                 navigate('/main');
             }
         } catch (err: any) {
-            setMessage(err.message);
+            setMessage(err.response.data); // ! 모달창 안내 필요
             console.log('에러? response 확인할것 :', err);
-            console.error('에러 정보:', err.response ? err.response.data : err.message);
         }
     };
+    console.log(message); //
 
     return {
         email,

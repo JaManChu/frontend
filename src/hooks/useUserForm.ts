@@ -64,14 +64,11 @@ export const useUserForm = () => {
     // 회원가입 버튼 눌렀을때 호출되는 함수
     const handleSignup = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(`API URL: ${import.meta.env.VITE_BASE_URL}/users/signup`);
         // 유효성 검사 결과 담아서 inputMessage에 반환
         const inputResult = validateResult({ email, password, passwordCheck, nickname });
         setInputMessage(inputResult);
-        console.log(email, password, nickname);
         // email, password, passwordCheck, nickName 중 어느 하나라도 ''값이 아닌 경우 false 반환
         const hasMessage = Object.values(inputResult).some((result) => result !== '');
-        console.log(email, password, nickname);
         // hasMessage가 false인 경우(모든 validation 통과한 경우)
         if (hasMessage) {
             alert('모든 필드값을 입력해주시기 바랍니다.');
@@ -82,21 +79,17 @@ export const useUserForm = () => {
             const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/signup`, { email, password, nickname });
 
             if (response.status == 201) {
-                console.log('success?');
-                console.log(response);
                 setMessage(response.data.message);
                 alert(response.data.message);
                 alert(message); // 메시지로 보여줄 수 있는지 check
                 navigate('/login');
             }
-            // !  response.code가 200이 아닌 경우 catch로 넘어가는지 확인
         } catch (err: any) {
-            console.log(`${import.meta.env.VITE_BASE_URL}/users/signup`);
-
+            console.log(err);
             setMessage(err.message);
         }
     };
-    console.log(message);
+
     // 로그인 버튼 눌렀을때 호출되는 함수
     const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -115,22 +108,19 @@ export const useUserForm = () => {
         try {
             const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, { email, password });
             console.log('login, response check(200 아님): ', response);
-            if (response.status == 200) {
-                console.log('200 Ok, login response: ', response);
-                // ! 임시 저장(토큰 내려주는지 확인) - accessToken 인지 refreshToken인지
-                // ! HTTP only인지 , headers-cookie인지 check
-                const accessToken = response.headers['Access-Token'];
+            if (response.data.code == 'OK') {
+                const accessToken = response.headers['access-token'];
 
                 sessionStorage.setItem('token', accessToken);
-                sessionStorage.setItem('nickname', response.data.nickname);
+                sessionStorage.setItem('nickname', response.data.data);
                 setMessage(response.data.message);
-                alert(response.message);
+                alert(response.data.message);
+                alert(`message 값은? , ${message}`);
                 navigate('/main');
             }
-            // !  response.code가 200이 아닌 경우 catch로 넘어가는지 확인
         } catch (err: any) {
             setMessage(err.message);
-            console.log('에러? :', err);
+            console.log('에러? response 확인할것 :', err);
             console.error('에러 정보:', err.response ? err.response.data : err.message);
         }
     };

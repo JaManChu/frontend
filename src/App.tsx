@@ -14,6 +14,8 @@ import AuthKaKao from './components/AuthKaKao.tsx';
 import SearchView from './views/Recipes/SearchRecipe/SearchView.tsx';
 import CreateRecipe from './views/Recipes/CreateRecipe/CreateRecipe.tsx';
 import UpdateRecipe from './views/Recipes/UpdateRecipe/UpdateRecipe.tsx';
+import withAuth from './hooks/withAuth.tsx';
+
 function App() {
     return (
         <BrowserRouter>

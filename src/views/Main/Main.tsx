@@ -8,8 +8,9 @@ import { CiSearch } from 'react-icons/ci';
 // import { useLocation } from 'react-router-dom';
 import mainImage from '../../assets/img/spoon.jpg';
 import Visited from '../Visited/Visited';
+import withAuth from '../../hooks/withAuth';
 
-export default function Main(): JSX.Element {
+function Main(): JSX.Element {
     const [searched, setSearched] = useState<string>('');
     const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
     // const [message, setMessage] = useState<string>('');
@@ -70,6 +71,7 @@ export default function Main(): JSX.Element {
         </MainContainer>
     );
 }
+export default withAuth(Main);
 
 const MainContainer = styled.section`
     background-color: #f5f4f3;

@@ -126,7 +126,7 @@ export const useRecipeCreate = () => {
         try {
             const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/recipes`, formData, {
                 headers: {
-                    'Access-Token': `Bearer ${token}`,
+                    'access-token': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
                 },
             });

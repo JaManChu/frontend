@@ -33,7 +33,7 @@ export const useUpdateRecipes = (id: string) => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/users`, {
                     headers: {
-                        'Access-Token': `Bearer ${token}`,
+                        'access-token': `Bearer ${token}`,
                     },
                 });
                 console.log('게시물수정 유저정보', response);
@@ -53,7 +53,7 @@ export const useUpdateRecipes = (id: string) => {
             try {
                 const response = await axios.get(`/recipes/${id}`, {
                     headers: {
-                        'Access-Token': `Bearer ${token}`,
+                        'access-token': `Bearer ${token}`,
                     },
                 });
                 console.log('게시물수정 레시피데이터', response);
@@ -113,7 +113,7 @@ export const useUpdateRecipes = (id: string) => {
 
             await axios.put('/recipes', formData, {
                 headers: {
-                    'Access-Token': `Bearer ${token}`,
+                    'access-token': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
                 },
             });

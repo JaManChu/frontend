@@ -22,7 +22,7 @@ function App() {
                 <Route element={<HeaderView />}>
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
-                    <Route path="/users/login/auth/kakako" element={<AuthKaKao />} />
+                    <Route path="/users/login/auth/kakao" element={<AuthKaKao />} />
                     <Route path="/mypage" element={<Mypage />} />
                     <Route path="/guesthome" element={<GuestHome />} />
                     <Route path="/main" element={<Main />} />

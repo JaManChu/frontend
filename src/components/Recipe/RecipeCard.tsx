@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import { FaRegBookmark, FaBookmark } from 'react-icons/fa6';
 import RecipeMetaData from './RecipeMetaData';
 import styled from 'styled-components';
+import axios from 'axios';
 
-// main 페이지가 아닌 Latest에서 isMain을 콘솔에 찍으면 false값이 찍힘 -> 최적화 방안 생각(RecipeCard에서는 4번 : main, latest, recipeList, recipeCard인듯
+// ! main 페이지가 아닌 Latest에서 isMain을 콘솔에 찍으면 false값이 찍힘 -> 최적화 방안 생각(RecipeCard에서는 4번 : main, latest, recipeList, recipeCard인듯
 
 interface CardProps {
     page?: string;
@@ -20,6 +21,36 @@ interface CardProps {
 
 export default function RecipeCard({ page = '', recipeId, recipeName, recipeThumbnail, recipeCookingTime, recipeLevel }: CardProps): JSX.Element {
     const [marked, setMarked] = useState<boolean>(false);
+    console.log('bookmark card - recipeId ? : ', recipeId);
+    const token = sessionStorage.getItem('token');
+
+    const handleClickBookmark = async () => {
+        try {
+            if (marked) {
+                setMarked(false);
+            } else {
+                const response = await axios.post(
+                    `${import.meta.env.VITE_BASE_URL}/recipes/${recipeId}/scrap`,
+                    {},
+                    {
+                        headers: {
+                            'Access-Token': `Bearer ${token}`,
+                        },
+                    },
+                );
+                if (response.status == 200) {
+                    console.log('post scrap response: ', response);
+                    console.log(response.data);
+                    setMarked(true);
+                    alert(response.data.message);
+                }
+            }
+        } catch (err: any) {
+            console.log(err);
+            console.log('err.response: ', err.response);
+            alert(marked ? '찜한 레시피에서 삭제하였습니다.' : '레시피를 찜하지 못했습니다.');
+        }
+    };
 
     return (
         <RecipeCardFigure page={page}>
@@ -29,7 +60,7 @@ export default function RecipeCard({ page = '', recipeId, recipeName, recipeThum
                 <h4>
                     <Linked to={`/recipes/${recipeId}`}>{recipeName}</Linked>
                 </h4>
-                <BookmarkIcons mark={marked} onClick={() => setMarked(!marked)}>
+                <BookmarkIcons mark={marked} onClick={handleClickBookmark}>
                     {marked ? <FaBookmark /> : <FaRegBookmark />}
                 </BookmarkIcons>
                 <RecipeMetaData page={page} time={recipeCookingTime} level={recipeLevel} rate="평점" />

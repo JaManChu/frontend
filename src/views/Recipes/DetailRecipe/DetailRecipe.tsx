@@ -1,55 +1,58 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
-// import axios from 'axios';
+import { useParams, Link } from 'react-router-dom';
 import { BsCartCheckFill } from 'react-icons/bs';
-import fakeData from '../../../fakeData/recipeFake';
 import RecipeMetaData from '../../../components/Recipe/RecipeMetaData';
 import CommentsView from '../../Comments/CommentsView';
+import styled from 'styled-components';
+import axios from 'axios';
 
 interface Props {
-    id: string;
-    title: string;
-    image: string;
-    thumbnail: string;
-    time: string;
-    level: string;
-    rate: string;
-    desc: string;
-    ingredients: Record<string, string | number>[];
-    overview: string;
-    instructions: Record<string, number | string>[];
+    recipeId: number;
+    recipeAuthor: string;
+    recipeName: string;
+    recipeLevel: string;
+    recipeCookingTime: string;
+    // rate: number;
+    recipeThumbnail: string;
+    recipeIngredients: Record<string, string>[];
+    recipeManuals: Record<string, string>[];
+    // desc: string;
+    // overview: string;
 }
 
 export default function DetailRecipe(): JSX.Element {
     const { id } = useParams();
     const [recipe, setRecipe] = useState<Props | null>(null);
-    useEffect(() => {
-        // const fetchData = async () => {
-        //     try {
-        // const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes/${id}`);
-        //     } catch (err) {
-        //         console.log(err);
-        //     }
-        // };
 
-        // ! fakeData 필터링하는 작업(추후 삭제)
-        const filtered = fakeData.filter((data) => data.id == id);
-        if (filtered.length > 0) {
-            setRecipe(filtered[0]);
-        }
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes/${id}`);
+                if (response.status === 200) {
+                    console.log('detailpage response:', response);
+                    console.log(response.data);
+                    setRecipe(response.data);
+                    alert('상세페이지 조회 성공');
+                }
+            } catch (err: any) {
+                console.log(err);
+                console.log('err.data "detailpage": ', err.data);
+                alert('다시 시도해주시기 바랍니다');
+            }
+        };
+        fetchData();
     }, []);
 
     if (!recipe) {
-        return <div>Loading</div>;
+        return <div>Loading...</div>;
     }
     return (
         <DetailRecipeContainer>
-            <DetailRecipeName>{recipe.title}</DetailRecipeName>
+            <DetailRecipeName>{recipe.recipeName}</DetailRecipeName>
             <DetailRecipeContents>
                 <DetailRecipeInstruction>
-                    <img src={recipe.thumbnail} alt="썸네일 이미지" />
-                    {recipe.instructions.map((step, idx) => (
+                    <img src={recipe.recipeThumbnail} alt="썸네일 이미지" />
+                    {recipe.recipeManuals.map((step, idx) => (
                         <DetailRecipeFigure key={idx}>
                             <img src={`${step.image}`} alt="단계별 이미지" />
                             <DetailRecipeFigcapton>{`${idx + 1}. ${step.content}`}</DetailRecipeFigcapton>
@@ -60,7 +63,7 @@ export default function DetailRecipe(): JSX.Element {
                 <DetailRecipeInfo>
                     <DetailOverview>
                         <h3>OverView</h3>
-                        <p>{recipe.overview}</p>
+                        <p>Overview text??????</p>
                     </DetailOverview>
                     <DetailIngredientsWrapper>
                         <h3>Ingredients</h3>
@@ -73,19 +76,21 @@ export default function DetailRecipe(): JSX.Element {
                                 </tr>
                             </thead>
                             <tbody>
-                                {recipe.ingredients.map((ingredient, idx) => (
-                                    <tr key={`${ingredient.name}+${idx}`}>
-                                        <td>{ingredient.name}</td>
-                                        <td>{ingredient.count}</td>
+                                {recipe.recipeIngredients.map((ingredient, idx) => (
+                                    <tr key={`${ingredient.ingredientName}+${idx}`}>
+                                        <td>{ingredient.ingredientName}</td>
+                                        <td>{ingredient.ingredientQuantity}</td>
                                         <td>
-                                            <CartIcon />
+                                            <Link to={`${ingredient.ingredientQuantity}`}>
+                                                <CartIcon />
+                                            </Link>
                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </DetailIngredientsTable>
                     </DetailIngredientsWrapper>
-                    <RecipeMetaData time={recipe.time} level={recipe.level} rate={recipe.rate} />
+                    <RecipeMetaData time={recipe.recipeCookingTime} level={recipe.recipeLevel} rate="평점 필요함" />
                 </DetailRecipeInfo>
             </DetailRecipeContents>
             <CommentsView />

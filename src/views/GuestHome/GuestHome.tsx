@@ -228,9 +228,8 @@ const PopularArea = styled.div`
 const PopularRecipesArea = styled.div`
     display: flex;
     flex-direction: column;
-
     margin-left: 50px;
-    width: 40%;
+    flex-grow: 1;
 `;
 
 const PopularRecipesImgArea = styled.div`
@@ -245,7 +244,7 @@ const VisitedArea = styled.div`
     display: flex;
     align-items: center;
     flex-direction: column;
-    width: 60%;
+    flex-grow: 2;
 `;
 
 const VisitedInfoArea = styled.div`

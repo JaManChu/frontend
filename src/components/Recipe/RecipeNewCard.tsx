@@ -26,7 +26,7 @@ interface CardProps {
     // desc: string;
 }
 
-export default function RecipeNewCard({ page = '', recipeId, recipeName, recipeThumbnail, recipeCookingTime, recipeLevel }: CardProps): JSX.Element {
+export default function RecipeNewCard({ recipeId, recipeName, recipeThumbnail, recipeCookingTime, recipeLevel }: CardProps): JSX.Element {
     const [marked, setMarked] = useState<boolean>(false);
     const [message, setMessage] = useState<string>('');
 

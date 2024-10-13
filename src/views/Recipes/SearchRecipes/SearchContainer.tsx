@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent } from 'react';
+import { ChangeEvent, FormEvent, KeyboardEvent } from 'react';
 import { SearchResult } from './SearchResult';
 import SearchCondition from './SearchCondition';
 import PopularRecipe from '../PopularRecipes/PopularRecipes';
@@ -23,7 +23,7 @@ interface ContainerProps {
     value: string;
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
     handleKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
-    handleSubmit: () => Promise<void>;
+    handleSubmit: (e: FormEvent) => Promise<void>;
     handleTime: (e: SelectChangeEvent) => void;
     handleLevel: (e: SelectChangeEvent) => void;
     ingredientsList: string[];

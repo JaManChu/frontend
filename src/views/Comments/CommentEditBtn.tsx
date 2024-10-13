@@ -1,8 +1,10 @@
 interface Props {
+    commentId: number;
     nickname: string;
     content: string;
     rating: number;
-    commentId: number;
+    createdAt: string;
+    updatedAt: string;
 }
 interface UpdateProps {
     commentId: number;
@@ -55,23 +57,18 @@ export default function CommentEditBtn({
                 <div>
                     <button
                         onClick={() => {
-                            // ! 데이터 연동 후 타입 명확히 지정 & if문 삭제
-                            if (typeof review.content === 'string' && typeof review.rating === 'number' && typeof review.commentId === 'number') {
-                                handleClickEdit({
-                                    comments: review.content,
-                                    commentId: review.commentId,
-                                    commentRate: review.rating,
-                                });
-                            }
+                            handleClickEdit({
+                                comments: review.content,
+                                commentId: review.commentId,
+                                commentRate: review.rating,
+                            });
                         }}
                     >
                         수정
                     </button>
                     <button
                         onClick={() => {
-                            if (typeof review.commentId === 'number') {
-                                deleteCommentHandler(review.commentId);
-                            }
+                            deleteCommentHandler(review.commentId);
                         }}
                     >
                         삭제

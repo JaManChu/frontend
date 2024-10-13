@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent } from 'react';
+import { ChangeEvent, FormEvent, KeyboardEvent } from 'react';
 import { SearchBox } from './SearchBox';
 import { CiSearch } from 'react-icons/ci';
 import CustomSelect from '../../../ui/Select/CustomSelect';
@@ -13,7 +13,7 @@ interface SearchConditionProps {
     value: string;
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
     handleKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
-    handleSubmit: () => Promise<void>;
+    handleSubmit: (e: FormEvent) => Promise<void>;
     handleTime: (e: SelectChangeEvent) => void;
     handleLevel: (e: SelectChangeEvent) => void;
     ingredientsList: string[];

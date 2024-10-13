@@ -16,10 +16,18 @@ interface EditingProps {
     comments: string;
     commentRate: number;
 }
+interface CommentDataProps {
+    commentId: number;
+    nickname: string;
+    content: string;
+    rating: number;
+    createdAt: string;
+    updatedAt: string;
+}
 
 export default function useComments() {
     const [editing, setEditing] = useState<boolean>(false); // 수정 중인지 check
-    const [commentDataList, setCommentDataList] = useState<Record<string, string | number>[]>([]);
+    const [commentDataList, setCommentDataList] = useState<CommentDataProps[]>([]);
     const [recipeId, setRecipeId] = useState<number>();
     const [commentId, setCommentId] = useState<number>();
     const [currentComment, setCurrentComment] = useState<string>('');
@@ -37,17 +45,18 @@ export default function useComments() {
                     'access-token': `Bearer ${token}`,
                 },
             });
-            if (response.status === 200) {
+            if (response.data.code === 'OK') {
                 console.log('get response: ', response);
-                setCommentDataList(response.data);
+                console.log('response.data.data: ', response.data.data);
+                setCommentDataList(response.data.data.comments);
             }
         } catch (err) {
             console.log(err);
             alert('댓글을 가져오는데 실패했습니다.');
         }
     };
-    console.log(recipeId);
-    console.log(currentComment);
+    console.log('comment-recipeId: ', recipeId);
+    console.log('comment-currentComment:  ', currentComment);
     // create : recipeId, comment, rating
     const createCommentHandler = async (e: FormEvent<HTMLFormElement>, { recipeId, comment, rating }: CreateHandlerProps) => {
         e.preventDefault();
@@ -70,6 +79,7 @@ export default function useComments() {
             );
             console.log('comment create response: ', response);
             console.log('comment response message:', response.data.message);
+            console.log('rating, comment', rating, comment);
             setResponseMessage(response.data.message);
             // ! 초기화 : 필요여부 체크(test필요)
             setCurrentComment('');
@@ -97,6 +107,8 @@ export default function useComments() {
                     },
                 },
             );
+
+            console.log('rating, comment', rating, comment);
 
             if (response.staus === 200) {
                 console.log('update response: ', response);

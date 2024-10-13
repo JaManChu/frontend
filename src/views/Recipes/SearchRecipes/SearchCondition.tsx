@@ -3,6 +3,8 @@ import { SearchBox } from './SearchBox';
 import { CiSearch } from 'react-icons/ci';
 import CustomSelect from '../../../ui/Select/CustomSelect';
 import { SelectChangeEvent } from '@mui/material/Select';
+import { levelOptions, timeOption } from '../../../common/options';
+import colors from '../../../styles/colors';
 import styled from 'styled-components';
 
 interface SearchConditionProps {
@@ -28,25 +30,11 @@ export default function SearchCondition({
     handleLevel,
     ingredientsList,
 }: SearchConditionProps): JSX.Element {
-    const levelOptions = [
-        { label: '10분', value: 10 },
-        { label: '20분', value: 20 },
-        { label: '30분', value: 30 },
-        { label: '60분', value: 60 },
-        { label: '120분', value: 120 },
-    ];
-    const timeOption = [
-        { label: '하', value: 'LOW' },
-        { label: '중', value: 'MIDDLE' },
-        { label: '상', value: 'HIGH' },
-    ];
-
     console.log(typeof ingredientsList.length);
     return (
         <>
             <S_ConditionList>
                 <S_SearchItem>
-                    <label htmlFor="ingredient">재료</label>
                     <SearchBox value={value} onChange={onChange} handleKeyDown={handleKeyDown} />
                 </S_SearchItem>
                 <S_SearchItem>
@@ -59,7 +47,7 @@ export default function SearchCondition({
             </S_ConditionList>
             {ingredientsList.length != 0 && (
                 <S_ConditionContent>
-                    <h4>선택하신 재료가 맞나요?</h4>
+                    <h4>선택하신 재료를 확인후, 엔터 혹은 검색버튼을 눌러주세요</h4>
                     <S_ConditionContentList length={ingredientsList.length}>
                         {ingredientsList.map((ingredient, idx) => (
                             <S_ConditionContentItem key={idx}>
@@ -79,7 +67,7 @@ const S_ConditionList = styled.ul`
     margin: 40px auto;
     list-style: none;
     border-radius: 16px;
-    background-color: #efb63e;
+    background-color: ${colors[400]};
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -88,16 +76,11 @@ const S_SearchItem = styled.li`
     margin: 8px;
     padding: 8px;
     height: 80px;
-
     border-radius: 16px;
     background-color: #eaecec;
-    label {
-        margin-bottom: 8px;
-        font-size: 12px;
-        display: block;
-    }
+
     &:first-child {
-        flex-grow: 2;
+        flex-grow: 4;
     }
 `;
 const S_SearchIcon = styled(CiSearch)`
@@ -110,7 +93,7 @@ const S_SearchIcon = styled(CiSearch)`
     cursor: pointer;
 
     &:hover {
-        color: #007bff;
+        color: #fff;
     }
 `;
 
@@ -122,11 +105,11 @@ const S_ConditionContent = styled.div`
     }
 `;
 const S_ConditionContentList = styled.ul<{ length: number }>`
-    margin: 0 auto;
+    margin: 0 auto 70px;
     padding: 10px;
     width: 80%;
     height: auto;
-    border: 3px solid #efb63e;
+    border: 3px solid ${colors[400]};
     border-radius: 16px;
     list-style: none;
 

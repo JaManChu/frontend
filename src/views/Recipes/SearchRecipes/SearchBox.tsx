@@ -1,4 +1,6 @@
 import { ChangeEvent, KeyboardEvent } from 'react';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
 
 import styled from 'styled-components';
 
@@ -11,20 +13,22 @@ interface SearchBoxProps {
 export function SearchBox({ value, onChange, handleKeyDown }: SearchBoxProps) {
     return (
         <S_SearchWrapper>
-            <S_SearchInput type="search" value={value} onChange={onChange} onKeyDown={handleKeyDown} placeholder="재료를 입력하세요" />
+            <Box component="form" sx={{ width: 600, maxWidth: '100%' }}>
+                <TextField
+                    fullWidth
+                    id="search"
+                    label="재료를 띄어쓰기로 입력해주세요 "
+                    variant="outlined"
+                    type="search"
+                    value={value}
+                    onChange={onChange}
+                    onKeyDown={handleKeyDown}
+                />
+            </Box>
         </S_SearchWrapper>
     );
 }
 
 const S_SearchWrapper = styled.div`
     margin: 0 auto;
-`;
-const S_SearchInput = styled.input`
-    display: block;
-    width: 100%;
-    height: 40px;
-    padding-left: 16px;
-    border: transparent;
-    border-radius: 16px;
-    background-color: rgba(239, 182, 63, 0.2);
 `;

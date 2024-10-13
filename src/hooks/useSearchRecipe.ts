@@ -1,4 +1,4 @@
-import { useEffect, useState, ChangeEvent, KeyboardEvent } from 'react';
+import { useEffect, useState, ChangeEvent, KeyboardEvent, FormEvent } from 'react';
 import { SelectChangeEvent } from '@mui/material/Select';
 import axios from 'axios';
 
@@ -29,7 +29,8 @@ export default function useSearchRecipe() {
 
     const token = sessionStorage.getItem('token');
     // 검색 버튼 클릭시 api 통신
-    const handleSubmit = async () => {
+    const handleSubmit = async (e: FormEvent) => {
+        e.preventDefault();
         setSearching(true); // 검색 중임을 나타내는 상태
         if (!ingredientsList.length) {
             alert('재료명을 입력해주시기 바랍니다.');
@@ -43,13 +44,14 @@ export default function useSearchRecipe() {
                 headers: { 'access-token': `Bearer ${token}` },
             });
             console.log('search response: ', response);
+            console.log('검색내용', ingredientsList, time, level);
             if (response.data.code == 'OK') {
                 console.log('search response.data: ', response.data);
                 console.log('search response: ', response);
                 setRecipes(response.data.data);
                 setMessage(response.data.message);
             } else {
-                console.log('status 200 아닐때');
+                console.log('code ok 아닐때');
                 setMessage('재료명을 다시 입력해주시기 바랍니다.');
             }
         } catch (err) {
@@ -66,7 +68,7 @@ export default function useSearchRecipe() {
     // 재료 입력후 enter 키를 누른 경우 handleSumbit 호출
     const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key == 'Enter') {
-            await handleSubmit();
+            await handleSubmit(e);
         }
     };
 

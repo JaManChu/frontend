@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import CommentRating from './CommentRating';
 import CommentsContent from './CommentsContent';
 import CommentEditBtn from './CommentEditBtn';
-import reviewFake from '../../fakeData/reviewFake';
 import styled from 'styled-components';
 
 interface UpdateProps {
@@ -11,13 +10,21 @@ interface UpdateProps {
     comment: string;
     rating: number;
 }
+interface CommentDataProps {
+    commentId: number;
+    nickname: string;
+    content: string;
+    rating: number;
+    createdAt: string;
+    updatedAt: string;
+}
 interface CommentsListProps {
     isEditing: boolean;
     handleClickEdit: ({ comments, commentId, commentRate }: { comments: string; commentId: number; commentRate: number }) => void;
     commentId?: number;
     currentRate?: number;
     currentComment: string;
-    commentDataList: Record<string, string | number>[];
+    commentDataList: CommentDataProps[];
     fetchCommentHandler: (id: string) => Promise<void>;
     updateCommentHandler: ({ commentId, comment, rating }: UpdateProps) => Promise<void>;
     deleteCommentHandler: (commentId: number) => Promise<void>;
@@ -42,7 +49,7 @@ CommentsListProps): JSX.Element {
 
     // fetchCommentsList : recipeId 기준 코멘트 조회 & recipeId가 바뀔때마다 fetchCommentHandler 호출
     useEffect(() => {
-        console.log(commentDataList); // 안사용시 삭제
+        console.log('commentList : ', commentDataList);
         if (id) {
             fetchCommentHandler(id);
         }
@@ -52,16 +59,15 @@ CommentsListProps): JSX.Element {
         <>
             <CommentsContainer>
                 <h4>리뷰보기</h4>
-                {/* commentDataList로 연결 */}
-                {reviewFake.map((review) => (
+                {commentDataList.map((comment) => (
                     <CommentsWrapper>
                         <ReviewerFigure>
                             <img src="" alt="유저이미지" />
-                            <ReviewerFigcaption>{review.nickname}</ReviewerFigcaption>
+                            <ReviewerFigcaption>{comment.nickname}</ReviewerFigcaption>
                         </ReviewerFigure>
                         <CommentsDataWrapper>
-                            <CommentRating rating={review.rating} />
-                            <span>{review.createdAt}</span>
+                            <CommentRating rating={comment.rating} />
+                            <span>{comment.createdAt}</span>
                             <CommentEditBtn
                                 isEditing={isEditing}
                                 commentId={commentId}
@@ -70,13 +76,13 @@ CommentsListProps): JSX.Element {
                                 handleClickEdit={handleClickEdit}
                                 updateCommentHandler={updateCommentHandler}
                                 deleteCommentHandler={deleteCommentHandler}
-                                review={review}
+                                review={comment}
                             />
                             <CommentsContent
                                 isEditing={isEditing}
-                                reviewId={review.commentId}
-                                commentId={commentId!}
-                                content={review.content}
+                                reviewId={comment.commentId}
+                                commentId={commentId}
+                                content={comment.content}
                                 currentComment={currentComment}
                                 handleUpdateComment={handleUpdateComment}
                             />

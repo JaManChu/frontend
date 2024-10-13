@@ -15,7 +15,7 @@ interface Props {
     // rate: number;
     recipeThumbnail: string;
     recipeIngredients: Record<string, string>[];
-    recipeManuals: Record<string, string>[];
+    recipesManuals: Record<string, string>[];
     // desc: string;
     // overview: string;
 }
@@ -29,9 +29,8 @@ export default function DetailRecipe(): JSX.Element {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes/${id}`);
-                console.log('detalpage response:', response);
                 if (response.data.code === 'OK') {
-                    console.log('detailpage response: code에서 추출.....', response.data.data);
+                    console.log('detailpage response.data.data: ', response.data.data);
                     setRecipe(response.data.data);
                     setMessage(response.data.message);
                 }
@@ -49,15 +48,14 @@ export default function DetailRecipe(): JSX.Element {
         return <div>Loading...</div>;
     }
 
-    console.log(recipe);
     return (
         <DetailRecipeContainer>
             <DetailRecipeName>{recipe.recipeName}</DetailRecipeName>
             <DetailRecipeContents>
                 <DetailRecipeInstruction>
                     <img src={recipe.recipeThumbnail} alt="썸네일 이미지" />
-                    {recipe.recipeManuals &&
-                        recipe.recipeManuals.map((step, idx) => (
+                    {recipe.recipesManuals &&
+                        recipe.recipesManuals.map((step, idx) => (
                             <DetailRecipeFigure key={idx}>
                                 <img src={`${step.recipeOrderImage}`} alt="단계별 이미지" />
                                 <DetailRecipeFigcapton>{`${idx + 1}. ${step.recipeOrderContent}`}</DetailRecipeFigcapton>
@@ -87,7 +85,7 @@ export default function DetailRecipe(): JSX.Element {
                                             <td>{ingredient.ingredientName}</td>
                                             <td>{ingredient.ingredientQuantity}</td>
                                             <td>
-                                                <Link to={`${ingredient.ingredientQuantity}`}>
+                                                <Link to={`${ingredient.ingredientCoupangLink}`}>
                                                     <CartIcon />
                                                 </Link>
                                             </td>

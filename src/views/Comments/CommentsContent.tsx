@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 interface CommentsTextProps {
     isEditing: boolean;
-    commentId: number;
+    commentId?: number;
     reviewId: number;
     content: string;
     currentComment: string;
@@ -13,6 +13,7 @@ interface CommentsTextProps {
 export default function CommentsContent({ isEditing, commentId, reviewId, content, currentComment, handleUpdateComment }: CommentsTextProps) {
     return (
         <>
+            {/* commentId는 수정하기 버튼을 눌렀을때 설정, commentId와 commentDataList-commentId가 일치하는 경우 */}
             {isEditing && commentId == reviewId ? (
                 <CommentsTextarea value={currentComment} onChange={handleUpdateComment}></CommentsTextarea>
             ) : (

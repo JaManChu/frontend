@@ -1,7 +1,6 @@
 import SearchContainer from './SearchContainer';
 import useSearchRecipe from '../../../hooks/useSearchRecipe';
 import { S_RecipeContainer } from '../../../styles/RecipeContainer';
-import { FormEvent } from 'react';
 
 export default function SearchViewRecipes() {
     const {

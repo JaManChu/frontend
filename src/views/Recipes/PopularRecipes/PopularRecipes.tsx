@@ -7,7 +7,7 @@ import fakeData from '../../../fakeData/recipeFake.js';
 interface RecipeLimitProps {
     limit?: number;
     page?: string;
-    children: ReactNode;
+    children?: ReactNode;
 }
 interface RecipeProps {
     recipeId: number;

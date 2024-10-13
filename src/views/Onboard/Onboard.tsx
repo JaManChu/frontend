@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '../../styles/layout';
-import styled from 'styled-components';
 import logo from '../../assets/img/logo.png';
+import { Box, Button, Typography, Container, Card, CardMedia, CardContent } from '@mui/material';
+import { styled } from '@mui/system';
 
 export default function Onboard(): JSX.Element {
     const navigate = useNavigate();
@@ -18,87 +19,97 @@ export default function Onboard(): JSX.Element {
             content: '나중에 도전하고 싶은 요리는 저장해 놓을 수 있어요',
         },
     ];
+
     return (
         <Layout>
-            <OnboardContainer>
-                <OnboardHeader>
-                    <img src={logo} alt="Logo" />
-                    <HeaderText>
-                        <span>자만추에서는</span>
-                        <strong>한번의 클릭으로, 다양한 요리를!</strong>
-                    </HeaderText>
-                </OnboardHeader>
+            <StyledContainer maxWidth="md">
+                <HeaderBox>
+                    <img src={logo} alt="Logo" style={{ width: '120px', marginRight: '16px' }} />
+                    <Box>
+                        <Typography variant="h6" component="span" display="block">
+                            자만추에서는
+                        </Typography>
+                        <Typography variant="h4" fontWeight="bold">
+                            한번의 클릭으로, 다양한 요리를!
+                        </Typography>
+                    </Box>
+                </HeaderBox>
 
-                <OnboardSlider>
+                <CardBox>
                     {RecomendItemsArray.map((item, idx) => (
-                        <OnboardFigure key={idx}>
-                            <img src={item.imgUrl} />
-                            <OnboardFigcaption>{item.content}</OnboardFigcaption>
-                        </OnboardFigure>
+                        <StyledCard key={idx}>
+                            <CardMedia component="img" image={item.imgUrl} alt="Recommendation Image" sx={{ height: 200 }} />
+                            <CardContent>
+                                <Typography variant="body1" align="center">
+                                    {item.content}
+                                </Typography>
+                            </CardContent>
+                        </StyledCard>
                     ))}
-                </OnboardSlider>
-                <ButtonWrapper>
-                    <Button onClick={() => navigate('/login')}>Join</Button>
-                    <Button onClick={() => navigate('/guesthome')}>둘러보기</Button>
-                </ButtonWrapper>
-            </OnboardContainer>
+                </CardBox>
+
+                <ButtonBox>
+                    <JoinButton variant="contained" onClick={() => navigate('/login')}>
+                        Join
+                    </JoinButton>
+                    <BrowseButton variant="outlined" onClick={() => navigate('/guesthome')}>
+                        둘러보기
+                    </BrowseButton>
+                </ButtonBox>
+            </StyledContainer>
         </Layout>
     );
 }
 
-const OnboardContainer = styled.section``;
-const OnboardHeader = styled.header`
-    width: 60%;
-    margin-right: auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
+const StyledContainer = styled(Container)({
+    marginTop: '64px',
+});
 
-    img {
-        display: block;
-        width: 150px;
-    }
-`;
-const HeaderText = styled.div`
-    display: flex;
-    flex-direction: column;
-`;
+const HeaderBox = styled(Box)({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: '32px',
+});
 
-//슬라이더 섹션
-const OnboardSlider = styled.section`
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-`;
-const OnboardFigure = styled.figure`
-    border: 1px solid black;
-    border-radius: 10px;
-    width: 350px;
-    padding: 20px;
-    flex-shrink: 0;
+const CardBox = styled(Box)({
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '16px',
+    flexWrap: 'wrap',
+});
 
-    img {
-        width: 100%;
-        height: auto;
-    }
-`;
-const OnboardFigcaption = styled.figcaption`
-    font-size: 16px;
-`;
+const StyledCard = styled(Card)({
+    width: '300px',
+    borderRadius: '16px',
+    boxShadow: '3px 3px 10px rgba(0, 0, 0, 0.2)',
+});
 
-const ButtonWrapper = styled.div`
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    margin-top: 100px;
-`;
-const Button = styled.button`
-    width: 150px;
-    height: 50px;
-    color: white;
-    background-color: black;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-`;
+const ButtonBox = styled(Box)({
+    display: 'flex',
+    justifyContent: 'space-around',
+    marginTop: '40px',
+});
+
+const JoinButton = styled(Button)({
+    backgroundColor: '#b2dfdb',
+    color: 'black',
+    fontWeight: 'bold',
+    width: '150px',
+    height: '50px',
+    '&:hover': {
+        backgroundColor: '#80cbc4',
+    },
+});
+
+const BrowseButton = styled(Button)({
+    borderColor: '#b2dfdb',
+    color: '#70d1c9',
+    fontWeight: 'bold',
+    width: '150px',
+    height: '50px',
+    '&:hover': {
+        borderColor: '#80cbc4',
+        color: '#4db6ac',
+    },
+});

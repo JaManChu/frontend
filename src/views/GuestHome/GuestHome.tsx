@@ -3,10 +3,15 @@ import { CiSearch } from 'react-icons/ci';
 import { useNavigate } from 'react-router-dom';
 import MainLogo from '../../assets/img/spoon.jpg';
 import { useSearchInput } from '../../hooks/useSearchInput';
+import { Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+
+// Chart.js 등록
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export default function GuestHome(): JSX.Element {
     const { searched, changeInputHandler, handleActiveEnter, handleSubmit } = useSearchInput();
-    //추후 api통신을통해 받은 값으로 대체
+    // !추후 api통신을통해 받은 값으로 대체
     const LatestInfo = {
         img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg',
         title: 'Recipe Title',
@@ -15,11 +20,30 @@ export default function GuestHome(): JSX.Element {
         content:
             '배추김치는 사방 1cm 크기로 자르고, 양파는 굵게 다져주세요. 실파는 송송 썰고, 베이컨은 한입 크기로 잘라주세요. 볼에 양념 재료를 넣어 섞어주세요.',
     };
-
+    // !추후 api통신을통해 받은 값으로 대체
     const VisitedInfo = {
-        total: '5,015',
-        Yesterday: '500',
-        Today: '15',
+        total: 5015,
+        Yesterday: 500,
+        Today: 15,
+    };
+
+    // 그래프 데이터 설정
+    const data = {
+        labels: ['Total', 'Yesterday', 'Today'], // x축 라벨
+        datasets: [
+            {
+                label: '방문자 수',
+                data: [VisitedInfo.total, VisitedInfo.Yesterday, VisitedInfo.Today], // 각 항목에 대응하는 데이터
+                backgroundColor: 'brown', // 바 색상
+                borderColor: 'brown',
+                borderWidth: 1,
+            },
+        ],
+    };
+
+    // 옵션 설정 (선택 사항)
+    const options = {
+        responsive: true, //반응형설정
     };
 
     const navigate = useNavigate();
@@ -38,7 +62,7 @@ export default function GuestHome(): JSX.Element {
                 <SearchIcon onClick={handleSubmit} />
             </SearchArea>
             <RecommendArea>
-                <Title>Recommend for You</Title>
+                <S_Title>Recommend for You</S_Title>
                 <RecommendSection>
                     <Notice>회원이 되시면 레시피를 추천 받으실 수 있습니다.</Notice>
                 </RecommendSection>
@@ -49,7 +73,7 @@ export default function GuestHome(): JSX.Element {
                     <img src={LatestInfo.img}></img>
                 </LatestImgSection>
                 <LatestContent>
-                    <Title>Latest Recipe</Title>
+                    <S_Title>Latest Recipe</S_Title>
                     <h1>{LatestInfo.title}</h1>
                     <RecipeStatus>
                         <span>{LatestInfo.time}</span>
@@ -61,7 +85,7 @@ export default function GuestHome(): JSX.Element {
             </LatestArea>
             <PopularArea>
                 <PopularRecipesArea>
-                    <Title>Popular Recipes</Title>
+                    <S_Title>Popular Recipes</S_Title>
                     <PopularRecipesImgArea>
                         <img src="https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg"></img>
                         <img src="https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg"></img>
@@ -69,20 +93,12 @@ export default function GuestHome(): JSX.Element {
                     <Button onClick={() => navigate('/recipes/popular')}>view more popular recipes</Button>
                 </PopularRecipesArea>
                 <VisitedArea>
-                    <Title>Visited</Title>
+                    <S_Title>Visited</S_Title>
                     <VisitedInfoArea>
-                        <VisitedSection>
-                            <p>Total</p>
-                            <p>{VisitedInfo.total}</p>
-                        </VisitedSection>
-                        <VisitedSection>
-                            <p>YesterDay</p>
-                            <p>{VisitedInfo.Yesterday}</p>
-                        </VisitedSection>
-                        <VisitedSection>
-                            <p>Today</p>
-                            <p>{VisitedInfo.Today}</p>
-                        </VisitedSection>
+                        <VisitedInfoArea>
+                            {/* Bar 차트 추가 */}
+                            <Bar data={data} options={options} />
+                        </VisitedInfoArea>
                     </VisitedInfoArea>
                 </VisitedArea>
             </PopularArea>
@@ -124,7 +140,7 @@ const SearchIcon = styled(CiSearch)`
     cursor: pointer;
 `;
 
-const Title = styled.p`
+const S_Title = styled.p`
     color: brown;
     font-size: 2rem;
     margin-top: 50px;
@@ -214,11 +230,12 @@ const PopularRecipesArea = styled.div`
     flex-direction: column;
 
     margin-left: 50px;
-    width: 800px;
+    width: 40%;
 `;
 
 const PopularRecipesImgArea = styled.div`
     display: flex;
+    margin-top: 20px;
     img {
         margin-left: 30px;
     }
@@ -228,26 +245,12 @@ const VisitedArea = styled.div`
     display: flex;
     align-items: center;
     flex-direction: column;
-    width: 30%;
+    width: 60%;
 `;
 
 const VisitedInfoArea = styled.div`
     display: flex;
-    margin-top: 50px;
-    width: 500px;
-    height: 80px;
-`;
-
-const VisitedSection = styled.div`
-    border-right: 3px solid black;
-    display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
-    padding: 50px;
-    width: 150px;
-    p {
-        font-size: 1.5rem;
-        margin-bottom: 10px;
-    }
+    width: 100%;
+    height: 400px;
 `;

@@ -122,7 +122,6 @@ export const useUserForm = () => {
             console.log('에러? response 확인할것 :', err);
         }
     };
-    console.log(message); //
 
     return {
         email,

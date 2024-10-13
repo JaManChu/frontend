@@ -30,7 +30,6 @@ export default function RecipeNewCard({ page = '', recipeId, recipeName, recipeT
     const [marked, setMarked] = useState<boolean>(false);
     const [message, setMessage] = useState<string>('');
 
-    console.log('bookmark card - recipeId ? : ', recipeId);
     const token = sessionStorage.getItem('token');
 
     const handleClickBookmark = async (e: MouseEvent) => {
@@ -51,7 +50,6 @@ export default function RecipeNewCard({ page = '', recipeId, recipeName, recipeT
                 console.log('scarp response: ', response);
                 if (response.data.code == 'OK') {
                     console.log('post scrap response: ', response);
-                    console.log(response.data);
                     setMarked(true);
                     setMessage(response.data.message);
                     alert(response.data.message);

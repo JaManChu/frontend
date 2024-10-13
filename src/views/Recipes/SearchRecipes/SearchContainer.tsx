@@ -57,7 +57,10 @@ export default function SearchContainer({
                 handleTime={handleTime}
                 ingredientsList={ingredientsList}
             />
-            <PopularRecipe page="search" />
+
+            <PopularRecipe page="search">
+                <h3 style={{ marginLeft: '50px' }}>인기레시피</h3>
+            </PopularRecipe>
             <SearchResult recipes={recipes} searching={searching} />
         </>
     );

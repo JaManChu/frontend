@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
-import RecipeList from '../../../components/Recipe/RecipeList.js';
+import { ReactNode, useEffect, useState } from 'react';
 import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
+import RecipeList from '../../../components/Recipe/RecipeList.js';
 import axios from 'axios';
 import fakeData from '../../../fakeData/recipeFake.js';
 
 interface RecipeLimitProps {
     limit?: number;
     page?: string;
+    children: ReactNode;
 }
 interface RecipeProps {
     recipeId: number;
@@ -19,7 +20,7 @@ interface RecipeProps {
     // desc: string;
 }
 
-export default function PopularRecipes({ limit, page }: RecipeLimitProps): JSX.Element {
+export default function PopularRecipes({ limit, page, children }: RecipeLimitProps): JSX.Element {
     const [recipes, setRecipes] = useState<RecipeProps[]>([]);
     const [message, setMessage] = useState<string>();
     useEffect(() => {
@@ -39,10 +40,10 @@ export default function PopularRecipes({ limit, page }: RecipeLimitProps): JSX.E
         };
         fetchRecipes();
     }, []);
-    console.log('popular: ', message);
-
+    console.log(message);
     return (
         <S_RecipeContainer>
+            {children}
             <RecipeList recipes={recipes} limit={limit} page={page} />
         </S_RecipeContainer>
     );

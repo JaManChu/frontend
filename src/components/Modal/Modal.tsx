@@ -1,6 +1,30 @@
 import React from 'react';
 import styled from 'styled-components';
 
+interface ModalProps {
+    visible: boolean;
+    onClose: () => void;
+    children: React.ReactNode;
+    buttons?: { label: string; onClick: () => void }[];
+}
+
+const Modal: React.FC<ModalProps> = ({ visible, onClose, children, buttons }) => {
+    return (
+        <ModalWrapper visible={visible} onClick={onClose}>
+            <ModalContent onClick={(e) => e.stopPropagation()}>
+                {children}
+                <ButtonWrapper>
+                    {buttons?.map((button, index) => (
+                        <ModalButton key={index} onClick={button.onClick}>
+                            {button.label}
+                        </ModalButton>
+                    ))}
+                </ButtonWrapper>
+            </ModalContent>
+        </ModalWrapper>
+    );
+};
+
 const ModalWrapper = styled.div<{ visible: boolean }>`
     display: ${(props) => (props.visible ? 'block' : 'none')};
     position: fixed;
@@ -44,29 +68,5 @@ const ModalButton = styled.button`
 const ButtonWrapper = styled.div`
     display: flex;
 `;
-
-interface ModalProps {
-    visible: boolean;
-    onClose: () => void;
-    children: React.ReactNode;
-    buttons?: { label: string; onClick: () => void }[];
-}
-
-const Modal: React.FC<ModalProps> = ({ visible, onClose, children, buttons }) => {
-    return (
-        <ModalWrapper visible={visible} onClick={onClose}>
-            <ModalContent onClick={(e) => e.stopPropagation()}>
-                {children}
-                <ButtonWrapper>
-                    {buttons?.map((button, index) => (
-                        <ModalButton key={index} onClick={button.onClick}>
-                            {button.label}
-                        </ModalButton>
-                    ))}
-                </ButtonWrapper>
-            </ModalContent>
-        </ModalWrapper>
-    );
-};
 
 export default Modal;

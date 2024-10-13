@@ -109,6 +109,8 @@ export default function GuestHome(): JSX.Element {
 const GuestContainer = styled.section`
     background-color: #f5f4f3;
     height: 100%;
+    width: 100%;
+    overflow-x: hidden;
 `;
 const GusetImage = styled.img`
     display: block;
@@ -223,6 +225,7 @@ const PopularArea = styled.div`
     height: 500px;
     display: flex;
     justify-content: center;
+    gap: 40px;
 `;
 
 const PopularRecipesArea = styled.div`
@@ -244,7 +247,7 @@ const VisitedArea = styled.div`
     display: flex;
     align-items: center;
     flex-direction: column;
-    flex-grow: 2;
+    flex-grow: 1;
 `;
 
 const VisitedInfoArea = styled.div`

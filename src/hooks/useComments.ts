@@ -46,7 +46,6 @@ export default function useComments() {
                 },
             });
             if (response.data.code === 'OK') {
-                console.log('get response: ', response);
                 console.log('response.data.data: ', response.data.data);
                 setCommentDataList(response.data.data.comments);
             }
@@ -55,7 +54,7 @@ export default function useComments() {
             alert('댓글을 가져오는데 실패했습니다.');
         }
     };
-    console.log('comment-recipeId: ', recipeId);
+    console.log('comment-commentId: ', commentId);
     console.log('comment-currentComment:  ', currentComment);
     // create : recipeId, comment, rating
     const createCommentHandler = async (e: FormEvent<HTMLFormElement>, { recipeId, comment, rating }: CreateHandlerProps) => {
@@ -84,6 +83,7 @@ export default function useComments() {
             // ! 초기화 : 필요여부 체크(test필요)
             setCurrentComment('');
             setCurrentRate(0);
+            fetchCommentHandler(recipeId.toString());
         } catch (err: any) {
             console.log(err);
             alert('댓글 작성에 실패하였습니다.');

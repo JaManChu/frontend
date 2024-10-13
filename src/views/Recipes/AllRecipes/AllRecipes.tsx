@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import RecipeList from '../../../components/Recipe/RecipeList.js';
-import RecipePageHeader from '../../../components/Recipe/RecipePageHeader.js';
 import axios from 'axios';
 
 interface RecipeLimitProps {
@@ -18,7 +17,7 @@ interface RecipeProps {
     // desc: string;
 }
 
-export default function LatestRecipe({ limit, page }: RecipeLimitProps): JSX.Element {
+export default function AllRecipes({ limit, page }: RecipeLimitProps): JSX.Element {
     const [recipes, setRecipes] = useState<RecipeProps[]>([]);
     const [message, setMessage] = useState<string>('');
 
@@ -43,10 +42,5 @@ export default function LatestRecipe({ limit, page }: RecipeLimitProps): JSX.Ele
     }, []);
     console.log('all message: ', message);
 
-    return (
-        <>
-            {!page && <RecipePageHeader title="Latest" />}
-            <RecipeList recipes={recipes} limit={limit} page={page} />
-        </>
-    );
+    return <RecipeList recipes={recipes} limit={limit} page={page} />;
 }

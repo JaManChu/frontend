@@ -14,4 +14,4 @@ const colors = {
 export default colors;
 // 사용시
 // 1. 사용하려는 컴포넌트에 import colors
-// 2. ㄴstyled-compnent안에서 color: colors[500]
+// 2. ㄴstyled-compnent안에서 ${color: colors[500]}

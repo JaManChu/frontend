@@ -1,9 +1,10 @@
 import { useState, MouseEvent } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FiLogOut, FiUser, FiBell } from 'react-icons/fi';
 import Alarm from '../Alarm/Alarm';
-import logo from '../../assets/img/logo.png';
 import styled from 'styled-components';
+import logo from '../../assets/img/logo.png';
+import colors from '../../styles/colors';
 
 interface HeaderProps {
     menuItems: Record<string, string>[];
@@ -26,61 +27,62 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
 
     return (
         <>
-            <HeaderSection onClick={() => setShowAlarm(false)}>
-                <Logo src={logo} alt="LOGO" />
-                <MenuList>
+            <S_HeaderSection onClick={() => setShowAlarm(false)}>
+                <S_Logo src={logo} alt="LOGO" />
+                <S_MenuList>
                     {menuItems.map((item, idx) => {
                         return (
-                            <MenuItem key={item.name + idx} active={isActive === item.name} onClick={() => handleClickMenu(item.name)}>
-                                <StyledLink to={`${item.to}`}>{item.name}</StyledLink>
-                            </MenuItem>
+                            <S_MenuItem key={item.name + idx} active={isActive === item.name}>
+                                <S_StyledLink to={item.to} onClick={() => handleClickMenu(item.name)}>
+                                    {item.name}
+                                </S_StyledLink>
+                            </S_MenuItem>
                         );
                     })}
-                </MenuList>
-                <UserAction>
+                </S_MenuList>
+                <S_UserAction>
                     {isLogin ? (
                         <>
-                            <StyledLink to="/">
+                            <S_StyledLink to="/">
                                 <FiLogOut onClick={logout} />
-                            </StyledLink>
-                            <StyledLink to="/mypage">
+                            </S_StyledLink>
+                            <S_StyledLink to="/mypage">
                                 <FiUser />
-                            </StyledLink>
-                            <FiBell onClick={handleShowAlarm} />
-                        </>
-                    ) : (
-                        <>
-                            <HeaderButton>
-                                <Link to="/login">로그인</Link>
-                            </HeaderButton>
-                            <HeaderButton>
-                                <Link to="signup">회원가입</Link>
-                            </HeaderButton>
+                            </S_StyledLink>
                             <FiBell onClick={handleShowAlarm} />
                             {showAlarm && <Alarm />}
                         </>
+                    ) : (
+                        <>
+                            <S_HeaderButton>
+                                <Link to="/login">로그인</Link>
+                            </S_HeaderButton>
+                            <S_HeaderButton>
+                                <Link to="signup">회원가입</Link>
+                            </S_HeaderButton>
+                        </>
                     )}
-                </UserAction>
-            </HeaderSection>
-            <Outlet />
+                </S_UserAction>
+            </S_HeaderSection>
         </>
     );
 }
 
-const HeaderSection = styled.section`
-    height: 70px;
+const S_HeaderSection = styled.section`
+    margin: 0 auto;
     padding: 16px;
+    width: 90vw;
+    height: 100px;
     font-size: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
 `;
-const Logo = styled.img`
+const S_Logo = styled.img`
     margin-top: 5px;
     width: 150px;
 `;
-const MenuList = styled.ul`
+const S_MenuList = styled.ul`
     padding: 0;
     margin: 0;
     list-style: none;
@@ -88,26 +90,26 @@ const MenuList = styled.ul`
     display: flex;
     flex-grow: 1;
 `;
-const MenuItem = styled.li<{ active: boolean }>`
+const S_MenuItem = styled.li<{ active: boolean }>`
     margin: 10px;
     cursor: pointer;
     &:hover {
-        border-bottom: 3px solid #efb63f;
+        border-bottom: 3px solid ${colors[300]};
     }
-    border-bottom: ${(props) => (props.active ? '3px solid #efb63f' : 'none')};
+    border-bottom: ${(props) => (props.active ? `3px solid ${colors[300]}` : 'none')};
 `;
-const StyledLink = styled(Link)`
+const S_StyledLink = styled(Link)`
     text-decoration: none;
     margin: 10px;
     color: inherit;
 `;
-const UserAction = styled.div`
+const S_UserAction = styled.div`
     flex-grow: 1;
     display: flex;
     justify-content: flex-end;
     cursor: pointer;
 `;
-const HeaderButton = styled.div`
+const S_HeaderButton = styled.div`
     margin-left: 16px;
     font-size: 16px;
     outline: none;

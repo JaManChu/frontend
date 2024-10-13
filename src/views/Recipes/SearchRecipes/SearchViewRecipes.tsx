@@ -1,7 +1,7 @@
 import SearchContainer from './SearchContainer';
 import useSearchRecipe from '../../../hooks/useSearchRecipe';
 
-export default function SearchView() {
+export default function SearchViewRecipes() {
     const {
         time,
         level,

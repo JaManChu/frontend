@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import RecipeList from '../../../components/Recipe/RecipeList.js';
-import RecipePageHeader from '../../../components/Recipe/RecipePageHeader.js';
 import styled from 'styled-components';
 import axios from 'axios';
+import fakeData from '../../../fakeData/recipeFake.js';
 
 interface RecipeLimitProps {
     limit?: number;
@@ -19,7 +19,7 @@ interface RecipeProps {
     // desc: string;
 }
 
-export default function PopularRecipe({ limit, page }: RecipeLimitProps): JSX.Element {
+export default function PopularRecipes({ limit, page }: RecipeLimitProps): JSX.Element {
     const [recipes, setRecipes] = useState<RecipeProps[]>([]);
     const [message, setMessage] = useState<string>();
     useEffect(() => {
@@ -34,6 +34,7 @@ export default function PopularRecipe({ limit, page }: RecipeLimitProps): JSX.El
             } catch (err: any) {
                 console.log('popular recipe 조회 err: ', err);
                 setMessage(err.message);
+                setRecipes(fakeData);
             }
         };
         fetchRecipes();
@@ -41,21 +42,16 @@ export default function PopularRecipe({ limit, page }: RecipeLimitProps): JSX.El
     console.log('popular: ', message);
 
     return (
-        <RecipeContainer>
-            {page ? <RecipePageTitle>Popular Recipes</RecipePageTitle> : <RecipePageHeader title="Popular" />}
+        <S_RecipeContainer>
             <RecipeList recipes={recipes} limit={limit} page={page} />
-        </RecipeContainer>
+        </S_RecipeContainer>
     );
 }
 
-const RecipeContainer = styled.section`
+const S_RecipeContainer = styled.section`
+    margin: 0 auto;
+    width: 90vw;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-`;
-const RecipePageTitle = styled.h2`
-    margin: 36px 16px 0px;
-    color: #622b18;
-    font-size: 40px;
-    text-align: center;
 `;

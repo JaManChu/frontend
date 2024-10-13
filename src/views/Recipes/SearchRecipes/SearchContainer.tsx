@@ -1,7 +1,7 @@
 import { ChangeEvent, KeyboardEvent } from 'react';
 import { SearchResult } from './SearchResult';
 import SearchCondition from './SearchCondition';
-import PopularRecipe from '../PopularRecipe/PopularRecipe';
+import PopularRecipe from '../PopularRecipes/PopularRecipes';
 import { SelectChangeEvent } from '@mui/material/Select';
 
 interface RecipeProps {

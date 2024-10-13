@@ -10,16 +10,16 @@ interface SearchBoxProps {
 
 export function SearchBox({ value, onChange, handleKeyDown }: SearchBoxProps) {
     return (
-        <SearchWrapper>
-            <SearchInput type="search" value={value} onChange={onChange} onKeyDown={handleKeyDown} placeholder="재료를 입력하세요" />
-        </SearchWrapper>
+        <S_SearchWrapper>
+            <S_SearchInput type="search" value={value} onChange={onChange} onKeyDown={handleKeyDown} placeholder="재료를 입력하세요" />
+        </S_SearchWrapper>
     );
 }
 
-const SearchWrapper = styled.div`
+const S_SearchWrapper = styled.div`
     margin: 0 auto;
 `;
-const SearchInput = styled.input`
+const S_SearchInput = styled.input`
     display: block;
     width: 100%;
     height: 40px;

@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from 'react';
-import LatestRecipe from '../Recipes/LatestRecipe/LatestRecipe';
-import PopularRecipe from '../Recipes/PopularRecipe/PopularRecipe';
-import RecommendedRecipe from '../Recipes/RecommendedRecipe/RecommendedRecipe';
+import AllRecipes from '../Recipes/AllRecipes/AllRecipes';
+import PopularRecipes from '../Recipes/PopularRecipes/PopularRecipes';
+import RecommendedRecipes from '../Recipes/RecommendedRecipes/RecommendedRecipes';
 import styled from 'styled-components';
 // import axios from 'axios';
 import { CiSearch } from 'react-icons/ci';
@@ -10,13 +10,13 @@ import mainImage from '../../assets/img/spoon.jpg';
 import Visited from '../Visited/Visited';
 import withAuth from '../../hooks/withAuth';
 
-function Main(): JSX.Element {
+function Home(): JSX.Element {
     const [searched, setSearched] = useState<string>('');
     const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
     // const [message, setMessage] = useState<string>('');
 
     // const { pathname } = useLocation();
-    // const isMain = pathname == '/main';
+    // const isMain = pathname == '/homde';
 
     const changeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const search = e.target.value;
@@ -46,49 +46,49 @@ function Main(): JSX.Element {
         }
     };
     return (
-        <MainContainer>
-            <MainImage src={mainImage} alt="메인페이지 이미지" />
-            <SearchWrapper>
-                <SearchBox
+        <S_MainContainer>
+            <S_MainImage src={mainImage} alt="메인페이지 이미지" />
+            <S_SearchWrapper>
+                <S_SearchBox
                     type="text"
                     value={searched}
                     onChange={(e) => changeInputHandler(e)}
                     onKeyDown={(e) => handleActiveEnter(e)}
                     placeholder="재료를 입력해주세요."
                 />
-                <SearchIcon onClick={handleSubmit} />
-            </SearchWrapper>
+                <S_SearchIcon onClick={handleSubmit} />
+            </S_SearchWrapper>
             {/* 리덕스 툴킷 도입 : 레시피페이지 전역상태관리 - RecipePageHeader + RecipeList 호출가능?  */}
-            <RecipeWrapper>
-                <RecommendedRecipe limit={4} page="recommended" />
-                <LatestRecipe limit={1} page="latest" />
+            <S_RecipeWrapper>
+                <RecommendedRecipes limit={4} page="recommended" />
+                <AllRecipes limit={1} page="all" />
                 {/* Popular, Visited 분리 작업 후 VisitedWrapper는 float/position으로 css 변경처리 */}
-                <VisitedPopularWrapper>
-                    <PopularRecipe limit={2} page="popular" />
+                <S_VisitedPopularWrapper>
+                    <PopularRecipes limit={2} page="popular" />
                     <Visited />
-                </VisitedPopularWrapper>
-            </RecipeWrapper>
-        </MainContainer>
+                </S_VisitedPopularWrapper>
+            </S_RecipeWrapper>
+        </S_MainContainer>
     );
 }
-export default withAuth(Main);
+export default withAuth(Home);
 
-const MainContainer = styled.section`
+const S_MainContainer = styled.section`
     background-color: #f5f4f3;
     min-height: 100vh;
 `;
-const MainImage = styled.img`
+const S_MainImage = styled.img`
     display: block;
     width: 100%;
     height: 250px;
     object-fit: cover;
 `;
-const SearchWrapper = styled.div`
+const S_SearchWrapper = styled.div`
     width: 50%;
     margin: 16px auto;
     position: relative;
 `;
-const SearchBox = styled.input`
+const S_SearchBox = styled.input`
     display: block;
     width: 90%;
     height: 40px;
@@ -98,7 +98,7 @@ const SearchBox = styled.input`
     color: black;
     background-color: rgba(239, 182, 63, 0.2);
 `;
-const SearchIcon = styled(CiSearch)`
+const S_SearchIcon = styled(CiSearch)`
     position: absolute;
     right: 15%;
     top: 50%;
@@ -106,12 +106,12 @@ const SearchIcon = styled(CiSearch)`
     font-size: 20px;
     cursor: pointer;
 `;
-const RecipeWrapper = styled.div`
+const S_RecipeWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 16px;
 `;
-const VisitedPopularWrapper = styled.div`
+const S_VisitedPopularWrapper = styled.div`
     display: flex;
     height: auto;
 `;

@@ -61,11 +61,11 @@ export default function RecipeNewCard({ recipeId, recipeName, recipeThumbnail, r
             setMessage(marked ? '찜한 레시피에서 삭제하였습니다.' : '레시피를 찜하지 못했습니다.');
         }
     };
-    console.log(marked);
-    console.log('scrap message: ', message);
+
+    console.log('scrap message, 찜상태, recipeId: ', message, marked, recipeId);
 
     return (
-        <Grid size={{ xs: 12, md: 4 }} sx={{ margin: 1 }}>
+        <Grid size={{ xs: 12, sm: 6, md: 4 }} sx={{ margin: 1 }}>
             <M_SyledCard variant="outlined" tabIndex={0} sx={{ height: '100%' }}>
                 <CardMedia
                     component="img"
@@ -83,9 +83,11 @@ export default function RecipeNewCard({ recipeId, recipeName, recipeThumbnail, r
                     <Typography gutterBottom variant="caption" component="div">
                         여기는...아마 카테고리?
                     </Typography>
-                    <Typography gutterBottom variant="h6" component="div">
-                        <M_Linked to={`/recipes/${recipeId}`}>{recipeName}</M_Linked>
-                    </Typography>
+
+                    <M_Linked to={`/recipes/${recipeId}`}>
+                        <M_StyledTypography>{recipeName}</M_StyledTypography>
+                    </M_Linked>
+
                     <M_StyledTypography variant="body2" color="text.secondary" gutterBottom>
                         Overview 내용들어가면 좋을듯 ? 그 오늘은 뭐 만들겠다는 내용?그리고 나머지
                         가나다라마바사아자차가타파하가갸거겨교고교그긔나냐너녀노뇨뉴ㅜ뉴느늬
@@ -102,6 +104,7 @@ export default function RecipeNewCard({ recipeId, recipeName, recipeThumbnail, r
 const M_SyledCard = styled(Card)({
     display: 'flex',
     flexDirection: 'column',
+    flex: '1 1 auto',
     padding: 0,
     height: '100%',
     borderRadius: '8px',
@@ -116,7 +119,8 @@ const M_SyledCardContent = styled(CardContent)({
     flexDirection: 'column',
     gap: 4,
     padding: 16,
-    flexGrow: 1,
+    flexGrow: 0,
+    flexShrink: 1,
     position: 'relative',
 
     '&:last-child': {
@@ -137,6 +141,7 @@ const M_StyledInfo = styled(Box)({
     fontSize: '14px',
 });
 const M_Linked = styled(Link)({
+    display: 'block',
     textDecorationLine: 'none',
     color: '#000',
 

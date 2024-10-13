@@ -40,7 +40,7 @@ const fakeData: Props[] = [
         ],
     },
     {
-        recipeName: 'second',
+        recipeName: 'secondasfsfsdfsfcscfdscfdcdfjsfljsklf',
         recipeId: 2,
         recipeThumbnail: 'https://picsum.photos/800/450?random=1',
         recipeCookingTime: '45min',

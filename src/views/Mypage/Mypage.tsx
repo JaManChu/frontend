@@ -1,155 +1,32 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-// import Modal from '../../components/Modal/Modal';
+import Modal from '../../components/Modal/Modal';
 import { useModal } from './hooks/useModal';
-// import { useUpdateForm } from './hooks/updateForm';
-// import { useGetMyRecipes } from '../../hooks/useGetMyRecipes';
+import { useUpdateForm } from './hooks/updateForm';
+import { useGetMyRecipes } from '../../hooks/useGetMyRecipes';
 import { useGetUserInfo } from '../../hooks/useGetUserInfo';
 import { Button, Typography, Avatar, Grid, Pagination } from '@mui/material';
-// ! 더미데이터 추후 삭제
-const dummyScrapedRecipes = [
-    {
-        recipeId: 1,
-        recipeThumbnail: 'https://via.placeholder.com/150',
-        recipeName: '스크랩 레시피 1',
-    },
-    {
-        recipeId: 2,
-        recipeThumbnail: 'https://via.placeholder.com/150',
-        recipeName: '스크랩 레시피 2',
-    },
-    {
-        recipeId: 3,
-        recipeThumbnail: 'https://via.placeholder.com/150',
-        recipeName: '스크랩 레시피 3',
-    },
-    {
-        recipeId: 4,
-        recipeThumbnail: 'https://via.placeholder.com/150',
-        recipeName: '스크랩 레시피 4',
-    },
-    {
-        recipeId: 5,
-        recipeThumbnail: 'https://via.placeholder.com/150',
-        recipeName: '스크랩 레시피 5',
-    },
-    {
-        recipeId: 6,
-        recipeThumbnail: 'https://via.placeholder.com/150',
-        recipeName: '스크랩 레시피 6',
-    },
-    {
-        recipeId: 7,
-        recipeThumbnail: 'https://via.placeholder.com/150',
-        recipeName: '스크랩 레시피 7',
-    },
-    {
-        recipeId: 8,
-        recipeThumbnail: 'https://via.placeholder.com/150',
-        recipeName: '스크랩 레시피 8',
-    },
-    {
-        recipeId: 9,
-        recipeThumbnail: 'https://via.placeholder.com/150',
-        recipeName: '스크랩 레시피 9',
-    },
-    {
-        recipeId: 10,
-        recipeThumbnail: 'https://via.placeholder.com/150',
-        recipeName: '스크랩 레시피 10',
-    },
-    {
-        recipeId: 11,
-        recipeThumbnail: 'https://via.placeholder.com/150',
-        recipeName: '스크랩 레시피 11',
-    },
-    {
-        recipeId: 12,
-        recipeThumbnail: 'https://via.placeholder.com/150',
-        recipeName: '스크랩 레시피 12',
-    },
-];
-
-const dummyMyRecipes = [
-    {
-        myRecipeId: 1,
-        myRecipeThumbnail: 'https://via.placeholder.com/150',
-        myRecipeName: '내 레시피 1',
-    },
-    {
-        myRecipeId: 2,
-        myRecipeThumbnail: 'https://via.placeholder.com/150',
-        myRecipeName: '내 레시피 2',
-    },
-    {
-        myRecipeId: 3,
-        myRecipeThumbnail: 'https://via.placeholder.com/150',
-        myRecipeName: '내 레시피 3',
-    },
-    {
-        myRecipeId: 4,
-        myRecipeThumbnail: 'https://via.placeholder.com/150',
-        myRecipeName: '내 레시피 4',
-    },
-    {
-        myRecipeId: 5,
-        myRecipeThumbnail: 'https://via.placeholder.com/150',
-        myRecipeName: '내 레시피 5',
-    },
-    {
-        myRecipeId: 6,
-        myRecipeThumbnail: 'https://via.placeholder.com/150',
-        myRecipeName: '내 레시피 6',
-    },
-    {
-        myRecipeId: 7,
-        myRecipeThumbnail: 'https://via.placeholder.com/150',
-        myRecipeName: '내 레시피 7',
-    },
-    {
-        myRecipeId: 8,
-        myRecipeThumbnail: 'https://via.placeholder.com/150',
-        myRecipeName: '내 레시피 8',
-    },
-    {
-        myRecipeId: 9,
-        myRecipeThumbnail: 'https://via.placeholder.com/150',
-        myRecipeName: '내 레시피 9',
-    },
-    {
-        myRecipeId: 10,
-        myRecipeThumbnail: 'https://via.placeholder.com/150',
-        myRecipeName: '내 레시피 10',
-    },
-    {
-        myRecipeId: 11,
-        myRecipeThumbnail: 'https://via.placeholder.com/150',
-        myRecipeName: '내 레시피 11',
-    },
-    {
-        myRecipeId: 12,
-        myRecipeThumbnail: 'https://via.placeholder.com/150',
-        myRecipeName: '내 레시피 12',
-    },
-];
 
 const ITEMS_PER_PAGE = 4; // 페이지당 보여줄 아이템 수
 
 export default function Mypage(): JSX.Element {
     //스크랩, 작성 게시물 불러오는 hook
-    // const { myRecipes, scrapedRecipes } = useGetMyRecipes();
+    const { myRecipes, scrapedRecipes } = useGetMyRecipes();
+    const { password, setPassword, passwordCheck, setPasswordCheck, nickname, setNickname, errors, touched, handleBlur, clearFieldError } =
+        useUpdateForm();
+
     //유저 정보 hook
     const { userInfo } = useGetUserInfo();
 
     const {
-        // isNickModalVisible,
+        isNickModalVisible,
         setIsNickModalVisible,
-        // isPwModalVisible,
+        isPwModalVisible,
         setIsPwModalVisible,
-        // handleNickClose,
-        // handlePwClose,
-        // handleNickUpdate,
-        // handlePasswordUpdate,
+        handleNickClose,
+        handlePwClose,
+        handleNickUpdate,
+        handlePasswordUpdate,
         // updateNick,
         // setUpdateNick,
     } = useModal();
@@ -157,15 +34,15 @@ export default function Mypage(): JSX.Element {
     const [myRecipesPage, setMyRecipesPage] = useState(1); // 작성한 레시피의 현재 페이지
     const [scrapedRecipesPage, setScrapedRecipesPage] = useState(1); // 스크랩된 레시피의 현재 페이지
 
-    const totalMyRecipesPages = Math.ceil(dummyMyRecipes.length / ITEMS_PER_PAGE);
-    const totalScrapedRecipesPages = Math.ceil(dummyScrapedRecipes.length / ITEMS_PER_PAGE);
+    const totalMyRecipesPages = Math.ceil(myRecipes.length / ITEMS_PER_PAGE);
+    const totalScrapedRecipesPages = Math.ceil(scrapedRecipes.length / ITEMS_PER_PAGE);
 
     // 현재 페이지에 해당하는 아이템만 보여주도록 슬라이싱
     // myRecipesPage : 현재페이지 ITEMS_PER_PAGE : 현재페이지당 보여질 게시물 수
     // myRecipes = dummyMyRecipes.slice(0,4) => dummyMyRecipes[0]~dummyMyRecipes[3] 값 저장 .
     // 즉 현재페이지에 해당하는 게시물4개
-    const myRecipes = dummyMyRecipes.slice((myRecipesPage - 1) * ITEMS_PER_PAGE, myRecipesPage * ITEMS_PER_PAGE);
-    const scrapedRecipes = dummyScrapedRecipes.slice((scrapedRecipesPage - 1) * ITEMS_PER_PAGE, scrapedRecipesPage * ITEMS_PER_PAGE);
+    const myRecipesArr = myRecipes.slice((myRecipesPage - 1) * ITEMS_PER_PAGE, myRecipesPage * ITEMS_PER_PAGE);
+    const scrapedRecipesArr = scrapedRecipes.slice((scrapedRecipesPage - 1) * ITEMS_PER_PAGE, scrapedRecipesPage * ITEMS_PER_PAGE);
 
     return (
         <S_MyContainer>
@@ -173,7 +50,7 @@ export default function Mypage(): JSX.Element {
                 <S_MyScrap>
                     <S_Subtitle variant="h5">찜한 레시피</S_Subtitle>
                     <Grid container spacing={2}>
-                        {scrapedRecipes.map((scrapedRecipe) => (
+                        {scrapedRecipesArr.map((scrapedRecipe) => (
                             <Grid item xs={12} sm={6} md={6} key={scrapedRecipe.recipeId}>
                                 <S_MyFigure>
                                     <img src={scrapedRecipe.recipeThumbnail} alt="스크랩 이미지" style={{ width: '100%', borderRadius: '8px' }} />
@@ -199,7 +76,7 @@ export default function Mypage(): JSX.Element {
                 <S_MyPosting>
                     <S_Subtitle variant="h5">작성한 레시피</S_Subtitle>
                     <Grid container spacing={2}>
-                        {myRecipes.map((myRecipe) => (
+                        {myRecipesArr.map((myRecipe) => (
                             <Grid item xs={12} sm={6} md={6} key={myRecipe.myRecipeId}>
                                 <S_MyFigure>
                                     <img src={myRecipe.myRecipeThumbnail} alt="작성 레시피 이미지" style={{ width: '100%', borderRadius: '8px' }} />
@@ -251,6 +128,19 @@ export default function Mypage(): JSX.Element {
                     >
                         닉네임 수정
                     </Button>
+                    {isNickModalVisible && (
+                        <Modal
+                            visible={isNickModalVisible}
+                            onClose={handleNickClose}
+                            buttons={[
+                                { label: '확인', onClick: handleNickUpdate },
+                                { label: '취소', onClick: handleNickClose },
+                            ]}
+                        >
+                            <h1>닉네임 수정</h1>
+                            <input value={nickname} placeholder="변경할 닉네임을 입력하세요" onChange={(e) => setNickname(e.target.value)} />
+                        </Modal>
+                    )}
                     <Button
                         variant="contained"
                         color="secondary"
@@ -263,6 +153,36 @@ export default function Mypage(): JSX.Element {
                     >
                         비밀번호 수정
                     </Button>
+                    {isPwModalVisible && (
+                        <Modal
+                            visible={isPwModalVisible}
+                            onClose={handlePwClose}
+                            buttons={[
+                                { label: '확인', onClick: handlePasswordUpdate },
+                                { label: '취소', onClick: handlePwClose },
+                            ]}
+                        >
+                            <h1>비밀번호 수정</h1>
+                            <S_Input
+                                value={password}
+                                placeholder="기존 비밀번호를 입력하세요"
+                                onChange={(e) => setPassword(e.target.value)}
+                                isError={!!errors.password && touched.password}
+                                onFocus={() => clearFieldError('password')}
+                                onBlur={() => handleBlur('password')}
+                            />
+                            <S_ErrorMessage visible={!!errors.password && touched.password}>{errors.password}</S_ErrorMessage>
+                            <S_Input
+                                value={passwordCheck}
+                                placeholder="변경할 비밀번호를 입력하세요"
+                                onChange={(e) => setPasswordCheck(e.target.value)}
+                                isError={!!errors.passwordCheck && touched.passwordCheck}
+                                onFocus={() => clearFieldError('passwordCheck')}
+                                onBlur={() => handleBlur('passwordCheck')}
+                            />
+                            <S_ErrorMessage visible={!!errors.passwordCheck && touched.passwordCheck}>{errors.passwordCheck}</S_ErrorMessage>
+                        </Modal>
+                    )}
                 </S_ButtonWrapper>
             </S_MyInfo>
         </S_MyContainer>
@@ -329,4 +249,23 @@ const S_PaginationContainer = styled.div`
     margin-top: 20px;
     display: flex;
     justify-content: center;
+`;
+
+const S_ErrorMessage = styled.p<{ visible: boolean }>`
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    margin-right: 260px;
+    min-height: 20px;
+    visibility: ${(props) => (props.visible ? 'visible' : 'hidden')};
+`;
+
+const S_Input = styled.input<{ isError: boolean }>`
+    width: 400px;
+    height: 45px;
+    color: gray;
+    margin-top: 20px;
+    border-radius: 10px;
+    font-size: 1rem;
+    border: ${(props) => (props.isError ? '2px solid red' : '1px solid #ccc')};
 `;

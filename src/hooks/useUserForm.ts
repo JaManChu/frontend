@@ -138,5 +138,6 @@ export const useUserForm = () => {
         clearInputMessage,
         handleSignup,
         handleLogin,
+        setInputMessage,
     };
 };

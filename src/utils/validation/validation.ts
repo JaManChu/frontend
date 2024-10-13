@@ -33,10 +33,24 @@ interface ValidationProps {
     passwordCheck?: string;
     nickname?: string;
 }
+interface UserInfoValidationProps {
+    password: string;
+    passwordCheck?: string;
+    nickname?: string;
+}
+
 // 유효성 검사 결과 (success or fail)
 export const validateResult = ({ email, password, passwordCheck, nickname }: ValidationProps) => {
     return {
         email: validateEmail(email),
+        password: validatePassword(password),
+        passwordCheck: passwordCheck ? validatePasswordCheck(password, passwordCheck) : '',
+        nickName: nickname ? validateNickname(nickname) : '',
+    };
+};
+
+export const validateUserIfno = ({ password, passwordCheck, nickname }: UserInfoValidationProps) => {
+    return {
         password: validatePassword(password),
         passwordCheck: passwordCheck ? validatePasswordCheck(password, passwordCheck) : '',
         nickName: nickname ? validateNickname(nickname) : '',

@@ -186,7 +186,7 @@ export default function Mypage(): JSX.Element {
                         <Pagination
                             count={totalScrapedRecipesPages}
                             page={scrapedRecipesPage}
-                            onChange={(e, page) => setScrapedRecipesPage(page)}
+                            onChange={(_, page) => setScrapedRecipesPage(page)}
                             variant="outlined"
                             color="primary"
                             shape="rounded"
@@ -212,7 +212,7 @@ export default function Mypage(): JSX.Element {
                         <Pagination
                             count={totalMyRecipesPages}
                             page={myRecipesPage}
-                            onChange={(e, page) => setMyRecipesPage(page)}
+                            onChange={(_, page) => setMyRecipesPage(page)}
                             variant="outlined"
                             color="primary"
                             shape="rounded"

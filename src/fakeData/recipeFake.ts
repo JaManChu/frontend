@@ -15,7 +15,7 @@ const fakeData: Props[] = [
     {
         recipeName: 'first',
         recipeId: 1,
-        recipeThumbnail: '',
+        recipeThumbnail: 'https://picsum.photos/800/450?random=1',
         recipeCookingTime: '60min',
         recipeAuthor: '',
         recipeLevel: '상',
@@ -42,7 +42,7 @@ const fakeData: Props[] = [
     {
         recipeName: 'second',
         recipeId: 2,
-        recipeThumbnail: '',
+        recipeThumbnail: 'https://picsum.photos/800/450?random=1',
         recipeCookingTime: '45min',
         recipeLevel: '상',
         recipeAuthor: '',
@@ -70,7 +70,7 @@ const fakeData: Props[] = [
         recipeName: 'third',
         recipeId: 3,
 
-        recipeThumbnail: '',
+        recipeThumbnail: 'https://picsum.photos/800/450?random=1',
         recipeCookingTime: '20min',
         recipeLevel: '상',
         recipeAuthor: '',
@@ -98,7 +98,7 @@ const fakeData: Props[] = [
         recipeName: 'fourth',
         recipeId: 4,
 
-        recipeThumbnail: '',
+        recipeThumbnail: 'https://picsum.photos/800/450?random=1',
         recipeCookingTime: '10min',
         recipeLevel: '상',
         recipeRating: 3.5,
@@ -126,7 +126,7 @@ const fakeData: Props[] = [
         recipeName: 'fifth',
         recipeId: 5,
 
-        recipeThumbnail: '',
+        recipeThumbnail: 'https://picsum.photos/800/450?random=1',
         recipeCookingTime: '6min',
         recipeLevel: '상',
         recipeRating: 5.0,

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import RecipeList from '../../../components/Recipe/RecipeList.js';
-import styled from 'styled-components';
+import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
 import axios from 'axios';
 import fakeData from '../../../fakeData/recipeFake.js';
 
@@ -47,11 +47,3 @@ export default function PopularRecipes({ limit, page }: RecipeLimitProps): JSX.E
         </S_RecipeContainer>
     );
 }
-
-const S_RecipeContainer = styled.section`
-    margin: 0 auto;
-    width: 90vw;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-`;

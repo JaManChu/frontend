@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import RecipeList from '../../../components/Recipe/RecipeList.js';
+import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
 import axios from 'axios';
+import fakeData from '../../../fakeData/recipeFake.js';
 
 interface RecipeLimitProps {
     limit?: number;
@@ -33,6 +35,7 @@ export default function AllRecipes({ limit, page }: RecipeLimitProps): JSX.Eleme
                 console.log(err);
                 console.log(err.message);
                 setMessage(err.message);
+                setRecipes(fakeData);
             }
         };
 
@@ -42,5 +45,9 @@ export default function AllRecipes({ limit, page }: RecipeLimitProps): JSX.Eleme
     }, []);
     console.log('all message: ', message);
 
-    return <RecipeList recipes={recipes} limit={limit} page={page} />;
+    return (
+        <S_RecipeContainer>
+            <RecipeList recipes={recipes} limit={limit} page={page} />
+        </S_RecipeContainer>
+    );
 }

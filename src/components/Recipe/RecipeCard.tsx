@@ -36,7 +36,7 @@ export default function RecipeCard({ page = '', recipeId, recipeName, recipeThum
                     {},
                     {
                         headers: {
-                            'Access-Token': `Bearer ${token}`,
+                            'access-token': `Bearer ${token}`,
                         },
                     },
                 );

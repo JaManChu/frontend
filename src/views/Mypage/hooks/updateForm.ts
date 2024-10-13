@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { validateEmail, validatePassword, validatePasswordCheck, validateNickname, validateResult } from '../../../utils/validation/validation.ts';
+import { validateEmail, validatePassword, validatePasswordCheck, validateNickname } from '../../../utils/validation/validation.ts';
 
 export const useUpdateForm = () => {
     const [email, setEmail] = useState('');
@@ -52,23 +52,6 @@ export const useUpdateForm = () => {
         setErrors((prev) => ({ ...prev, [field]: '' }));
     };
 
-    const handleSubmit = () => {
-        const newErrors = validateResult({ email, password, passwordCheck, nickname });
-        setErrors(newErrors);
-
-        const hasErrors = Object.values(newErrors).some((error) => error !== '');
-
-        if (!hasErrors) {
-            return {
-                email,
-                password: password,
-                nickname: nickname,
-            };
-        }
-
-        return null;
-    };
-
     return {
         email,
         setEmail,
@@ -82,6 +65,5 @@ export const useUpdateForm = () => {
         touched,
         handleBlur,
         clearFieldError,
-        handleSubmit,
     };
 };

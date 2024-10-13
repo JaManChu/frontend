@@ -1,7 +1,8 @@
 import { ChangeEvent, KeyboardEvent } from 'react';
 import { SearchResult } from './SearchResult';
 import SearchCondition from './SearchCondition';
-import PopularRecipe from '../PopularRecipe/PopularRecipe';
+import PopularRecipe from '../PopularRecipes/PopularRecipes';
+import { SelectChangeEvent } from '@mui/material/Select';
 
 interface RecipeProps {
     recipeId: number;
@@ -17,18 +18,22 @@ interface RecipeProps {
     instructions: Record<number | string, string>[];
 }
 interface ContainerProps {
+    time: string;
+    level: string;
     value: string;
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
     handleKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
     handleSubmit: () => Promise<void>;
-    handleTime: (e: ChangeEvent<HTMLSelectElement>) => void;
-    handleLevel: (e: ChangeEvent<HTMLSelectElement>) => void;
+    handleTime: (e: SelectChangeEvent) => void;
+    handleLevel: (e: SelectChangeEvent) => void;
     ingredientsList: string[];
     recipes: RecipeProps[];
     searching: boolean;
 }
 
 export default function SearchContainer({
+    time,
+    level,
     value,
     onChange,
     handleSubmit,
@@ -42,6 +47,8 @@ export default function SearchContainer({
     return (
         <>
             <SearchCondition
+                time={time}
+                level={level}
                 value={value}
                 onChange={onChange}
                 handleSubmit={handleSubmit}
@@ -50,7 +57,10 @@ export default function SearchContainer({
                 handleTime={handleTime}
                 ingredientsList={ingredientsList}
             />
-            <PopularRecipe page="search" />
+
+            <PopularRecipe page="search">
+                <h3 style={{ marginLeft: '50px' }}>인기레시피</h3>
+            </PopularRecipe>
             <SearchResult recipes={recipes} searching={searching} />
         </>
     );

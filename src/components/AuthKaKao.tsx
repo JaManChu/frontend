@@ -25,7 +25,7 @@ export default function AuthKaKao() {
 
     //             if (response.code === 200) {
     //                 sessionStorage.setItem('kakaoToken', JSON.stringify(response.data));
-    //                 navigate('/main');
+    //                 navigate('/home');
     //             }
     //         } catch (err) {
     //             console.log(err);
@@ -46,7 +46,7 @@ export default function AuthKaKao() {
             if (nickname) {
                 sessionStorage.setItem('nickname', nickname);
             }
-            navigate('/main');
+            navigate('/home');
         }
     }, [navigate]);
 

@@ -1,16 +1,15 @@
 // import { useEffect, useState } from 'react';
 import RecipeList from '../../../components/Recipe/RecipeList.js';
-import RecipePageHeader from '../../../components/Recipe/RecipePageHeader.js';
 import fakeData from '../../../fakeData/recipeFake.js';
-import styled from 'styled-components';
-// import axios from 'axios';
 import withAuth from '../../../hooks/withAuth.js';
+import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
+// import axios from 'axios';
 
 interface RecipeLimitProps {
     limit?: number;
     page?: string;
 }
-function RecommendedRecipe({ limit, page }: RecipeLimitProps): JSX.Element {
+function RecommendedRecipes({ limit, page }: RecipeLimitProps): JSX.Element {
     // const [recipes, setRecipes] = useState<string[]>([]);
     // useEffect(() => {
     //     const fetchRecipes = async () => {
@@ -21,18 +20,10 @@ function RecommendedRecipe({ limit, page }: RecipeLimitProps): JSX.Element {
     // }, [recipes]);
 
     return (
-        <>
-            {page ? <RecipePageTitle>Recommend Recipes</RecipePageTitle> : <RecipePageHeader title="Recommend" />}
+        <S_RecipeContainer>
             <RecipeList recipes={fakeData} limit={limit} page={page} />
-        </>
+        </S_RecipeContainer>
     );
 }
 
-export default withAuth(RecommendedRecipe);
-
-const RecipePageTitle = styled.h2`
-    margin: 36px 16px 0px;
-    color: #622b18;
-    font-size: 40px;
-    text-align: center;
-`;
+export default withAuth(RecommendedRecipes);

@@ -34,7 +34,7 @@ export default function useComments() {
         try {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/comments/${recipeId}`, {
                 headers: {
-                    'Access-Token': `Bearer ${token}`,
+                    'access-token': `Bearer ${token}`,
                 },
             });
             if (response.status === 200) {
@@ -64,7 +64,7 @@ export default function useComments() {
                 },
                 {
                     headers: {
-                        'Access-Token': `Bearer ${token}`,
+                        'access-token': `Bearer ${token}`,
                     },
                 },
             );
@@ -93,7 +93,7 @@ export default function useComments() {
                 },
                 {
                     headers: {
-                        'Access-Token': `Bearer ${token}`,
+                        'access-token': `Bearer ${token}`,
                     },
                 },
             );
@@ -134,7 +134,7 @@ export default function useComments() {
         try {
             const response: any = await axios.delete(`${import.meta.env.VITE_BASE_URL}/comments`, {
                 headers: {
-                    'Access-Token': `Bearer ${token}`,
+                    'access-token': `Bearer ${token}`,
                 },
                 data: {
                     commentId: commentId,

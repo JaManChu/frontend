@@ -1,19 +1,25 @@
 import { ChangeEvent, KeyboardEvent } from 'react';
 import { SearchBox } from './SearchBox';
 import { CiSearch } from 'react-icons/ci';
+import CustomSelect from '../../../ui/Select/CustomSelect';
+import { SelectChangeEvent } from '@mui/material/Select';
 import styled from 'styled-components';
 
 interface SearchConditionProps {
+    time: string;
+    level: string;
     value: string;
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
     handleKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
     handleSubmit: () => Promise<void>;
-    handleTime: (e: ChangeEvent<HTMLSelectElement>) => void;
-    handleLevel: (e: ChangeEvent<HTMLSelectElement>) => void;
+    handleTime: (e: SelectChangeEvent) => void;
+    handleLevel: (e: SelectChangeEvent) => void;
     ingredientsList: string[];
 }
 
 export default function SearchCondition({
+    time,
+    level,
     value,
     onChange,
     handleSubmit,
@@ -22,54 +28,53 @@ export default function SearchCondition({
     handleLevel,
     ingredientsList,
 }: SearchConditionProps): JSX.Element {
+    const levelOptions = [
+        { label: '10분', value: 10 },
+        { label: '20분', value: 20 },
+        { label: '30분', value: 30 },
+        { label: '60분', value: 60 },
+        { label: '120분', value: 120 },
+    ];
+    const timeOption = [
+        { label: '하', value: 'LOW' },
+        { label: '중', value: 'MIDDLE' },
+        { label: '상', value: 'HIGH' },
+    ];
+
     console.log(typeof ingredientsList.length);
     return (
         <>
-            <ConditionList>
-                <SearchItem>
+            <S_ConditionList>
+                <S_SearchItem>
                     <label htmlFor="ingredient">재료</label>
                     <SearchBox value={value} onChange={onChange} handleKeyDown={handleKeyDown} />
-                </SearchItem>
-                <SearchItem>
-                    <label htmlFor="recipeLevel">난이도</label>
-                    <select name="level" id="recipeLevel" onChange={handleLevel}>
-                        <option value="">선택해주세요</option>
-                        <option value="high">상</option>
-                        <option value="middle">중</option>
-                        <option value="low">하</option>
-                    </select>
-                </SearchItem>
-                <SearchItem>
-                    <label htmlFor="recipeTime">조리시간</label>
-                    <select name="time" id="recipeTime" onChange={handleTime}>
-                        <option value="">선택해주세요</option>
-                        <option value="10">10분</option>
-                        <option value="15">15분</option>
-                        <option value="30">30분</option>
-                        <option value="60">60분</option>
-                        <option value="120">120분</option>
-                    </select>
-                </SearchItem>
-                <SearchIcon onClick={handleSubmit} />
-            </ConditionList>
+                </S_SearchItem>
+                <S_SearchItem>
+                    <CustomSelect id="recipeLevel" options={timeOption} value={level} label="난이도" handleChange={handleTime} />
+                </S_SearchItem>
+                <S_SearchItem>
+                    <CustomSelect id="recipeTime" options={levelOptions} value={time} label="조리시간" handleChange={handleLevel} />
+                </S_SearchItem>
+                <S_SearchIcon onClick={handleSubmit} />
+            </S_ConditionList>
             {ingredientsList.length != 0 && (
-                <ConditionContent>
+                <S_ConditionContent>
                     <h4>선택하신 재료가 맞나요?</h4>
-                    <ConditionContentList length={ingredientsList.length}>
+                    <S_ConditionContentList length={ingredientsList.length}>
                         {ingredientsList.map((ingredient, idx) => (
-                            <ConditionContentItem key={idx}>
+                            <S_ConditionContentItem key={idx}>
                                 <span>선택재료{idx + 1}</span>
                                 <span>{ingredient}</span>
-                            </ConditionContentItem>
+                            </S_ConditionContentItem>
                         ))}
-                    </ConditionContentList>
-                </ConditionContent>
+                    </S_ConditionContentList>
+                </S_ConditionContent>
             )}
         </>
     );
 }
 
-const ConditionList = styled.ul`
+const S_ConditionList = styled.ul`
     width: 80%;
     margin: 40px auto;
     list-style: none;
@@ -79,7 +84,7 @@ const ConditionList = styled.ul`
     align-items: center;
     justify-content: space-between;
 `;
-const SearchItem = styled.li`
+const S_SearchItem = styled.li`
     margin: 8px;
     padding: 8px;
     height: 80px;
@@ -95,7 +100,7 @@ const SearchItem = styled.li`
         flex-grow: 2;
     }
 `;
-const SearchIcon = styled(CiSearch)`
+const S_SearchIcon = styled(CiSearch)`
     margin-left: 10px;
     font-size: 24px;
     color: #333;
@@ -109,14 +114,14 @@ const SearchIcon = styled(CiSearch)`
     }
 `;
 
-const ConditionContent = styled.div`
+const S_ConditionContent = styled.div`
     h4 {
         font-size: 20px;
         font-weight: 400;
         text-align: center;
     }
 `;
-const ConditionContentList = styled.ul<{ length: number }>`
+const S_ConditionContentList = styled.ul<{ length: number }>`
     margin: 0 auto;
     padding: 10px;
     width: 80%;
@@ -131,7 +136,7 @@ const ConditionContentList = styled.ul<{ length: number }>`
         display: block;
     }
 `;
-const ConditionContentItem = styled.li`
+const S_ConditionContentItem = styled.li`
     padding: 8px;
     display: flex;
     flex-direction: column;

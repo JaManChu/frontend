@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
+import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
 import RecipeList from '../../../components/Recipe/RecipeList.js';
-import RecipePageHeader from '../../../components/Recipe/RecipePageHeader.js';
 import axios from 'axios';
+import fakeData from '../../../fakeData/recipeFake.js';
 
 interface RecipeLimitProps {
     limit?: number;
     page?: string;
+    children: ReactNode;
 }
 interface RecipeProps {
     recipeId: number;
@@ -18,35 +20,31 @@ interface RecipeProps {
     // desc: string;
 }
 
-export default function LatestRecipe({ limit, page }: RecipeLimitProps): JSX.Element {
+export default function PopularRecipes({ limit, page, children }: RecipeLimitProps): JSX.Element {
     const [recipes, setRecipes] = useState<RecipeProps[]>([]);
-    const [message, setMessage] = useState<string>('');
-
+    const [message, setMessage] = useState<string>();
     useEffect(() => {
         const fetchRecipes = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes`);
+                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes/popular`);
                 if (response.data.code == 'OK') {
+                    console.log('popular recipe response: ', response);
                     setRecipes(response.data.data);
                     setMessage(response.data.message);
                 }
             } catch (err: any) {
-                console.log(err);
-                console.log(err.message);
+                console.log('popular recipe 조회 err: ', err);
                 setMessage(err.message);
+                setRecipes(fakeData);
             }
         };
-
         fetchRecipes();
-
-        return () => {};
     }, []);
-    console.log('all message: ', message);
-
+    console.log(message);
     return (
-        <>
-            {!page && <RecipePageHeader title="Latest" />}
+        <S_RecipeContainer>
+            {children}
             <RecipeList recipes={recipes} limit={limit} page={page} />
-        </>
+        </S_RecipeContainer>
     );
 }

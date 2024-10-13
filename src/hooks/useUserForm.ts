@@ -115,14 +115,13 @@ export const useUserForm = () => {
                 sessionStorage.setItem('nickname', response.data.data);
                 setMessage(response.data.message); // ! 모달로 빼기 - 성공안내 필요
                 alert(response.data.message);
-                navigate('/main');
+                navigate('/home');
             }
         } catch (err: any) {
             setMessage(err.response.data); // ! 모달창 안내 필요
             console.log('에러? response 확인할것 :', err);
         }
     };
-    console.log(message); //
 
     return {
         email,

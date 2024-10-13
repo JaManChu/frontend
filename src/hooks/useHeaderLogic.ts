@@ -7,32 +7,32 @@ export default function useHeaderLogic() {
     const location = useLocation();
 
     useEffect(() => {
-        if (location.pathname == '/login' || location.pathname == '/signup') {
-            setIsActive('');
+        const currentMenu = menuItems.find((menu) => location.pathname == menu.to);
+        if (currentMenu) {
+            setIsActive(currentMenu.name);
         } else {
-            const getMenu = sessionStorage.getItem('menu') || 'Home';
-            setIsActive(getMenu);
+            setIsActive('');
         }
     }, [location.pathname]);
 
     const handleClickMenu = (menu: string): void => {
         setIsActive(menu);
-        sessionStorage.setItem('menu', menu);
     };
+    console.log(isActive);
 
     const menuItems = isLogin
         ? [
-              { name: 'Home', to: '/main' },
-              { name: 'Recommend', to: '/recipes/recommended' },
+              { name: 'Home', to: '/home' },
+              { name: 'All', to: '/recipes/all' },
               { name: 'Popular', to: '/recipes/popular' },
-              { name: 'Latest', to: '/recipes/latest' },
+              { name: 'Recommended', to: '/recipes/recommended' },
               { name: 'Search', to: '/recipes/search' },
           ]
         : [
               { name: 'Onboard', to: '/' },
-              { name: 'Home', to: '/guestHome' },
+              { name: 'GuestHome', to: '/guestHome' },
+              { name: 'All', to: '/recipes/all' },
               { name: 'Popular', to: '/recipes/popular' },
-              { name: 'Latest', to: '/recipes/latest' },
               { name: 'Search', to: '/recipes/search' },
           ];
 

@@ -1,4 +1,5 @@
 import { useEffect, useState, ChangeEvent, KeyboardEvent } from 'react';
+import { SelectChangeEvent } from '@mui/material/Select';
 import axios from 'axios';
 
 export default function useSearchRecipe() {
@@ -6,8 +7,8 @@ export default function useSearchRecipe() {
     const [searchIngredients, setSearchIngredients] = useState<string>(''); // 사용자 입력 검색어
     const [ingredientsList, setIngredientsList] = useState<string[]>([]); // 공백 기준 검색어 리스트
     const [recipes, setRecipes] = useState([]); // 레시피 데이터 저장
-    const [time, setTime] = useState<string | null>(); // 소요시간(select에서 선택)
-    const [level, setLevel] = useState<string | null>(); // 난이도(select에서 선택)
+    const [time, setTime] = useState<string>(''); // 소요시간(select에서 선택)
+    const [level, setLevel] = useState<string>(''); // 난이도(select에서 선택)
     const [message, setMessage] = useState<string>('');
 
     // 재료 입력시에 검색어 리스트 입력 재료로 갱신
@@ -39,7 +40,7 @@ export default function useSearchRecipe() {
         try {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}`, {
                 params: { ingredientName: ingredientsList, recipeCookingTime: time, recipeLevel: level },
-                headers: { 'Access-Token': `Bearer ${token}` },
+                headers: { 'access-token': `Bearer ${token}` },
             });
             console.log('search response: ', response);
             if (response.data.code == 'OK') {
@@ -70,11 +71,12 @@ export default function useSearchRecipe() {
     };
 
     // 난이도를 변경하는 핸들러
-    const handleLevel = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleLevel = (e: SelectChangeEvent) => {
         setLevel(e.target.value);
     };
+
     // 소요시간을 변경하는 핸들러
-    const handleTime = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleTime = (e: SelectChangeEvent) => {
         setTime(e.target.value);
     };
 

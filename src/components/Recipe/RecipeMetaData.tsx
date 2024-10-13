@@ -11,25 +11,25 @@ export default function RecipeMetaData({ page = '', time, level, rate }: Props):
     return (
         <>
             {page != 'popular' ? (
-                <RecipeInfo>
+                <S_RecipeInfo>
                     <FaRegClock />
-                    <RecipeInfoItem>{time}</RecipeInfoItem>
+                    <S_RecipeInfoItem>{time}</S_RecipeInfoItem>
                     <FaStairs />
-                    <RecipeInfoItem>{level}</RecipeInfoItem>
+                    <S_RecipeInfoItem>{level}</S_RecipeInfoItem>
                     <FaRegStar />
-                    <RecipeInfoItem>{rate}</RecipeInfoItem>
-                </RecipeInfo>
+                    <S_RecipeInfoItem>{rate}</S_RecipeInfoItem>
+                </S_RecipeInfo>
             ) : null}
         </>
     );
 }
 
-const RecipeInfo = styled.div`
+const S_RecipeInfo = styled.div`
     height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
 `;
-const RecipeInfoItem = styled.span`
+const S_RecipeInfoItem = styled.span`
     margin: 0 8px 0 5px;
 `;

@@ -1,4 +1,5 @@
-import RecipeCard from './RecipeCard';
+// import RecipeCard from './RecipeCard';
+import RecipeNewCard from './RecipeNewCard';
 import styled from 'styled-components';
 
 interface RecipeProps {
@@ -20,21 +21,20 @@ export default function RecipeList({ recipes, limit, page }: RecipeListProps): J
     const displayRecipes = limit ? recipes.slice(0, limit) : recipes;
 
     return (
-        <RecipeUlist page={page}>
-            {/* 데이터 연동하면 ...recipe로 코드 변경 필요 */}
+        <S_RecipeULlist page={page}>
             {displayRecipes.map((recipe: RecipeProps) => (
                 <li key={recipe.recipeId}>
-                    <RecipeCard key={recipe.recipeId} {...recipe} page={page} />
+                    <RecipeNewCard key={recipe.recipeId} {...recipe} page={page} />
                 </li>
             ))}
-        </RecipeUlist>
+        </S_RecipeULlist>
     );
 }
 
-const RecipeUlist = styled.ul<{ page?: string }>`
+const S_RecipeULlist = styled.ul<{ page?: string }>`
     list-style: none;
     display: grid;
     gap: 16px;
-    padding: ${(props) => (props.page == 'latest' ? '0px' : props.page == 'recommended' || props.page == 'popular' ? '8px 50px 50px' : '30px;')};
-    grid-template-columns: ${(props) => (props.page == 'latest' ? '1fr' : props.page == 'recommended' ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)')};
+    padding: ${(props) => (props.page == 'all' ? '0px' : props.page == 'recommended' || props.page == 'popular' ? '8px 50px 50px' : '30px;')};
+    grid-template-columns: ${(props) => (props.page == 'all' ? '1fr' : props.page == 'recommended' ? 'repeat(4, 1fr)' : 'repeat(3, 1fr)')};
 `;

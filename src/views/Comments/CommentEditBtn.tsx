@@ -34,11 +34,11 @@ export default function CommentEditBtn({
     updateCommentHandler,
     deleteCommentHandler,
 }: EditBtnProps) {
-    // const nickName = sessionStorage.getItem('nickname');
+    const nickname = sessionStorage.getItem('nickname');
 
     return (
         <>
-            {isEditing ? (
+            {isEditing && nickname == review.commentAuthor ? (
                 <>
                     {commentId !== undefined && currentRate != undefined && recipeId !== undefined && (
                         <button
@@ -58,7 +58,6 @@ export default function CommentEditBtn({
                     )}
                 </>
             ) : (
-                // nickName == review.commentAuthor
                 <div>
                     <button
                         onClick={() => {

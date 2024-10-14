@@ -51,7 +51,6 @@ export default function useComments() {
                 console.log('response.data.data: ', response.data.data);
                 setCommentDataList(response.data.data.comments);
             }
-            console.log('너는 몇번째임?');
         } catch (err) {
             console.log(err);
             alert('댓글을 가져오는데 실패했습니다.');
@@ -87,8 +86,8 @@ export default function useComments() {
             console.log('rating, comment', rating, comment);
             setResponseMessage(response.data.message);
             // ! 초기화 : 필요여부 체크(test필요)
-            setCreateComment('');
-            setCurrentRate(0);
+            // setCreateComment('');
+            // setCurrentRate(0);
             await fetchCommentHandler(recipeId.toString());
         } catch (err: any) {
             console.log(err);
@@ -114,7 +113,8 @@ export default function useComments() {
                     withCredentials: true,
                 },
             );
-
+            console.log('update response:', response);
+            console.log(commentId, comment, rating);
             console.log('rating, comment', rating, comment);
 
             if (response.staus === 200) {
@@ -122,7 +122,13 @@ export default function useComments() {
                 setResponseMessage(response.data.message);
                 // 초기화 -> 안하면 다시 수정 버튼 눌렀을때 어떻게 반영되는지 확인
                 setCurrentRate(0);
-                setUpdateComment('');
+                // setUpdateComment('');
+
+                setCommentDataList((prev) =>
+                    prev.map((originComment) =>
+                        originComment.commentId == commentId ? { ...originComment, commentContent: comment } : originComment,
+                    ),
+                );
                 setCommentId(0);
                 await fetchCommentHandler(recipeId);
                 alert('댓글이 수정되었습니다.');
@@ -143,7 +149,7 @@ export default function useComments() {
     const handleMakeRate = (rate: number) => {
         setCurrentRate(rate);
     };
-    console.log(currentRate);
+    console.log('rate는? ', currentRate);
 
     // 코멘트 수정 버튼과 연결
     const handleClickEdit = ({ comments, commentId, commentRate }: EditingProps) => {
@@ -167,10 +173,9 @@ export default function useComments() {
             console.log('delete response: ', response);
             setResponseMessage(response.data.message);
             console.log(responseMessage);
-            await fetchCommentHandler(recipeId);
+            setCommentDataList((prev) => prev.filter((originComment) => originComment.commentId != commentId));
             alert('댓글이 삭제되었습니다.');
-            //  ! comments 리렌더링 조건 추가 필요 삭제 / 수정 / 생성 될때마다 알아서 호출되도록 구현
-            // 현재는 comments를 새로 생성하지 않고 삭제만 했음 - useEffect 동작 이유 없음
+            await fetchCommentHandler(recipeId);
         } catch (err) {
             console.log(err);
             alert('댓글 삭제에 실패하였습니다.');

@@ -1,6 +1,7 @@
 // import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { setCookie } from '../utils/cookie/cookies';
 
 export default function AuthKaKao() {
     const navigate = useNavigate();
@@ -37,11 +38,14 @@ export default function AuthKaKao() {
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
-        const token = params.get('token');
+        const token = params.get('access-token');
         const nickname = params.get('nickname');
 
         if (token) {
-            sessionStorage.setItem('token', token);
+            setCookie('access-token', token, {
+                path: ',',
+                secure: true,
+            });
             if (nickname) {
                 sessionStorage.setItem('nickname', nickname);
             }

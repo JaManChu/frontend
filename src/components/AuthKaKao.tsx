@@ -9,6 +9,7 @@ export default function AuthKaKao() {
         const params = new URLSearchParams(window.location.search);
         const token = params.get('access-token');
         const nickname = params.get('nickname');
+        console.log(token, nickname);
 
         if (token && nickname) {
             sessionStorage.setItem('token', token);
@@ -16,7 +17,7 @@ export default function AuthKaKao() {
 
             navigate('/home');
         }
-    }, []);
+    }, [navigate]);
 
     return (
         <div>

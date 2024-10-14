@@ -51,6 +51,7 @@ export default function useComments() {
                 console.log('response.data.data: ', response.data.data);
                 setCommentDataList(response.data.data.comments);
             }
+            console.log('너는 몇번째임?');
         } catch (err) {
             console.log(err);
             alert('댓글을 가져오는데 실패했습니다.');
@@ -88,7 +89,7 @@ export default function useComments() {
             // ! 초기화 : 필요여부 체크(test필요)
             setCreateComment('');
             setCurrentRate(0);
-            fetchCommentHandler(recipeId.toString());
+            await fetchCommentHandler(recipeId.toString());
         } catch (err: any) {
             console.log(err);
             alert('댓글 작성에 실패하였습니다.');
@@ -123,7 +124,7 @@ export default function useComments() {
                 setCurrentRate(0);
                 setUpdateComment('');
                 setCommentId(0);
-                fetchCommentHandler(recipeId);
+                await fetchCommentHandler(recipeId);
                 alert('댓글이 수정되었습니다.');
             }
         } catch (err) {
@@ -166,7 +167,7 @@ export default function useComments() {
             console.log('delete response: ', response);
             setResponseMessage(response.data.message);
             console.log(responseMessage);
-            fetchCommentHandler(recipeId);
+            await fetchCommentHandler(recipeId);
             alert('댓글이 삭제되었습니다.');
             //  ! comments 리렌더링 조건 추가 필요 삭제 / 수정 / 생성 될때마다 알아서 호출되도록 구현
             // 현재는 comments를 새로 생성하지 않고 삭제만 했음 - useEffect 동작 이유 없음

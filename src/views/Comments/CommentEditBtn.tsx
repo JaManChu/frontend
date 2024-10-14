@@ -1,7 +1,7 @@
 interface Props {
+    commentAuthor: string;
+    commentContent: string;
     commentId: number;
-    nickname: string;
-    content: string;
     rating: number;
     createdAt: string;
     updatedAt: string;
@@ -17,7 +17,7 @@ interface EditBtnProps {
     isEditing: boolean;
     commentId?: number;
     currentRate: number;
-    currentComment: string;
+    updateComment: string;
     handleClickEdit: ({ comments, commentId, commentRate }: { comments: string; commentId: number; commentRate: number }) => void;
     updateCommentHandler: ({ commentId, comment, rating }: UpdateProps, recipeId: string) => Promise<void>;
     deleteCommentHandler: (commentId: number, recipeId: string) => Promise<void>;
@@ -29,59 +29,61 @@ export default function CommentEditBtn({
     isEditing,
     commentId,
     currentRate,
-    currentComment,
+    updateComment,
     handleClickEdit,
     updateCommentHandler,
     deleteCommentHandler,
 }: EditBtnProps) {
-    // const nickName = sessionStorage.getItem('nickname');
+    const nickname = sessionStorage.getItem('nickname');
 
     return (
         <>
-            {isEditing ? (
-                <>
-                    {commentId !== undefined && currentRate != undefined && recipeId !== undefined && (
-                        <button
-                            onClick={() =>
-                                updateCommentHandler(
-                                    {
-                                        commentId: commentId,
-                                        comment: currentComment,
-                                        rating: currentRate,
-                                    },
-                                    recipeId,
-                                )
-                            }
-                        >
-                            완료
-                        </button>
-                    )}
-                </>
-            ) : (
-                // nickName == review.nickname
-                <div>
-                    <button
-                        onClick={() => {
-                            handleClickEdit({
-                                comments: review.content,
-                                commentId: review.commentId,
-                                commentRate: review.rating,
-                            });
-                        }}
-                    >
-                        수정
-                    </button>
-                    {recipeId !== undefined && (
-                        <button
-                            onClick={() => {
-                                deleteCommentHandler(review.commentId, recipeId);
-                            }}
-                        >
-                            삭제
-                        </button>
-                    )}
-                </div>
-            )}
+
+            {isEditing
+                ? commentId == review.commentId && (
+                      <>
+                          {commentId !== undefined && currentRate != undefined && recipeId !== undefined && (
+                              <button
+                                  onClick={() =>
+                                      updateCommentHandler(
+                                          {
+                                              commentId: commentId,
+                                              comment: updateComment,
+                                              rating: currentRate,
+                                          },
+                                          recipeId,
+                                      )
+                                  }
+                              >
+                                  완료
+                              </button>
+                          )}
+                      </>
+                  )
+                : nickname == review.commentAuthor && (
+                      <div>
+                          <button
+                              onClick={() => {
+                                  handleClickEdit({
+                                      comments: review.commentContent,
+                                      commentId: review.commentId,
+                                      commentRate: review.rating,
+                                  });
+                              }}
+                          >
+                              수정
+                          </button>
+                          {recipeId !== undefined && (
+                              <button
+                                  onClick={() => {
+                                      deleteCommentHandler(review.commentId, recipeId);
+                                  }}
+                              >
+                                  삭제
+                              </button>
+                          )}
+                      </div>
+                  )}
         </>
     );
 }

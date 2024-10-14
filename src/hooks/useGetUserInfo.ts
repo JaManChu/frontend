@@ -21,6 +21,7 @@ export const useGetUserInfo = () => {
                             headers: {
                                 'access-token': `Bearer ${token}`,
                             },
+                            withCredentials: true,
                         },
                     );
                     console.log('마이페이지 유저정보', response);

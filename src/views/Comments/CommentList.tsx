@@ -11,9 +11,9 @@ interface UpdateProps {
     rating: number;
 }
 interface CommentDataProps {
+    commentAuthor: string;
+    commentContent: string;
     commentId: number;
-    nickname: string;
-    content: string;
     rating: number;
     createdAt: string;
     updatedAt: string;
@@ -23,7 +23,7 @@ interface CommentsListProps {
     handleClickEdit: ({ comments, commentId, commentRate }: { comments: string; commentId: number; commentRate: number }) => void;
     commentId?: number;
     currentRate?: number;
-    currentComment: string;
+    updateComment: string;
     commentDataList: CommentDataProps[];
     fetchCommentHandler: (id: string) => Promise<void>;
     updateCommentHandler: ({ commentId, comment, rating }: UpdateProps, recipeId: string) => Promise<void>;
@@ -37,7 +37,7 @@ export default function CommentList({
     handleClickEdit,
     commentId,
     currentRate,
-    currentComment,
+    updateComment,
     commentDataList,
     fetchCommentHandler,
     updateCommentHandler,
@@ -53,7 +53,7 @@ CommentsListProps): JSX.Element {
         if (id) {
             fetchCommentHandler(id);
         }
-    }, [id]);
+    }, []);
 
     return (
         <>
@@ -63,16 +63,16 @@ CommentsListProps): JSX.Element {
                     <CommentsWrapper>
                         <ReviewerFigure>
                             <img src="" alt="유저이미지" />
-                            <ReviewerFigcaption>{comment.nickname}</ReviewerFigcaption>
+                            <ReviewerFigcaption>{comment.commentAuthor}</ReviewerFigcaption>
                         </ReviewerFigure>
                         <CommentsDataWrapper>
                             <CommentRating rating={comment.rating} />
-                            <span>{comment.createdAt}</span>
+                            <span>{comment.createdAt.split('T')[0]}</span>
                             <CommentEditBtn
                                 isEditing={isEditing}
                                 commentId={commentId}
                                 currentRate={currentRate ?? 0}
-                                currentComment={currentComment}
+                                updateComment={updateComment}
                                 handleClickEdit={handleClickEdit}
                                 updateCommentHandler={updateCommentHandler}
                                 deleteCommentHandler={deleteCommentHandler}
@@ -83,8 +83,8 @@ CommentsListProps): JSX.Element {
                                 isEditing={isEditing}
                                 reviewId={comment.commentId}
                                 commentId={commentId}
-                                content={comment.content}
-                                currentComment={currentComment}
+                                content={comment.commentContent}
+                                updateComment={updateComment}
                                 handleUpdateComment={handleUpdateComment}
                             />
                         </CommentsDataWrapper>

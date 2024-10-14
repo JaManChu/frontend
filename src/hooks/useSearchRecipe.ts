@@ -42,6 +42,7 @@ export default function useSearchRecipe() {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}`, {
                 params: { ingredientName: ingredientsList, recipeCookingTime: time, recipeLevel: level },
                 headers: { 'access-token': `Bearer ${token}` },
+                withCredentials: true,
             });
             console.log('search response: ', response);
             console.log('검색내용', ingredientsList, time, level);

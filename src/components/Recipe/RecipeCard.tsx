@@ -38,6 +38,7 @@ export default function RecipeCard({ page = '', recipeId, recipeName, recipeThum
                         headers: {
                             'access-token': `Bearer ${token}`,
                         },
+                        withCredentials: true,
                     },
                 );
                 console.log('scarp response: ', response);

@@ -45,6 +45,7 @@ export default function RecipeNewCard({ recipeId, recipeName, recipeThumbnail, r
                         headers: {
                             'access-token': `Bearer ${token}`,
                         },
+                        withCredentials: true,
                     },
                 );
                 console.log('scarp response: ', response);
@@ -61,7 +62,7 @@ export default function RecipeNewCard({ recipeId, recipeName, recipeThumbnail, r
             setMessage(marked ? '찜한 레시피에서 삭제하였습니다.' : '레시피를 찜하지 못했습니다.');
         }
     };
-
+    console.log(message);
     return (
         <Grid size={{ xs: 12, sm: 6, md: 4 }} sx={{ margin: 1 }}>
             <M_SyledCard variant="outlined" tabIndex={0} sx={{ height: '100%' }}>

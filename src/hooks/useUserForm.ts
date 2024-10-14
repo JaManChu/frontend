@@ -113,6 +113,7 @@ export const useUserForm = () => {
 
                 sessionStorage.setItem('token', accessToken);
                 sessionStorage.setItem('nickname', response.data.data);
+
                 setMessage(response.data.message); // ! 모달로 빼기 - 성공안내 필요
                 alert(response.data.message);
                 navigate('/home');

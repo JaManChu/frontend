@@ -5,46 +5,16 @@ import { useEffect } from 'react';
 export default function AuthKaKao() {
     const navigate = useNavigate();
 
-    // const code = new URL(window.location.href).searchParams.get('code');
-    // console.log(code);
-
-    // useEffect(() => {
-    //     if (!code) {
-    //         alert('카카오 인증에 실패했습니다.');
-    //         return;
-    //     }
-
-    //     const fetch = async () => {
-    //         console.log('code', code);
-
-    //         try {
-    //             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/oauth2/authorization/kakao`, {
-    //                 params: { code: code },
-    //             });
-    //             console.log(response.data);
-
-    //             if (response.code === 200) {
-    //                 sessionStorage.setItem('kakaoToken', JSON.stringify(response.data));
-    //                 navigate('/home');
-    //             }
-    //         } catch (err) {
-    //             console.log(err);
-    //             alert('로그인에 실패하였습니다.');
-    //         }
-    //     };
-    //     fetch();
-    // }, [code]);
-
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
-        const token = params.get('token');
+        const token = params.get('access-token');
         const nickname = params.get('nickname');
+        console.log(token, nickname);
 
-        if (token) {
+        if (token && nickname) {
             sessionStorage.setItem('token', token);
-            if (nickname) {
-                sessionStorage.setItem('nickname', nickname);
-            }
+            sessionStorage.setItem('nickname', nickname);
+
             navigate('/home');
         }
     }, [navigate]);

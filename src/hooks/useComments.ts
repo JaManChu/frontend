@@ -113,7 +113,8 @@ export default function useComments() {
                     withCredentials: true,
                 },
             );
-
+            console.log('update response:', response);
+            console.log(commentId, comment, rating);
             console.log('rating, comment', rating, comment);
 
             if (response.staus === 200) {
@@ -173,10 +174,8 @@ export default function useComments() {
             setResponseMessage(response.data.message);
             console.log(responseMessage);
             setCommentDataList((prev) => prev.filter((originComment) => originComment.commentId != commentId));
-            await fetchCommentHandler(recipeId);
             alert('댓글이 삭제되었습니다.');
-            //  ! comments 리렌더링 조건 추가 필요 삭제 / 수정 / 생성 될때마다 알아서 호출되도록 구현
-            // 현재는 comments를 새로 생성하지 않고 삭제만 했음 - useEffect 동작 이유 없음
+            await fetchCommentHandler(recipeId);
         } catch (err) {
             console.log(err);
             alert('댓글 삭제에 실패하였습니다.');

@@ -12,17 +12,19 @@ interface UpdateProps {
     rating: number;
 }
 interface EditBtnProps {
+    recipeId?: string;
     review: Props;
     isEditing: boolean;
     commentId?: number;
     currentRate: number;
     currentComment: string;
     handleClickEdit: ({ comments, commentId, commentRate }: { comments: string; commentId: number; commentRate: number }) => void;
-    updateCommentHandler: ({ commentId, comment, rating }: UpdateProps) => Promise<void>;
-    deleteCommentHandler: (commentId: number) => Promise<void>;
+    updateCommentHandler: ({ commentId, comment, rating }: UpdateProps, recipeId: string) => Promise<void>;
+    deleteCommentHandler: (commentId: number, recipeId: string) => Promise<void>;
 }
 
 export default function CommentEditBtn({
+    recipeId,
     review,
     isEditing,
     commentId,
@@ -38,14 +40,17 @@ export default function CommentEditBtn({
         <>
             {isEditing ? (
                 <>
-                    {commentId !== undefined && currentRate != undefined && (
+                    {commentId !== undefined && currentRate != undefined && recipeId !== undefined && (
                         <button
                             onClick={() =>
-                                updateCommentHandler({
-                                    commentId: commentId,
-                                    comment: currentComment,
-                                    rating: currentRate,
-                                })
+                                updateCommentHandler(
+                                    {
+                                        commentId: commentId,
+                                        comment: currentComment,
+                                        rating: currentRate,
+                                    },
+                                    recipeId,
+                                )
                             }
                         >
                             완료
@@ -66,13 +71,15 @@ export default function CommentEditBtn({
                     >
                         수정
                     </button>
-                    <button
-                        onClick={() => {
-                            deleteCommentHandler(review.commentId);
-                        }}
-                    >
-                        삭제
-                    </button>
+                    {recipeId !== undefined && (
+                        <button
+                            onClick={() => {
+                                deleteCommentHandler(review.commentId, recipeId);
+                            }}
+                        >
+                            삭제
+                        </button>
+                    )}
                 </div>
             )}
         </>

@@ -26,8 +26,8 @@ interface CommentsListProps {
     currentComment: string;
     commentDataList: CommentDataProps[];
     fetchCommentHandler: (id: string) => Promise<void>;
-    updateCommentHandler: ({ commentId, comment, rating }: UpdateProps) => Promise<void>;
-    deleteCommentHandler: (commentId: number) => Promise<void>;
+    updateCommentHandler: ({ commentId, comment, rating }: UpdateProps, recipeId: string) => Promise<void>;
+    deleteCommentHandler: (commentId: number, recipeId: string) => Promise<void>;
     handleUpdateComment: (e: ChangeEvent<HTMLTextAreaElement>) => void;
     // handleUpdateRate: (rate: number) => void;
 }
@@ -77,6 +77,7 @@ CommentsListProps): JSX.Element {
                                 updateCommentHandler={updateCommentHandler}
                                 deleteCommentHandler={deleteCommentHandler}
                                 review={comment}
+                                recipeId={id}
                             />
                             <CommentsContent
                                 isEditing={isEditing}

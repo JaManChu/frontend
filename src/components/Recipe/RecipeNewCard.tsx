@@ -62,8 +62,6 @@ export default function RecipeNewCard({ recipeId, recipeName, recipeThumbnail, r
         }
     };
 
-    console.log('scrap message, 찜상태, recipeId: ', message, marked, recipeId);
-
     return (
         <Grid size={{ xs: 12, sm: 6, md: 4 }} sx={{ margin: 1 }}>
             <M_SyledCard variant="outlined" tabIndex={0} sx={{ height: '100%' }}>

@@ -6,16 +6,16 @@ interface CommentsTextProps {
     commentId?: number;
     reviewId: number;
     content: string;
-    currentComment: string;
+    updateComment: string;
     handleUpdateComment: (e: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-export default function CommentsContent({ isEditing, commentId, reviewId, content, currentComment, handleUpdateComment }: CommentsTextProps) {
+export default function CommentsContent({ isEditing, commentId, reviewId, content, updateComment, handleUpdateComment }: CommentsTextProps) {
     return (
         <>
             {/* commentId는 수정하기 버튼을 눌렀을때 설정, commentId와 commentDataList-commentId가 일치하는 경우 */}
             {isEditing && commentId == reviewId ? (
-                <CommentsTextarea value={currentComment} onChange={handleUpdateComment}></CommentsTextarea>
+                <CommentsTextarea value={updateComment} onChange={handleUpdateComment}></CommentsTextarea>
             ) : (
                 <CommentsText>{content}</CommentsText>
             )}

@@ -129,6 +129,7 @@ export const useRecipeCreate = () => {
                     'access-token': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
                 },
+                withCredentials: true,
             });
             console.log('게시물작성 response', response);
 

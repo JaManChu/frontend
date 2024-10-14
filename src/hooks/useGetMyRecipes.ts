@@ -19,6 +19,7 @@ export const useGetMyRecipes = () => {
                     headers: {
                         'access-token': `Bearer ${token}`,
                     },
+                    withCredentials: true,
                 });
                 console.log('마이페이지 작성게시글,스크랩목록', response);
                 setMyRecipes(response.data.body.myRecipe);

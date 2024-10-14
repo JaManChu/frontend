@@ -35,6 +35,7 @@ export const useUpdateRecipes = (id: string) => {
                     headers: {
                         'access-token': `Bearer ${token}`,
                     },
+                    withCredentials: true,
                 });
                 console.log('게시물수정 유저정보', response);
                 setUserNickname(response.data.data.nickname);
@@ -55,6 +56,7 @@ export const useUpdateRecipes = (id: string) => {
                     headers: {
                         'access-token': `Bearer ${token}`,
                     },
+                    withCredentials: true,
                 });
                 console.log('게시물수정 레시피데이터', response);
 
@@ -116,6 +118,7 @@ export const useUpdateRecipes = (id: string) => {
                     'access-token': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
                 },
+                withCredentials: true,
             });
             alert('레시피가 성공적으로 수정되었습니다.');
             navigate(`/recipes/${id}`);

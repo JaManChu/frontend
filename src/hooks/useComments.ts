@@ -91,7 +91,7 @@ export default function useComments() {
     };
 
     // update : commentId, comment, rating
-    const updateCommentHandler = async ({ commentId, comment, rating }: UpdateHandlerProps) => {
+    const updateCommentHandler = async ({ commentId, comment, rating }: UpdateHandlerProps, recipeId: string) => {
         setEditing(false); // 수정완료 : false로 상태변경
         try {
             const response: any = await axios.put(
@@ -117,6 +117,7 @@ export default function useComments() {
                 setCurrentRate(0);
                 setCurrentComment('');
                 setCommentId(0);
+                fetchCommentHandler(recipeId);
                 alert('댓글이 수정되었습니다.');
             }
         } catch (err) {
@@ -142,7 +143,7 @@ export default function useComments() {
         setCurrentRate(commentRate);
     };
 
-    const deleteCommentHandler = async (commentId: number) => {
+    const deleteCommentHandler = async (commentId: number, recipeId: string) => {
         try {
             const response: any = await axios.delete(`${import.meta.env.VITE_BASE_URL}/comments`, {
                 headers: {
@@ -155,6 +156,7 @@ export default function useComments() {
             console.log('delete response: ', response);
             setResponseMessage(response.data.message);
             console.log(responseMessage);
+            fetchCommentHandler(recipeId);
             alert('댓글이 삭제되었습니다.');
             //  ! comments 리렌더링 조건 추가 필요 삭제 / 수정 / 생성 될때마다 알아서 호출되도록 구현
             // 현재는 comments를 새로 생성하지 않고 삭제만 했음 - useEffect 동작 이유 없음

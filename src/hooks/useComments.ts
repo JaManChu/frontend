@@ -41,9 +41,7 @@ export default function useComments() {
     const fetchCommentHandler = async (recipeId: string) => {
         try {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/comments/${recipeId}`, {
-                headers: {
-                    'access-token': `Bearer ${token}`,
-                },
+                withCredentials: true,
             });
             if (response.data.code === 'OK') {
                 console.log('response.data.data: ', response.data.data);
@@ -56,6 +54,8 @@ export default function useComments() {
     };
     console.log('comment-commentId: ', commentId);
     console.log('comment-currentComment:  ', currentComment);
+    console.log(recipeId);
+
     // create : recipeId, comment, rating
     const createCommentHandler = async (e: FormEvent<HTMLFormElement>, { recipeId, comment, rating }: CreateHandlerProps) => {
         e.preventDefault();
@@ -71,9 +71,7 @@ export default function useComments() {
                     rating: rating,
                 },
                 {
-                    headers: {
-                        'access-token': `Bearer ${token}`,
-                    },
+                    withCredentials: true,
                 },
             );
             console.log('comment create response: ', response);
@@ -102,9 +100,7 @@ export default function useComments() {
                     rating: rating,
                 },
                 {
-                    headers: {
-                        'access-token': `Bearer ${token}`,
-                    },
+                    withCredentials: true,
                 },
             );
 
@@ -146,12 +142,10 @@ export default function useComments() {
     const deleteCommentHandler = async (commentId: number, recipeId: string) => {
         try {
             const response: any = await axios.delete(`${import.meta.env.VITE_BASE_URL}/comments`, {
-                headers: {
-                    'access-token': `Bearer ${token}`,
-                },
                 data: {
                     commentId: commentId,
                 },
+                withCredentials: true,
             });
             console.log('delete response: ', response);
             setResponseMessage(response.data.message);

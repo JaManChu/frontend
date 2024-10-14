@@ -42,9 +42,7 @@ export default function RecipeNewCard({ recipeId, recipeName, recipeThumbnail, r
                     `${import.meta.env.VITE_BASE_URL}/recipes/${recipeId}/scrap`,
                     {},
                     {
-                        headers: {
-                            'access-token': `Bearer ${token}`,
-                        },
+                        withCredentials: true,
                     },
                 );
                 console.log('scarp response: ', response);

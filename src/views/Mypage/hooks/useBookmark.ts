@@ -5,7 +5,7 @@ export const useBookmark = () => {
     const [bookmarkRecipes, setBookmarkRecipes] = useState<Record<string, boolean>>({});
 
     //북마크 아이콘 클릭핸들 함수
-    const handleClickBookmark = async (recipeId: string) => {
+    const handleClickBookmark = async (recipeId: number) => {
         const token = sessionStorage.getItem('token');
         try {
             const response = await axios.post(

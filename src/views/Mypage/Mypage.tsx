@@ -5,7 +5,7 @@ import { useUpdateForm } from './hooks/updateForm';
 import { useGetMyRecipes } from '../../hooks/useGetMyRecipes';
 import { useGetUserInfo } from '../../hooks/useGetUserInfo';
 import { Button, Typography, Avatar, Grid, Pagination } from '@mui/material';
-import { useRecipesPagination } from './hooks/\busePagination';
+import { useRecipesPagination } from './hooks/usePagination';
 import { useUserUpdate } from './hooks/useUserUpdate';
 
 const ITEMS_PER_PAGE = 4; // 페이지당 보여줄 아이템 수

@@ -1,7 +1,6 @@
 import { FormEvent, useState } from 'react';
 import { validateEmail, validatePassword, validatePasswordCheck, validateNickname, validateResult } from '../utils/validation/validation.ts';
 import { useNavigate } from 'react-router-dom';
-import { setCookie } from '../utils/cookie/cookies.ts';
 import axios from 'axios';
 
 export const useUserForm = () => {
@@ -110,13 +109,11 @@ export const useUserForm = () => {
             const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, { email, password });
             if (response.data.code == 'OK') {
                 const token = response.headers['access-token'];
-                setCookie('access-token', token, {
-                    path: ',',
-                    secure: true,
-                });
-                // const accessToken = token?.replace('Bearer ', '');
-                // sessionStorage.setItem('token', accessToken);
-                // sessionStorage.setItem('nickname', response.data.data);
+                const accessToken = token?.replace('Bearer ', '');
+
+                sessionStorage.setItem('token', accessToken);
+                sessionStorage.setItem('nickname', response.data.data);
+
                 setMessage(response.data.message); // ! 모달로 빼기 - 성공안내 필요
                 alert(response.data.message);
                 navigate('/home');

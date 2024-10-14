@@ -8,13 +8,15 @@ export default function CommentsView(): JSX.Element {
         handleClickEdit,
         commentId,
         currentRate,
-        currentComment,
+        createComment,
+        updateComment,
         commentDataList,
         fetchCommentHandler,
         createCommentHandler,
         updateCommentHandler,
         deleteCommentHandler,
-        handleMakeComment,
+        handleCreateComment,
+        handleUpdateComment,
         handleMakeRate,
     } = useComments();
 
@@ -22,9 +24,9 @@ export default function CommentsView(): JSX.Element {
         <>
             <CreateComment
                 createdRate={currentRate}
-                createdComment={currentComment}
+                createdComment={createComment}
                 createCommentHandler={createCommentHandler}
-                handleCreateComment={handleMakeComment}
+                handleCreateComment={handleCreateComment}
                 handleCreateRate={handleMakeRate}
             />
             <CommentList
@@ -32,12 +34,12 @@ export default function CommentsView(): JSX.Element {
                 handleClickEdit={handleClickEdit}
                 commentId={commentId}
                 currentRate={currentRate}
-                currentComment={currentComment}
+                updateComment={updateComment}
                 commentDataList={commentDataList}
                 fetchCommentHandler={fetchCommentHandler}
                 updateCommentHandler={updateCommentHandler}
                 deleteCommentHandler={deleteCommentHandler}
-                handleUpdateComment={handleMakeComment}
+                handleUpdateComment={handleUpdateComment}
                 // handleUpdateRate={handleMakeRate}
             />
         </>

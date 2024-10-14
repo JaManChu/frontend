@@ -35,6 +35,9 @@ export default function RecipeCard({ page = '', recipeId, recipeName, recipeThum
                     `${import.meta.env.VITE_BASE_URL}/recipes/${recipeId}/scrap`,
                     {},
                     {
+                        headers: {
+                            'access-token': `Bearer ${token}`,
+                        },
                         withCredentials: true,
                     },
                 );

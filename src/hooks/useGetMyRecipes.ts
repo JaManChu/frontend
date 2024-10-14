@@ -1,38 +1,51 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-export const useGetMyRecipes = () => {
-    const [myRecipes, setMyRecipes] = useState([{ myRecipeId: '', myRecipeName: '', myRecipeThumbnail: '' }]);
-    const [scrapedRecipes, setScrapedRecipes] = useState([{ recipeId: '', recipeName: '', recipeAuthor: '', recipeThumbnail: '' }]);
-    const navigate = useNavigate();
+
+export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: number) => {
+    interface Recipe {
+        recipeId: number;
+        recipeName: string;
+        recipeThumbnail: string;
+    }
+    const [myRecipes, setMyRecipes] = useState<Recipe[]>([]);
+    const [scrapedRecipes, setScrapedRecipes] = useState<Recipe[]>([]);
+    const [totalMyRecipesPages, setTotalMyRecipesPages] = useState(1); // 총 작성 레시피 페이지 수
+    const [totalScrapedRecipesPages, setTotalScrapedRecipesPages] = useState(1); // 총 스크랩 레시피 페이지 수
+
     const token = sessionStorage.getItem('token');
 
     useEffect(() => {
-        // if (!token) {
-        //     navigate('/login');
-        //     return;
-        // } else {
-        // }
         const fetchRecipes = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/users/recipes`, {
-                    headers: {
-                        'access-token': `Bearer ${token}`,
+                const response = await axios.get(
+                    `${import.meta.env.VITE_BASE_URL}/users/recipes?myRecipePage=${myRecipesPage}&scrapRecipePage=${scrapedRecipesPage}`,
+                    {
+                        headers: {
+                            'access-token': `Bearer ${token}`,
+                        },
+                        withCredentials: true,
                     },
-                    withCredentials: true,
-                });
-                console.log('마이페이지 작성게시글,스크랩목록', response);
-                setMyRecipes(response.data.body.myRecipe);
-                setScrapedRecipes(response.data.body.scrapedRecipe);
+                );
+                console.log('마이페이지 작성게시글, 스크랩목록', response);
+
+                // API 응답 데이터를 사용하여 상태 업데이트
+                setMyRecipes(response.data.body.data.myRecipes.dataList);
+                setScrapedRecipes(response.data.body.data.myScrapedRecipes.dataList);
+
+                // 총 페이지 수 업데이트
+                setTotalMyRecipesPages(response.data.body.data.myRecipes.totalPage);
+                setTotalScrapedRecipesPages(response.data.body.data.myScrapedRecipes.totalPage);
             } catch (error) {
                 console.error('게시물 정보를 불러오는데 실패하였습니다', error);
             }
         };
         fetchRecipes();
-    }, [token, navigate]);
+    }, [myRecipesPage, scrapedRecipesPage]);
 
     return {
         myRecipes,
         scrapedRecipes,
+        totalMyRecipesPages,
+        totalScrapedRecipesPages,
     };
 };

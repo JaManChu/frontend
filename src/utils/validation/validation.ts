@@ -15,9 +15,18 @@ export const validatePassword = (password: string): string => {
 };
 
 // 비밀번호 확인 유효성 검사
-export const validatePasswordCheck = (password: string, passwordCheck: string): string => {
+export const validatePasswordCheck = (newPassword: string, passwordCheck: string): string => {
     if (!passwordCheck) return '비밀번호 확인을 입력하세요';
-    if (password !== passwordCheck) return '비밀번호가 일치하지 않습니다';
+    if (newPassword !== passwordCheck) return '비밀번호가 일치하지 않습니다';
+    return '';
+};
+
+//새로운비밀번호 확인 유효성 검사
+export const validateNewPasswordCheck = (newPassword: string, passwordCheck: string): string => {
+    if (!newPassword) return '변경할 비밀번호 확인란을 입력하세요.';
+    if (newPassword.includes(' ')) return '비밀번호에 공백을 포함할 수 없습니다';
+    if (newPassword.length < 8 || newPassword.length > 16) return '비밀번호는 8자 이상 16자 이하로 입력해주세요';
+    if (newPassword !== passwordCheck) return '변경할 비밀번호가 일치하지 않습니다.';
     return '';
 };
 

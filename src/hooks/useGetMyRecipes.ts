@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+
 import useAuthToken from './useAuthToken';
 export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: number) => {
     interface Recipe {
@@ -12,17 +12,11 @@ export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: numbe
     const [scrapedRecipes, setScrapedRecipes] = useState<Recipe[]>([]);
     const [totalMyRecipesPages, setTotalMyRecipesPages] = useState(1); // 총 작성 레시피 페이지 수
     const [totalScrapedRecipesPages, setTotalScrapedRecipesPages] = useState(1); // 총 스크랩 레시피 페이지 수
-    const navigate = useNavigate();
 
     const token = useAuthToken();
 
     useEffect(() => {
         const fetchRecipes = async () => {
-            if (!token) {
-                alert('잘못된 접근입니다.');
-                navigate('/login');
-                return;
-            }
             try {
                 console.log('마이페이지레시피 목록 api호출시작');
                 const response = await axios.get(

@@ -4,9 +4,16 @@ import { validateUserIfno } from '../../../utils/validation/validation';
 import { useUserForm } from '../../../hooks/useUserForm';
 import useAuthToken from '../../../hooks/useAuthToken';
 
-export const useUserUpdate = (password: string, passwordCheck: string, nickname: string, handleModalClose: () => void) => {
+export const useUserUpdate = (
+    password: string,
+    passwordCheck: string,
+    nickname: string,
+    handleModalClose: () => void,
+    refetchUserInfo: () => void,
+) => {
     const token = useAuthToken();
     const { setInputMessage } = useUserForm();
+
     const handleUpdate = async () => {
         const inputResult = validateUserIfno({ password, passwordCheck, nickname });
         setInputMessage(inputResult);
@@ -35,6 +42,9 @@ export const useUserUpdate = (password: string, passwordCheck: string, nickname:
             );
             console.log('회원정보 수정 성공', response);
             alert('회원정보가 성공적으로 수정되었습니다.');
+
+            //서버에서 받은 새로운 정보 상태 업데이트
+            refetchUserInfo();
             handleModalClose();
         } catch (error) {
             console.error('회원정보 수정 실패', error);

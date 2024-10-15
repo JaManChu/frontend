@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useAuthToken from './useAuthToken';
 export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: number) => {
     interface Recipe {
         recipeId: number;
@@ -12,8 +13,8 @@ export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: numbe
     const [totalMyRecipesPages, setTotalMyRecipesPages] = useState(1); // 총 작성 레시피 페이지 수
     const [totalScrapedRecipesPages, setTotalScrapedRecipesPages] = useState(1); // 총 스크랩 레시피 페이지 수
     const navigate = useNavigate();
-    const token = sessionStorage.getItem('token');
-    console.log('마이페이지 토큰값확인', token);
+
+    const token = useAuthToken();
 
     useEffect(() => {
         const fetchRecipes = async () => {

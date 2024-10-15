@@ -2,9 +2,10 @@ import axios from 'axios';
 
 import { validateUserIfno } from '../../../utils/validation/validation';
 import { useUserForm } from '../../../hooks/useUserForm';
+import useAuthToken from '../../../hooks/useAuthToken';
 
 export const useUserUpdate = (password: string, passwordCheck: string, nickname: string, handleModalClose: () => void) => {
-    const token = sessionStorage.getItem('token');
+    const token = useAuthToken();
     const { setInputMessage } = useUserForm();
     const handleUpdate = async () => {
         const inputResult = validateUserIfno({ password, passwordCheck, nickname });

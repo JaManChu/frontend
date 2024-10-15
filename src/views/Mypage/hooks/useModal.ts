@@ -5,7 +5,15 @@ export const useModal = () => {
     const [updateUserInfo, setUpdateUserInfo] = useState('');
     const [updatePassword, setUpdatePassword] = useState('');
     const [isCheckModal, setIsCheckModal] = useState(false);
+    const [isPasswordModal, setIsPasswordModal] = useState(false);
 
+    const handlePasswordModalOpen = () => {
+        setIsPasswordModal(true);
+    };
+
+    const handlePasswordModalClose = () => {
+        setIsPasswordModal(false);
+    };
     const handleCheckModalOpen = () => {
         setIsCheckModal(true);
     };
@@ -39,5 +47,8 @@ export const useModal = () => {
         handleCheckModalOpen,
         handleCheckModalClose,
         isCheckModal,
+        handlePasswordModalOpen,
+        handlePasswordModalClose,
+        isPasswordModal,
     };
 };

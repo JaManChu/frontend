@@ -90,51 +90,45 @@ export const useRecipeCreate = () => {
             return;
         }
 
-        // FormData 생성
-        const formData = new FormData();
-        formData.append('recipeName', recipeName);
-        formData.append('recipeLevel', recipeLevel);
-        formData.append('recipeCookingTime', recipeCookingTime);
+        // JSON 객체 생성
+        const requestBody = {
+            recipeName: recipeName,
+            recipeLevel: recipeLevel,
+            recipeCookingTime: recipeCookingTime,
+            recipeThumbnail: '',
+            recipeIngredients: ingredients.map((ingredient) => ({
+                ingredientName: ingredient.ingredientName,
+                ingredientQuantity: ingredient.ingredientQuantity,
+            })),
+            recipeOrderContents: steps.map((step, index) => ({
+                order: index + 1,
+                recipeOrderContent: step.content,
+                recipeOrderImage: '',
+            })),
+        };
 
-        // 첫 번째 조리 단계의 이미지를 썸네일로 설정
-        if (steps.length > 0 && steps[0].picture) {
-            if (steps[0].picture instanceof File) {
-                formData.append('recipeThumbnail', steps[0].picture); // 파일인 경우
-            } else if (typeof steps[0].picture === 'string') {
-                formData.append('recipeThumbnail', steps[0].picture); // S3 URL인 경우
-            }
+        // 첫 번째 조리 단계의 이미지를 썸네일로 설정 (이미지 URL로 설정할 경우)
+        if (steps.length > 0 && typeof steps[0].picture === 'string') {
+            requestBody.recipeThumbnail = steps[0].picture;
         }
 
-        // 재료 추가
-        ingredients.forEach((ingredient, index) => {
-            formData.append(`recipeIngredients[${index}][ingredientName]`, ingredient.ingredientName);
-            formData.append(`recipeIngredients[${index}][ingredientQuantity]`, ingredient.ingredientQuantity);
-        });
+        // 각 단계에 이미지가 있는 경우 이미지 URL을 설정
+        requestBody.recipeOrderContents = steps.map((step, index) => ({
+            order: index + 1,
+            recipeOrderContent: step.content,
+            recipeOrderImage: typeof step.picture === 'string' ? step.picture : '', // 이미지가 URL이면 추가
+        }));
 
-        // 조리 과정과 이미지 추가
-        steps.forEach((step, index) => {
-            formData.append(`recipeOrderContents[${index}][recipeOrderContent]`, step.content);
-
-            // 이미지가 존재할 경우에만 추가
-            if (step.picture instanceof File) {
-                formData.append(`recipeOrderContents[${index}][recipeOrderImage]`, step.picture);
-            } else if (typeof step.picture === 'string') {
-                formData.append(`recipeOrderContents[${index}][recipeOrderImage]`, step.picture);
-            }
-        });
-        console.log('전달 할 데이터 확인:');
-        for (const [key, value] of formData.entries() as IterableIterator<[string, FormDataEntryValue]>) {
-            console.log(`${key}: ${value}`);
-        }
+        console.log('전달할 JSON 데이터 확인:', requestBody);
         try {
-            const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/recipes`, formData, {
+            const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/recipes`, requestBody, {
                 headers: {
-                    'access-token': `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data',
+                    'Access-Token': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
                 },
                 withCredentials: true,
             });
-            console.log('게시물작성 response', response);
+            console.log('게시물 작성 response', response);
 
             if (response.status === 201) {
                 console.log('성공', response.data);

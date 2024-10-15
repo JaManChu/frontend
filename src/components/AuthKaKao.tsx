@@ -1,9 +1,12 @@
 // import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { loginSuccess } from '../redux/reducer/userSlice';
 
 export default function AuthKaKao() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -12,9 +15,7 @@ export default function AuthKaKao() {
         console.log(token, nickname);
 
         if (token && nickname) {
-            sessionStorage.setItem('token', token);
-            sessionStorage.setItem('nickname', nickname);
-
+            dispatch(loginSuccess({ isLoggedIn: true, token: token, nickname: nickname }));
             navigate('/home');
         }
     }, [navigate]);

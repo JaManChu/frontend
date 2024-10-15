@@ -1,4 +1,5 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
+import useAuthToken from './useAuthToken';
 import axios from 'axios';
 
 interface CreateHandlerProps {
@@ -35,8 +36,8 @@ export default function useComments() {
     const [currentRate, setCurrentRate] = useState<number>(0);
     const [responseMessage, setResponseMessage] = useState<string>(''); // 메시지 알람창
 
-    // 세션에 저장된 토큰
-    const token = sessionStorage.getItem('token');
+    // store에 저장된 token
+    const token = useAuthToken();
 
     // get : recipeId
     const fetchCommentHandler = async (recipeId: string) => {
@@ -130,6 +131,7 @@ export default function useComments() {
                     ),
                 );
                 setCommentId(0);
+
                 await fetchCommentHandler(recipeId);
                 alert('댓글이 수정되었습니다.');
             }
@@ -173,7 +175,9 @@ export default function useComments() {
             console.log('delete response: ', response);
             setResponseMessage(response.data.message);
             console.log(responseMessage);
+
             setCommentDataList((prev) => prev.filter((originComment) => originComment.commentId != commentId));
+
             alert('댓글이 삭제되었습니다.');
             await fetchCommentHandler(recipeId);
         } catch (err) {

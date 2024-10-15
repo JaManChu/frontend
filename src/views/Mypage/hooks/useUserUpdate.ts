@@ -29,6 +29,7 @@ export const useUserUpdate = (password: string, passwordCheck: string, nickname:
                     headers: {
                         'access-token': `Bearer ${token}`,
                     },
+                    withCredentials: true,
                 },
             );
             console.log('회원정보 수정 성공', response);

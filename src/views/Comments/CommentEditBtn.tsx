@@ -1,3 +1,6 @@
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store/store';
+
 interface Props {
     commentAuthor: string;
     commentContent: string;
@@ -34,7 +37,7 @@ export default function CommentEditBtn({
     updateCommentHandler,
     deleteCommentHandler,
 }: EditBtnProps) {
-    const nickname = sessionStorage.getItem('nickname');
+    const nickname = useSelector((state: RootState) => state.user.value.nickname);
 
     return (
         <>

@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import useAuthToken from './useAuthToken';
+
 export const useRecipeCreate = () => {
     const navigate = useNavigate();
-    const token = useAuthToken();
     //steps의 객체는 각각 타입이다르므로 인터페이스로 타입정의.
     interface Step {
         content: string;
@@ -66,6 +65,7 @@ export const useRecipeCreate = () => {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
 
+        const token = sessionStorage.getItem('token');
         if (!token) {
             alert('잘못된 접근입니다. 로그인해주세요.');
             navigate('/login');
@@ -122,8 +122,10 @@ export const useRecipeCreate = () => {
                 formData.append(`recipeOrderContents[${index}][recipeOrderImage]`, step.picture);
             }
         });
-
-        console.log('전달 할 데이터 확인 : ', formData);
+        console.log('전달 할 데이터 확인:');
+        for (const [key, value] of formData.entries() as IterableIterator<[string, FormDataEntryValue]>) {
+            console.log(`${key}: ${value}`);
+        }
         try {
             const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/recipes`, formData, {
                 headers: {

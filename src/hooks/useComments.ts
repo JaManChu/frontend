@@ -85,11 +85,13 @@ export default function useComments() {
             console.log('comment create response: ', response);
             console.log('comment response message:', response.data.message);
             console.log('rating, comment', rating, comment);
-            setResponseMessage(response.data.message);
-            // ! 초기화 : 필요여부 체크(test필요)
-            // setCreateComment('');
-            // setCurrentRate(0);
-            await fetchCommentHandler(recipeId.toString());
+            if (response.data.code == 'OK') {
+                setResponseMessage(response.data.message);
+                // 초기화
+                setCreateComment('');
+                setCurrentRate(0);
+                await fetchCommentHandler(recipeId.toString());
+            }
         } catch (err: any) {
             console.log(err);
             alert('댓글 작성에 실패하였습니다.');
@@ -118,21 +120,13 @@ export default function useComments() {
             console.log(commentId, comment, rating);
             console.log('rating, comment', rating, comment);
 
-            if (response.staus === 200) {
+            if (response.data.code === 'OK') {
                 console.log('update response: ', response);
                 setResponseMessage(response.data.message);
                 // 초기화 -> 안하면 다시 수정 버튼 눌렀을때 어떻게 반영되는지 확인
-                setCurrentRate(0);
-                // setUpdateComment('');
-
-                setCommentDataList((prev) =>
-                    prev.map((originComment) =>
-                        originComment.commentId == commentId ? { ...originComment, commentContent: comment } : originComment,
-                    ),
-                );
+                setUpdateComment('');
                 setCommentId(0);
-
-                await fetchCommentHandler(recipeId);
+                await fetchCommentHandler(recipeId.toString());
                 alert('댓글이 수정되었습니다.');
             }
         } catch (err) {
@@ -173,13 +167,15 @@ export default function useComments() {
                 withCredentials: true,
             });
             console.log('delete response: ', response);
-            setResponseMessage(response.data.message);
-            console.log(responseMessage);
+            if (response.data.code == 'OK') {
+                setResponseMessage(response.data.message);
+                console.log(responseMessage);
 
-            setCommentDataList((prev) => prev.filter((originComment) => originComment.commentId != commentId));
+                setCommentDataList((prev) => prev.filter((originComment) => originComment.commentId != commentId));
 
-            alert('댓글이 삭제되었습니다.');
-            await fetchCommentHandler(recipeId);
+                alert('댓글이 삭제되었습니다.');
+                await fetchCommentHandler(recipeId);
+            }
         } catch (err) {
             console.log(err);
             alert('댓글 삭제에 실패하였습니다.');

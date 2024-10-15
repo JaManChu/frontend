@@ -1,5 +1,6 @@
 import { useEffect, useState, ChangeEvent, KeyboardEvent, FormEvent } from 'react';
 import { SelectChangeEvent } from '@mui/material/Select';
+import useAuthToken from './useAuthToken';
 import axios from 'axios';
 
 export default function useSearchRecipe() {
@@ -27,7 +28,7 @@ export default function useSearchRecipe() {
         setSearchIngredients(e.target.value);
     };
 
-    const token = sessionStorage.getItem('token');
+    const token = useAuthToken();
     // 검색 버튼 클릭시 api 통신
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();

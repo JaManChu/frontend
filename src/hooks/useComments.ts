@@ -1,4 +1,5 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
+import useAuthToken from './useAuthToken';
 import axios from 'axios';
 
 interface CreateHandlerProps {
@@ -35,8 +36,8 @@ export default function useComments() {
     const [currentRate, setCurrentRate] = useState<number>(0);
     const [responseMessage, setResponseMessage] = useState<string>(''); // 메시지 알람창
 
-    // 세션에 저장된 토큰
-    const token = sessionStorage.getItem('token');
+    // store에 저장된 token
+    const token = useAuthToken();
 
     // get : recipeId
     const fetchCommentHandler = async (recipeId: string) => {

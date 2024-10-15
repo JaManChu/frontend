@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store/store';
 
 export default function useHeaderLogic() {
     const [isActive, setIsActive] = useState<string>('');
-    const isLogin = Boolean(sessionStorage.getItem('token'));
+    const isLogin = useSelector((state: RootState) => state.user.value.isLoggedIn);
     const location = useLocation();
 
     useEffect(() => {

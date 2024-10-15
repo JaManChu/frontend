@@ -1,10 +1,13 @@
 import { FormEvent, useState } from 'react';
 import { validateEmail, validatePassword, validatePasswordCheck, validateNickname, validateResult } from '../utils/validation/validation.ts';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loginSuccess } from '../redux/reducer/userSlice.ts';
 import axios from 'axios';
 
 export const useUserForm = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [message, setMessage] = useState('');
     const [email, setEmail] = useState('');
@@ -108,11 +111,10 @@ export const useUserForm = () => {
         try {
             const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, { email, password });
             if (response.data.code == 'OK') {
-                const token = response.headers['access-token'];
-                const accessToken = token?.replace('Bearer ', '');
-
-                sessionStorage.setItem('token', accessToken);
-                sessionStorage.setItem('nickname', response.data.data);
+                const token = response.headers['access-token']; // 헤더 토큰 저장
+                const accessToken = token?.replace('Bearer ', ''); // Bearer 삭제 후 저장
+                const userDispatchData = { isLoggedIn: true, token: accessToken, nickname: response.data.data };
+                dispatch(loginSuccess(userDispatchData));
 
                 setMessage(response.data.message); // ! 모달로 빼기 - 성공안내 필요
                 alert(response.data.message);

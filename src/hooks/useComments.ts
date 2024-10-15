@@ -85,12 +85,13 @@ export default function useComments() {
             console.log('comment create response: ', response);
             console.log('comment response message:', response.data.message);
             console.log('rating, comment', rating, comment);
-            if (response.data.code == 'OK') {
+            if (response.data.code == 'CREATED') {
                 setResponseMessage(response.data.message);
                 // 초기화
                 setCreateComment('');
                 setCurrentRate(0);
                 await fetchCommentHandler(recipeId.toString());
+                alert('댓글 작성 성공!');
             }
         } catch (err: any) {
             console.log(err);

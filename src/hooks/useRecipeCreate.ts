@@ -123,6 +123,7 @@ export const useRecipeCreate = () => {
             }
         });
 
+        console.log('전달 할 데이터 확인 : ', formData);
         try {
             const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/recipes`, formData, {
                 headers: {

@@ -9,7 +9,7 @@ import { Button, Typography, Avatar, Grid, Pagination, Box } from '@mui/material
 import { useUserUpdate } from './hooks/useUserUpdate';
 import { FaRegBookmark, FaBookmark } from 'react-icons/fa6';
 import colors from '../../styles/colors';
-import { useBookmark } from './hooks/\buseBookmark';
+import { useBookmark } from './hooks/useBookmark';
 import { useState } from 'react';
 import axios from 'axios';
 import { useUserForm } from '../../hooks/useUserForm';

@@ -36,26 +36,27 @@ export default function RecipeNewCard({ recipeId, recipeName, recipeThumbnail, r
     const handleClickBookmark = async (e: MouseEvent) => {
         e.stopPropagation();
         try {
-            if (marked) {
-                setMarked(false);
-            } else {
-                const response = await axios.post(
-                    `${import.meta.env.VITE_BASE_URL}/recipes/${recipeId}/scrap`,
-                    {},
-                    {
-                        headers: {
-                            'access-token': `Bearer ${token}`,
-                        },
-                        withCredentials: true,
+            const response = await axios.post(
+                `${import.meta.env.VITE_BASE_URL}/recipes/${recipeId}/scrap`,
+                {},
+                {
+                    headers: {
+                        'access-token': `Bearer ${token}`,
                     },
-                );
-                console.log('scarp response: ', response);
-                if (response.data.code == 'OK') {
-                    console.log('post scrap response: ', response);
+                    withCredentials: true,
+                },
+            );
+
+            console.log('scarp response: ', response);
+
+            if (response.data.code == 'OK') {
+                if (response.data.data == 'CANCELED') {
+                    setMarked(false);
+                } else if (response.data.data == 'SCRAPED') {
                     setMarked(true);
-                    setMessage(response.data.message);
-                    alert(response.data.message);
                 }
+                setMessage(response.data.message);
+                alert(response.data.message);
             }
         } catch (err: any) {
             console.log(err);

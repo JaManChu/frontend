@@ -130,6 +130,7 @@ export default function useComments() {
                     ),
                 );
                 setCommentId(0);
+
                 await fetchCommentHandler(recipeId);
                 alert('댓글이 수정되었습니다.');
             }
@@ -173,7 +174,9 @@ export default function useComments() {
             console.log('delete response: ', response);
             setResponseMessage(response.data.message);
             console.log(responseMessage);
+
             setCommentDataList((prev) => prev.filter((originComment) => originComment.commentId != commentId));
+
             alert('댓글이 삭제되었습니다.');
             await fetchCommentHandler(recipeId);
         } catch (err) {

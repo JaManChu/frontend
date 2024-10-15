@@ -40,7 +40,7 @@ export const useUpdateForm = () => {
                 newError = validateEmail(email);
                 break;
             case 'newpassword':
-                newError = validateNewPasswordCheck(newPassword, passwordCheck);
+                newError = validateNewPasswordCheck(newPassword);
                 break;
             case 'password':
                 newError = validatePassword(password);

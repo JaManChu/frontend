@@ -49,7 +49,17 @@ export default function Mypage(): JSX.Element {
     } = useUpdateForm();
 
     //모달 상태관리 hook
-    const { isModalVisible, setIsModalVisible, handleModalClose, handleCheckModalOpen, handleCheckModalClose, isCheckModal } = useModal();
+    const {
+        isModalVisible,
+        setIsModalVisible,
+        handleModalClose,
+        handleCheckModalOpen,
+        handleCheckModalClose,
+        isCheckModal,
+        handlePasswordModalOpen,
+        handlePasswordModalClose,
+        isPasswordModal,
+    } = useModal();
 
     //회원정보수정 hook
     const { handleUpdate } = useUserUpdate(password, passwordCheck, nickname, handleModalClose, refetchUserInfo);
@@ -58,6 +68,7 @@ export default function Mypage(): JSX.Element {
     const { inputMessage, clickedButEmpty } = useUserForm();
     const [nicknameCheck, setNicknameCheck] = useState<boolean>(false);
     const [checkFailMessage, setCheckFailMessage] = useState<string>('');
+
     const handleCheckNickname = async () => {
         try {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/nickname-check?nickname=${nickname}`);
@@ -72,6 +83,28 @@ export default function Mypage(): JSX.Element {
             }
         } catch (err) {
             console.log(err);
+        }
+    };
+
+    const [passwordCheckMessage, setPasswordCheckMessage] = useState('');
+    const handlePasswordCheck = async () => {
+        try {
+            const response = await axios.post(
+                `${import.meta.env.VITE_BASE_URL}/auth/password-check`,
+                {
+                    password: 'test123',
+                },
+                {
+                    headers: {
+                        'access-token': `Bearer ${token}`,
+                    },
+                    withCredentials: true,
+                },
+            );
+            console.log('비밀번호 확인 response:', response.data);
+            setPasswordCheckMessage(response.data.message);
+        } catch (error) {
+            console.error('비밀번호 확인 중 오류 발생:', error);
         }
     };
 
@@ -218,11 +251,35 @@ export default function Mypage(): JSX.Element {
                                 value={password}
                                 placeholder="기존 비밀번호를 입력하세요"
                                 onChange={(e) => setPassword(e.target.value)}
-                                isError={touched.password}
+                                isError={!!errors.password && touched.password}
                                 onFocus={() => clearFieldError('password')}
                                 onBlur={() => handleBlur('password')}
                                 type="password"
                             />
+                            <Button
+                                type="button"
+                                onClick={() => {
+                                    handlePasswordModalOpen();
+                                    handlePasswordCheck();
+                                }}
+                            >
+                                비밀번호 확인
+                            </Button>
+                            {isPasswordModal && (
+                                <Modal
+                                    visible={isPasswordModal}
+                                    onClose={handlePasswordModalClose}
+                                    buttons={[{ label: '확인', onClick: handlePasswordModalClose }]}
+                                >
+                                    <h2>비밀번호 확인</h2>
+                                    <p> {passwordCheckMessage} </p>
+                                </Modal>
+                            )}
+                            {nicknameCheck ? (
+                                <ErrorMessage visible={!!inputMessage.nickname && clickedButEmpty.nickname}>{inputMessage.nickname}</ErrorMessage>
+                            ) : (
+                                <ErrorMessage visible={true}>{checkFailMessage}</ErrorMessage>
+                            )}
                             <S_ErrorMessage visible={!!errors.password && touched.password}>{errors.password}</S_ErrorMessage>
                             <S_Input
                                 value={newPassword}

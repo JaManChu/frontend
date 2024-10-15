@@ -103,7 +103,7 @@ export default function useComments() {
             const response: any = await axios.put(
                 `${import.meta.env.VITE_BASE_URL}/comments`,
                 {
-                    commentId: commentId,
+                    commentsId: commentId,
                     comment: comment,
                     rating: rating,
                 },

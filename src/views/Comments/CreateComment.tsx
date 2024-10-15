@@ -38,10 +38,10 @@ export default function CreateComment({
                     {Array(5)
                         .fill(0)
                         .map((_, idx) => {
-                            return createdRate >= idx ? (
-                                <FaStar key={idx} onClick={() => handleCreateRate(idx)} />
+                            return createdRate >= idx + 1 ? (
+                                <FaStar key={idx} onClick={() => handleCreateRate(idx + 1)} />
                             ) : (
-                                <FaRegStar key={idx} onClick={() => handleCreateRate(idx)} />
+                                <FaRegStar key={idx} onClick={() => handleCreateRate(idx + 1)} />
                             );
                         })}
 

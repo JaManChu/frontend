@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useRecipeCreate } from './useRecipeCreate';
+import useAuthToken from './useAuthToken';
 
 export const useUpdateRecipes = (id: string) => {
     const navigate = useNavigate();
-
+    const token = useAuthToken();
     const [userNickname, setUserNickname] = useState(''); // 로그인된 유저의 닉네임
     const [isAuthor, setIsAuthor] = useState(false); // 작성자 여부 확인용
     const {
@@ -23,7 +24,6 @@ export const useUpdateRecipes = (id: string) => {
 
     // 1. 로그인된 유저의 닉네임 가져오기
     useEffect(() => {
-        const token = sessionStorage.getItem('token');
         if (!token) {
             navigate('/login');
             return;
@@ -49,7 +49,6 @@ export const useUpdateRecipes = (id: string) => {
 
     // 2. 레시피 데이터 불러오기 및 작성자 확인
     useEffect(() => {
-        const token = sessionStorage.getItem('token');
         const fetchRecipeData = async () => {
             try {
                 const response = await axios.get(`/recipes/${id}`, {
@@ -90,7 +89,6 @@ export const useUpdateRecipes = (id: string) => {
 
     // 3. 레시피 수정 요청
     const handleUpdateRecipe = async () => {
-        const token = sessionStorage.getItem('token');
         if (!isAuthor) {
             alert('이 레시피를 수정할 권한이 없습니다.');
             return;

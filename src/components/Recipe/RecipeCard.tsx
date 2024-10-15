@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaRegBookmark, FaBookmark } from 'react-icons/fa6';
+import useAuthToken from '../../hooks/useAuthToken';
 import RecipeMetaData from './RecipeMetaData';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -24,7 +25,7 @@ export default function RecipeCard({ page = '', recipeId, recipeName, recipeThum
     const [message, setMessage] = useState<string>('');
 
     console.log('bookmark card - recipeId ? : ', recipeId);
-    const token = sessionStorage.getItem('token');
+    const token = useAuthToken();
 
     const handleClickBookmark = async () => {
         try {

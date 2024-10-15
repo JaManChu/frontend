@@ -1,6 +1,9 @@
 import { useState, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../redux/store/store';
 import { FiLogOut, FiUser, FiBell } from 'react-icons/fi';
+import { logoutSuccess } from '../../redux/reducer/userSlice';
 import Alarm from '../Alarm/Alarm';
 import styled from 'styled-components';
 import logo from '../../assets/img/logo.png';
@@ -14,7 +17,8 @@ interface HeaderProps {
 
 export default function HeaderContainer({ menuItems, handleClickMenu, isActive }: HeaderProps): JSX.Element {
     const [showAlarm, setShowAlarm] = useState<boolean>(false);
-    const isLogin = Boolean(sessionStorage.getItem('token'));
+    const isLogin = useSelector((state: RootState) => state.user.value.isLoggedIn);
+    const dispatch = useDispatch();
 
     const handleShowAlarm = (e: MouseEvent) => {
         e.stopPropagation();
@@ -22,7 +26,7 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
     };
 
     const logout = () => {
-        sessionStorage.removeItem('token');
+        dispatch(logoutSuccess());
     };
 
     return (

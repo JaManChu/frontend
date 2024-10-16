@@ -72,7 +72,7 @@ export default function Mypage(): JSX.Element {
     const handleCheckNickname = async () => {
         try {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/nickname-check?nickname=${nickname}`);
-            console.log('nickanme check, response( 204 ok 전): ', response);
+            console.log('mypage nickanme check, response( 204 ok 전): ', response);
             if (response.data.data === true) {
                 console.log(response);
                 setNicknameCheck(true);
@@ -92,7 +92,7 @@ export default function Mypage(): JSX.Element {
             const response = await axios.post(
                 `${import.meta.env.VITE_BASE_URL}/auth/password-check`,
                 {
-                    password: 'test123',
+                    password: password,
                 },
                 {
                     headers: {

@@ -1,9 +1,16 @@
 import { useState } from 'react';
-import { validateEmail, validatePassword, validatePasswordCheck, validateNickname } from '../../../utils/validation/validation.ts';
+import {
+    validateEmail,
+    validatePassword,
+    validatePasswordCheck,
+    validateNickname,
+    validateNewPasswordCheck,
+} from '../../../utils/validation/validation.ts';
 
 export const useUpdateForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
     const [nickname, setNickname] = useState('');
 
@@ -11,6 +18,7 @@ export const useUpdateForm = () => {
         email: '',
         password: '',
         passwordCheck: '',
+        newpassword: '',
         nickname: '',
     });
 
@@ -19,6 +27,7 @@ export const useUpdateForm = () => {
         password: false,
         passwordCheck: false,
         nickname: false,
+        newpassword: false,
     });
 
     const handleBlur = (field: string) => {
@@ -30,11 +39,14 @@ export const useUpdateForm = () => {
             case 'email':
                 newError = validateEmail(email);
                 break;
+            case 'newpassword':
+                newError = validateNewPasswordCheck(newPassword);
+                break;
             case 'password':
                 newError = validatePassword(password);
                 break;
             case 'passwordCheck':
-                newError = validatePasswordCheck(password, passwordCheck);
+                newError = validatePasswordCheck(newPassword, passwordCheck);
                 break;
             case 'nickname':
                 newError = validateNickname(nickname);
@@ -65,5 +77,7 @@ export const useUpdateForm = () => {
         touched,
         handleBlur,
         clearFieldError,
+        newPassword,
+        setNewPassword,
     };
 };

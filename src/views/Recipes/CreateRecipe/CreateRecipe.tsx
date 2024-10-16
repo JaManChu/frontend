@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { useRecipeCreate } from '../../../hooks/useRecipeCreate';
 import DefaultImg from '../../../assets/img/defaultImg.jpeg';
 import withAuth from '../../../hooks/withAuth';
+import CustomSelect from '../../../ui/Select/CustomSelect';
+import { levelOptions } from '../../../common/options';
 
 const CreateRecipe: React.FC = () => {
     const {
@@ -57,18 +59,21 @@ const CreateRecipe: React.FC = () => {
                     <RecipeDetails>
                         <h3>레시피 난이도</h3>
                         <RecipeSelect value={recipeLevel} onChange={(e) => setRecipeLevel(e.target.value)}>
-                            <option value="EASY">EASY</option>
-                            <option value="NORMAL">NORMAL</option>
+                            <option value="LOW">LOW</option>
+                            <option value="MIDDLE">MIDDLE</option>
                             <option value="HIGH">HIGH</option>
                         </RecipeSelect>
 
                         <h3>요리 시간 (분)</h3>
-                        <RecipeInput
-                            type="number"
-                            value={recipeCookingTime}
-                            onChange={(e) => setRecipeCookingTime(e.target.value)}
-                            placeholder="요리 시간을 입력하세요."
-                        />
+                        <CustomStyledSelect>
+                            <CustomSelect
+                                id="recipeTime"
+                                options={levelOptions}
+                                value={recipeCookingTime}
+                                label=""
+                                handleChange={(e) => setRecipeCookingTime(e.target.value)}
+                            />
+                        </CustomStyledSelect>
                     </RecipeDetails>
 
                     <RecipeIngredients>
@@ -105,8 +110,6 @@ const CreateRecipe: React.FC = () => {
         </RecipeWriteContainer>
     );
 };
-
-export default withAuth(CreateRecipe);
 
 const RecipeWriteContainer = styled.section`
     display: flex;
@@ -257,3 +260,23 @@ const SubmitButton = styled.button`
         background-color: #fa7602;
     }
 `;
+
+const CustomStyledSelect = styled.div`
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    margin-bottom: 20px;
+
+    select {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        background-color: white;
+        border-radius: 8px;
+        outline: none;
+    }
+`;
+
+const CreateRecipeWithAuth = withAuth(CreateRecipe);
+export default CreateRecipeWithAuth;

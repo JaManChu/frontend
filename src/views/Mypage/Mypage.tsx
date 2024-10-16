@@ -10,14 +10,21 @@ import { useUserUpdate } from './hooks/useUserUpdate';
 import { FaRegBookmark, FaBookmark } from 'react-icons/fa6';
 import colors from '../../styles/colors';
 import { useBookmark } from './hooks/useBookmark';
-import { useState } from 'react';
-import instance from '../../utils/api/instance';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useUserForm } from '../../hooks/useUserForm';
+import useAuthToken from '../../hooks/useAuthToken';
+import { useNavigate } from 'react-router-dom';
 
 export default function Mypage(): JSX.Element {
+    const navigate = useNavigate();
+    const token = useAuthToken();
     // 페이지 번호 상태
     const [myRecipesPage, setMyRecipesPage] = useState(1);
     const [scrapedRecipesPage, setScrapedRecipesPage] = useState(1);
+
+    //유저 정보 hook
+    const { userInfo, refetchUserInfo: refetchUserInfo } = useGetUserInfo();
 
     // 스크랩, 작성 게시물 불러오는 hook
     const { myRecipes, scrapedRecipes, totalMyRecipesPages, totalScrapedRecipesPages } = useGetMyRecipes(myRecipesPage, scrapedRecipesPage);
@@ -26,31 +33,51 @@ export default function Mypage(): JSX.Element {
     const { bookmarkRecipes, handleClickBookmark } = useBookmark();
 
     //유효성 검사를 위한 hook
-    const { password, setPassword, passwordCheck, setPasswordCheck, nickname, setNickname, errors, touched, handleBlur, clearFieldError } =
-        useUpdateForm();
-
-    //유저 정보 hook
-    const { userInfo } = useGetUserInfo();
+    const {
+        password,
+        setPassword,
+        newPassword,
+        setNewPassword,
+        passwordCheck,
+        setPasswordCheck,
+        nickname,
+        setNickname,
+        errors,
+        touched,
+        handleBlur,
+        clearFieldError,
+    } = useUpdateForm();
 
     //모달 상태관리 hook
-    const { isModalVisible, setIsModalVisible, handleModalClose, handleCheckModalOpen, handleCheckModalClose, isCheckModal } = useModal();
+    const {
+        isModalVisible,
+        setIsModalVisible,
+        handleModalClose,
+        handleCheckModalOpen,
+        handleCheckModalClose,
+        isCheckModal,
+        handlePasswordModalOpen,
+        handlePasswordModalClose,
+        isPasswordModal,
+    } = useModal();
 
     //회원정보수정 hook
-    const { handleUpdate } = useUserUpdate(password, passwordCheck, nickname, handleModalClose);
+    const { handleUpdate } = useUserUpdate(password, newPassword, passwordCheck, nickname, handleModalClose, refetchUserInfo);
 
     //닉네임중복확인
     const { inputMessage, clickedButEmpty } = useUserForm();
     const [nicknameCheck, setNicknameCheck] = useState<boolean>(false);
     const [checkFailMessage, setCheckFailMessage] = useState<string>('');
+
     const handleCheckNickname = async () => {
         try {
-            const response: any = await instance.get(`/auth/nickname-check?nickname=${nickname}`);
-            console.log('nickanme check, response( 204 ok 전): ', response);
-            if (response.data.code === 'NO_CONTENT') {
+            const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/nickname-check?nickname=${nickname}`);
+            console.log('mypage nickanme check, response( 204 ok 전): ', response);
+            if (response.data.data === true) {
                 console.log(response);
                 setNicknameCheck(true);
                 setCheckFailMessage(response.data.message);
-            } else if (response.data.code === 'CONFLICT') {
+            } else if (response.data.data === false) {
                 setNicknameCheck(false);
                 setCheckFailMessage(response.data.message);
             }
@@ -58,6 +85,45 @@ export default function Mypage(): JSX.Element {
             console.log(err);
         }
     };
+
+    //비밀번호확인
+    const [passowordInfoCheck, setPasswordInfoCheck] = useState<boolean>(false);
+    const [checkFailMsg, setCheckFailMsg] = useState<string>('');
+    const handlePasswordCheck = async () => {
+        try {
+            const response = await axios.post(
+                `${import.meta.env.VITE_BASE_URL}/auth/password-check`,
+                {
+                    password: password,
+                },
+                {
+                    headers: {
+                        'access-token': `Bearer ${token}`,
+                    },
+                    withCredentials: true,
+                },
+            );
+            console.log('비밀번호 확인 response:', response.data);
+            console.log('비밀번호 확인 response.data.data:', response.data.data);
+            console.log('비밀번호 확인 response.data.message:', response.data.message);
+            if (response.data.data === true) {
+                console.log(response);
+                setPasswordInfoCheck(true);
+                setCheckFailMsg(response.data.message);
+            } else if (response.data.data === false) {
+                setCheckFailMsg(response.data.message);
+            }
+            console.log('passwordcheckmessage : ', response.data.message);
+        } catch (error) {
+            console.error('비밀번호 확인 중 오류 발생:', error);
+        }
+    };
+
+    useEffect(() => {
+        if (!token) {
+            navigate('/login');
+        }
+    }, [token, navigate]);
 
     return (
         <S_MyContainer>
@@ -154,7 +220,7 @@ export default function Mypage(): JSX.Element {
                             visible={isModalVisible}
                             onClose={handleModalClose}
                             buttons={[
-                                { label: '수정', onClick: handleUpdate },
+                                { label: '수정', onClick: handleUpdate, disabled: !nicknameCheck },
                                 { label: '취소', onClick: handleModalClose },
                             ]}
                         >
@@ -199,15 +265,51 @@ export default function Mypage(): JSX.Element {
                                 isError={!!errors.password && touched.password}
                                 onFocus={() => clearFieldError('password')}
                                 onBlur={() => handleBlur('password')}
+                                type="password"
                             />
+                            <Button
+                                type="button"
+                                onClick={() => {
+                                    handlePasswordModalOpen();
+                                    handlePasswordCheck();
+                                }}
+                            >
+                                비밀번호 확인
+                            </Button>
+                            {isPasswordModal && (
+                                <Modal
+                                    visible={isPasswordModal}
+                                    onClose={handlePasswordModalClose}
+                                    buttons={[{ label: '확인', onClick: handlePasswordModalClose }]}
+                                >
+                                    <h2>비밀번호 확인</h2>
+                                    <p> {checkFailMsg} </p>
+                                </Modal>
+                            )}
+                            {passowordInfoCheck ? (
+                                <ErrorMessage visible={!!inputMessage.password && clickedButEmpty.password}>{inputMessage.password}</ErrorMessage>
+                            ) : (
+                                <ErrorMessage visible={true}>{checkFailMsg}</ErrorMessage>
+                            )}
                             <S_ErrorMessage visible={!!errors.password && touched.password}>{errors.password}</S_ErrorMessage>
                             <S_Input
-                                value={passwordCheck}
+                                value={newPassword}
                                 placeholder="변경할 비밀번호를 입력하세요"
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                isError={!!errors.newPassword && touched.newPassword}
+                                onFocus={() => clearFieldError('newpassword')}
+                                onBlur={() => handleBlur('newpassword')}
+                                type="password"
+                            />
+                            <S_ErrorMessage visible={!!errors.newpassword && touched.newpassword}>{errors.newpassword}</S_ErrorMessage>
+                            <S_Input
+                                value={passwordCheck}
+                                placeholder="변경할 비밀번호를 한번 더 입력하세요"
                                 onChange={(e) => setPasswordCheck(e.target.value)}
                                 isError={!!errors.passwordCheck && touched.passwordCheck}
                                 onFocus={() => clearFieldError('passwordCheck')}
                                 onBlur={() => handleBlur('passwordCheck')}
+                                type="password"
                             />
                             <S_ErrorMessage visible={!!errors.passwordCheck && touched.passwordCheck}>{errors.passwordCheck}</S_ErrorMessage>
                         </Modal>

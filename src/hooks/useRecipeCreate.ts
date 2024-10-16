@@ -14,7 +14,7 @@ export const useRecipeCreate = () => {
 
     //레시피 정보들
     const [recipeName, setRecipeName] = useState(''); // 레시피명
-    const [recipeLevel, setRecipeLevel] = useState('EASY'); // 레시피난이도
+    const [recipeLevel, setRecipeLevel] = useState('LOW'); // 레시피난이도
     const [recipeCookingTime, setRecipeCookingTime] = useState(''); // 조리소요시간
     const [ingredients, setIngredients] = useState([{ ingredientName: '', ingredientQuantity: '' }]); //레시피에 필요한 재료들
     const [steps, setSteps] = useState<Step[]>([{ content: '', picture: null }]); //레시피 조리 순서
@@ -100,8 +100,7 @@ export const useRecipeCreate = () => {
                 ingredientName: ingredient.ingredientName,
                 ingredientQuantity: ingredient.ingredientQuantity,
             })),
-            recipeOrderContents: steps.map((step, index) => ({
-                order: index + 1,
+            recipeOrderContents: steps.map((step) => ({
                 recipeOrderContent: step.content,
                 recipeOrderImage: '',
             })),
@@ -113,8 +112,7 @@ export const useRecipeCreate = () => {
         }
 
         // 각 단계에 이미지가 있는 경우 이미지 URL을 설정
-        requestBody.recipeOrderContents = steps.map((step, index) => ({
-            order: index + 1,
+        requestBody.recipeOrderContents = steps.map((step) => ({
             recipeOrderContent: step.content,
             recipeOrderImage: typeof step.picture === 'string' ? step.picture : '', // 이미지가 URL이면 추가
         }));
@@ -127,6 +125,7 @@ export const useRecipeCreate = () => {
                 },
             });
             console.log('게시물 작성 response', response);
+            console.log('response.data', response.data);
 
             if (response.status === 201) {
                 console.log('성공', response.data);

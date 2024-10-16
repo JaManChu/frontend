@@ -31,11 +31,13 @@ export default function Signup(): JSX.Element {
     const handleCheckEmail = async () => {
         try {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/email-check?email=${email}`);
-            if (response.data.code === 'NO_CONTENT') {
+            console.log(response);
+            console.log('response.data :', response.data);
+            if (response.data.data === true) {
                 console.log(response);
                 setEmailCheck(true);
                 setCheckFailMessage(response.data.message);
-            } else if (response.data.code === 'CONFLICT') {
+            } else if (response.data.data === false) {
                 setEmailCheck(false);
                 setCheckFailMessage(response.data.message);
             }
@@ -142,7 +144,7 @@ export default function Signup(): JSX.Element {
                             {inputMessage.passwordCheck}
                         </ErrorMessage>
                     </SignupFieldset>
-                    <Button type="submit">회원가입</Button>
+                    {emailCheck && <Button type="submit">회원가입</Button>}
                 </form>
 
                 {isModalVisible && (

@@ -43,6 +43,7 @@ interface ValidationProps {
 }
 interface UserInfoValidationProps {
     password: string;
+    newPassword: string;
     passwordCheck?: string;
     nickname?: string;
 }
@@ -57,10 +58,11 @@ export const validateResult = ({ email, password, passwordCheck, nickname }: Val
     };
 };
 
-export const validateUserIfno = ({ password, passwordCheck, nickname }: UserInfoValidationProps) => {
+export const validateUserIfno = ({ password, newPassword, passwordCheck, nickname }: UserInfoValidationProps) => {
     return {
         password: validatePassword(password),
-        passwordCheck: passwordCheck ? validatePasswordCheck(password, passwordCheck) : '',
+        newPassword: validateNewPasswordCheck(newPassword),
+        passwordCheck: passwordCheck ? validatePasswordCheck(newPassword, passwordCheck) : '',
         nickName: nickname ? validateNickname(nickname) : '',
     };
 };

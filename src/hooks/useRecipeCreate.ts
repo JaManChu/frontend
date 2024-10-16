@@ -129,6 +129,7 @@ export const useRecipeCreate = () => {
                 withCredentials: true,
             });
             console.log('게시물 작성 response', response);
+            console.log('response.data', response.data);
 
             if (response.status === 201) {
                 console.log('성공', response.data);

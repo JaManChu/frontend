@@ -86,7 +86,9 @@ export default function Mypage(): JSX.Element {
         }
     };
 
-    const [passwordCheckMessage, setPasswordCheckMessage] = useState('');
+    //비밀번호확인
+    const [passowordInfoCheck, setPasswordInfoCheck] = useState<boolean>(false);
+    const [checkFailMsg, setCheckFailMsg] = useState<string>('');
     const handlePasswordCheck = async () => {
         try {
             const response = await axios.post(
@@ -106,9 +108,10 @@ export default function Mypage(): JSX.Element {
             console.log('비밀번호 확인 response.data.message:', response.data.message);
             if (response.data.data === true) {
                 console.log(response);
-                setPasswordCheckMessage(response.data.message);
+                setPasswordInfoCheck(true);
+                setCheckFailMsg(response.data.message);
             } else if (response.data.data === false) {
-                setPasswordCheckMessage(response.data.message);
+                setCheckFailMsg(response.data.message);
             }
             console.log('passwordcheckmessage : ', response.data.message);
         } catch (error) {
@@ -280,13 +283,13 @@ export default function Mypage(): JSX.Element {
                                     buttons={[{ label: '확인', onClick: handlePasswordModalClose }]}
                                 >
                                     <h2>비밀번호 확인</h2>
-                                    <p> {passwordCheckMessage} </p>
+                                    <p> {checkFailMsg} </p>
                                 </Modal>
                             )}
-                            {nicknameCheck ? (
-                                <ErrorMessage visible={!!inputMessage.nickname && clickedButEmpty.nickname}>{inputMessage.nickname}</ErrorMessage>
+                            {passowordInfoCheck ? (
+                                <ErrorMessage visible={!!inputMessage.password && clickedButEmpty.password}>{inputMessage.password}</ErrorMessage>
                             ) : (
-                                <ErrorMessage visible={true}>{checkFailMessage}</ErrorMessage>
+                                <ErrorMessage visible={true}>{checkFailMsg}</ErrorMessage>
                             )}
                             <S_ErrorMessage visible={!!errors.password && touched.password}>{errors.password}</S_ErrorMessage>
                             <S_Input

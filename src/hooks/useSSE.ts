@@ -13,7 +13,7 @@ export default function useSSE() {
             // 새로운 EventSource생성
             eventSource.current = new EventSource(`${import.meta.env.VITE_BASE_URL}/notify`, {
                 headers: {
-                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                    'access-token': `Bearer ${sessionStorage.getItem('token')}`,
                 },
                 withCredentials: true,
             });

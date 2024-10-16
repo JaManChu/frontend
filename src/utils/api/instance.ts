@@ -9,7 +9,7 @@ const instance = axios.create({
     withCredentials: true,
 });
 
-// 요청 인터셉터
+// 요청 인터셉터2
 instance.interceptors.request.use(
     // request 서버 전송 전 처리되는 코드로 config는 http 요청 시 사용할 설정과 데이터를 포함
     (config) => {
@@ -48,7 +48,7 @@ instance.interceptors.response.use(
             const newAccessToken = await reissueToken();
             if (newAccessToken) {
                 store.dispatch(loginSuccess({ isLoggedIn: true, token: newAccessToken, nickname: err.response.data.nickname }));
-                err.config.headers['Authorization'] = `Bearer ${newAccessToken}`;
+                err.config.headers['access-token'] = `Bearer ${newAccessToken}`;
                 return instance(err.config); // 중단된 요청을 갱신된 토큰으로 재요청
             } else {
                 // 재발급 실패 시 처리

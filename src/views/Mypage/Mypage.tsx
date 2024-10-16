@@ -11,7 +11,7 @@ import { FaRegBookmark, FaBookmark } from 'react-icons/fa6';
 import colors from '../../styles/colors';
 import { useBookmark } from './hooks/useBookmark';
 import { useState } from 'react';
-import axios from 'axios';
+import instance from '../../utils/api/instance';
 import { useUserForm } from '../../hooks/useUserForm';
 
 export default function Mypage(): JSX.Element {
@@ -44,7 +44,7 @@ export default function Mypage(): JSX.Element {
     const [checkFailMessage, setCheckFailMessage] = useState<string>('');
     const handleCheckNickname = async () => {
         try {
-            const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/nickname-check?nickname=${nickname}`);
+            const response: any = await instance.get(`/auth/nickname-check?nickname=${nickname}`);
             console.log('nickanme check, response( 204 ok 전): ', response);
             if (response.data.code === 'NO_CONTENT') {
                 console.log(response);

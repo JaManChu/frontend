@@ -1,11 +1,8 @@
-import axios from 'axios';
-
+import instance from '../../../utils/api/instance';
 import { validateUserIfno } from '../../../utils/validation/validation';
 import { useUserForm } from '../../../hooks/useUserForm';
-import useAuthToken from '../../../hooks/useAuthToken';
 
 export const useUserUpdate = (password: string, passwordCheck: string, nickname: string, handleModalClose: () => void) => {
-    const token = useAuthToken();
     const { setInputMessage } = useUserForm();
     const handleUpdate = async () => {
         const inputResult = validateUserIfno({ password, passwordCheck, nickname });
@@ -19,20 +16,11 @@ export const useUserUpdate = (password: string, passwordCheck: string, nickname:
         }
 
         try {
-            const response = await axios.put(
-                `${import.meta.env.VITE_BASE_URL}/users`,
-                {
-                    nickname: nickname,
-                    beforePassword: password,
-                    afterPassword: passwordCheck,
-                },
-                {
-                    headers: {
-                        'access-token': `Bearer ${token}`,
-                    },
-                    withCredentials: true,
-                },
-            );
+            const response = await instance.put(`/users`, {
+                nickname: nickname,
+                beforePassword: password,
+                afterPassword: passwordCheck,
+            });
             console.log('회원정보 수정 성공', response);
             alert('회원정보가 성공적으로 수정되었습니다.');
             handleModalClose();

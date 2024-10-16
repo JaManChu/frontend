@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import RecipeList from '../../../components/Recipe/RecipeList.js';
 import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
-import axios from 'axios';
+import instance from '../../../utils/api/instance.js';
 import fakeData from '../../../fakeData/recipeFake.js';
 
 interface RecipeLimitProps {
@@ -26,7 +26,7 @@ export default function AllRecipes({ limit, page }: RecipeLimitProps): JSX.Eleme
     useEffect(() => {
         const fetchRecipes = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes`);
+                const response = await instance.get(`/recipes`);
                 if (response.data.code == 'OK') {
                     setRecipes(response.data.data);
                     setMessage(response.data.message);

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import instance from '../utils/api/instance';
 import { useNavigate } from 'react-router-dom';
 import useAuthToken from './useAuthToken';
 
@@ -121,12 +121,10 @@ export const useRecipeCreate = () => {
 
         console.log('전달할 JSON 데이터 확인:', requestBody);
         try {
-            const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/recipes`, requestBody, {
+            const response = await instance.post(`/recipes`, requestBody, {
                 headers: {
-                    'Access-Token': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-                withCredentials: true,
             });
             console.log('게시물 작성 response', response);
 

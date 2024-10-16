@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import useAuthToken from './useAuthToken';
+import instance from '../utils/api/instance';
 
 export const useGetUserInfo = () => {
     const token = useAuthToken();
@@ -16,16 +16,7 @@ export const useGetUserInfo = () => {
         } else {
             const fetchUserInfo = async () => {
                 try {
-                    const response = await axios.get(
-                        `${import.meta.env.VITE_BASE_URL}/users`,
-
-                        {
-                            headers: {
-                                'access-token': `Bearer ${token}`,
-                            },
-                            withCredentials: true,
-                        },
-                    );
+                    const response = await instance.get('/users');
                     console.log('마이페이지 유저정보', response);
                     const { email, nickname } = response.data.data;
                     setUserInfo({

@@ -1,7 +1,8 @@
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthToken from './useAuthToken';
+import instance from '../utils/api/instance';
+
 export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: number) => {
     interface Recipe {
         recipeId: number;
@@ -25,15 +26,7 @@ export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: numbe
             }
             try {
                 console.log('마이페이지레시피 목록 api호출시작');
-                const response = await axios.get(
-                    `${import.meta.env.VITE_BASE_URL}/users/recipes?myRecipePage=${myRecipesPage}&scrapRecipePage=${scrapedRecipesPage}`,
-                    {
-                        headers: {
-                            'access-token': `Bearer ${token}`,
-                        },
-                        withCredentials: true,
-                    },
-                );
+                const response = await instance.get(`/users/recipes?myRecipePage=${myRecipesPage}&scrapRecipePage=${scrapedRecipesPage}`);
                 console.log('마이페이지 작성게시글, 스크랩목록', response);
                 if (response.data.body.code === 'OK') {
                     // API 응답 데이터를 사용하여 상태 업데이트

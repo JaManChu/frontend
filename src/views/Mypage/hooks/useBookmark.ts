@@ -1,23 +1,13 @@
 import { useState } from 'react';
-import axios from 'axios';
-import useAuthToken from '../../../hooks/useAuthToken';
+import instance from '../../../utils/api/instance';
+
 export const useBookmark = () => {
     //map함수에서 개별 게시물 북마크 상태관리 상태배열
     const [bookmarkRecipes, setBookmarkRecipes] = useState<Record<string, boolean>>({});
-    const token = useAuthToken();
     //북마크 아이콘 클릭핸들 함수
     const handleClickBookmark = async (recipeId: number) => {
         try {
-            const response = await axios.post(
-                `${import.meta.env.VITE_BASE_URL}/recipes/${recipeId}`,
-                {},
-                {
-                    headers: {
-                        'access-token': `Bearer ${token}`,
-                    },
-                    withCredentials: true,
-                },
-            );
+            const response = await instance.post(`/recipes/${recipeId}/scrap`);
             if (response.data.data === 'SCRAPED') {
                 //스크랩 성공 : 해당 게시물 스크랩 상태로 설정
                 setBookmarkRecipes((prev) => ({

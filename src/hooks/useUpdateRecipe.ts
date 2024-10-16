@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useRecipeCreate } from './useRecipeCreate';
 import useAuthToken from './useAuthToken';
+import instance from '../utils/api/instance';
 
 export const useUpdateRecipes = (id: string) => {
     const navigate = useNavigate();
@@ -31,12 +31,7 @@ export const useUpdateRecipes = (id: string) => {
 
         const fetchUserInfo = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/users`, {
-                    headers: {
-                        'access-token': `Bearer ${token}`,
-                    },
-                    withCredentials: true,
-                });
+                const response = await instance.get('/users');
                 console.log('게시물수정 유저정보', response);
                 setUserNickname(response.data.data.nickname);
             } catch (error) {
@@ -51,12 +46,7 @@ export const useUpdateRecipes = (id: string) => {
     useEffect(() => {
         const fetchRecipeData = async () => {
             try {
-                const response = await axios.get(`/recipes/${id}`, {
-                    headers: {
-                        'access-token': `Bearer ${token}`,
-                    },
-                    withCredentials: true,
-                });
+                const response = await instance.get(`/recipes/${id}`);
                 console.log('게시물수정 레시피데이터', response);
 
                 const recipeData = response.data.data;
@@ -111,12 +101,10 @@ export const useUpdateRecipes = (id: string) => {
                 }
             });
 
-            await axios.put('/recipes', formData, {
+            await instance.put('/recipes', formData, {
                 headers: {
-                    'access-token': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
                 },
-                withCredentials: true,
             });
             alert('레시피가 성공적으로 수정되었습니다.');
             navigate(`/recipes/${id}`);

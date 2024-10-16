@@ -9,7 +9,7 @@ const instance = axios.create({
     withCredentials: true,
 });
 
-// 요청 인터셉터2
+// 요청 인터셉터
 instance.interceptors.request.use(
     // request 서버 전송 전 처리되는 코드로 config는 http 요청 시 사용할 설정과 데이터를 포함
     (config) => {
@@ -32,9 +32,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
     // 액세스토큰 유효 -> 응답 반환
     (response) => {
-        if (response.data.code == 200) {
-            console.log(response);
-        }
+        console.log(response);
         return response;
     },
 

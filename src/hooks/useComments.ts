@@ -1,6 +1,7 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
 import useAuthToken from './useAuthToken';
 import axios from 'axios';
+import instance from '../utils/api/instance';
 
 interface CreateHandlerProps {
     recipeId: number;
@@ -68,20 +69,11 @@ export default function useComments() {
         setCurrentRate(rating);
 
         try {
-            const response = await axios.post(
-                `${import.meta.env.VITE_BASE_URL}/comments`,
-                {
-                    recipeId: recipeId,
-                    comment: comment,
-                    rating: rating,
-                },
-                {
-                    headers: {
-                        'access-token': `Bearer ${token}`,
-                    },
-                    withCredentials: true,
-                },
-            );
+            const response = await instance.post('/comments', {
+                recipeId: recipeId,
+                comment: comment,
+                rating: rating,
+            });
             console.log('comment create response: ', response);
             console.log('comment response message:', response.data.message);
             console.log('rating, comment', rating, comment);
@@ -94,8 +86,13 @@ export default function useComments() {
                 alert('댓글 작성 성공!');
             }
         } catch (err: any) {
-            console.log(err);
-            alert('댓글 작성에 실패하였습니다.');
+            if (err.message == 'No token') {
+                alert('로그인 후 이용바랍니다.');
+                window.location.href = '/login';
+            } else {
+                console.log(err);
+                alert('댓글 작성에 실패하였습니다.');
+            }
         }
     };
 

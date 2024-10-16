@@ -17,7 +17,7 @@ instance.interceptors.request.use(
         if (!token) {
             return Promise.reject(new Error('No token')); // 요청을 중단 - api호출하는 컴포넌트에서는 err.message == 'No token'로 구분 가능 & if - else 조거문 필요 (예상하지 못한 error 발생시)
         }
-        config.headers['Authorization'] = `Bearer ${token}`;
+        config.headers['access-token'] = `Bearer ${token}`;
         config.headers['Content-Type'] = 'application/json';
         return config;
     },

@@ -142,9 +142,7 @@ export default function Signup(): JSX.Element {
                             {inputMessage.passwordCheck}
                         </ErrorMessage>
                     </SignupFieldset>
-                    <Button type="submit" disabled={!emailCheck}>
-                        회원가입
-                    </Button>
+                    {emailCheck && <Button type="submit">회원가입</Button>}
                 </form>
 
                 {isModalVisible && (

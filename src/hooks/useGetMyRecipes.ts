@@ -29,14 +29,14 @@ export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: numbe
                     },
                 );
                 console.log('마이페이지 작성게시글, 스크랩목록', response);
-                console.log('게시글 불러오기 , response.data.data.code : ', response.data.data.code);
-                if (response.data.data.code === 'OK') {
+                console.log('게시글 불러오기 , response.data: ', response.data);
+                if (response.data.code === 'OK') {
                     // API 응답 데이터를 사용하여 상태 업데이트
-                    setMyRecipes(response.data.body.data.myRecipes.dataList);
-                    setScrapedRecipes(response.data.body.data.myScrapedRecipes.dataList);
+                    setMyRecipes(response.data.data.myRecipes.dataList);
+                    setScrapedRecipes(response.data.data.myScrapedRecipes.dataList);
                     // 총 페이지 수 업데이트
-                    setTotalMyRecipesPages(response.data.body.data.myRecipes.totalPage);
-                    setTotalScrapedRecipesPages(response.data.body.data.myScrapedRecipes.totalPage);
+                    setTotalMyRecipesPages(response.data.data.myRecipes.dataList.totalPage);
+                    setTotalScrapedRecipesPages(response.data.data.myScrapedRecipes.dataList.totalPage);
                 }
             } catch (error) {
                 console.error('게시물 정보를 불러오는데 실패하였습니다', error);

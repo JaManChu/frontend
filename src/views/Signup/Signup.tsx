@@ -33,11 +33,11 @@ export default function Signup(): JSX.Element {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/email-check?email=${email}`);
             console.log(response);
             console.log('response.data :', response.data);
-            if (response.data.code === 'NO_CONTENT') {
+            if (response.data.data === true) {
                 console.log(response);
                 setEmailCheck(true);
                 setCheckFailMessage(response.data.message);
-            } else if (response.data.code === 'CONFLICT') {
+            } else if (response.data.data === false) {
                 setEmailCheck(false);
                 setCheckFailMessage(response.data.message);
             }

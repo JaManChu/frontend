@@ -42,6 +42,8 @@ export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: numbe
                 console.error('게시물 정보를 불러오는데 실패하였습니다', error);
             }
         };
+        console.log('작성게시글 목록 : ', myRecipes);
+        console.log('스크랩 게시물 목록 : ', scrapedRecipes);
         fetchRecipes();
     }, [myRecipesPage, scrapedRecipesPage]);
 

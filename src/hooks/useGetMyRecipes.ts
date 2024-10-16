@@ -29,7 +29,8 @@ export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: numbe
                     },
                 );
                 console.log('마이페이지 작성게시글, 스크랩목록', response);
-                if (response.data.body.code === 'OK') {
+                console.log('게시글 불러오기 , response.data.data.code : ', response.data.data.code);
+                if (response.data.data.code === 'OK') {
                     // API 응답 데이터를 사용하여 상태 업데이트
                     setMyRecipes(response.data.body.data.myRecipes.dataList);
                     setScrapedRecipes(response.data.body.data.myScrapedRecipes.dataList);

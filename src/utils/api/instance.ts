@@ -69,7 +69,7 @@ instance.interceptors.response.use(
         if (err.response && err.response?.status === 404) {
             alert(`err.message: ', ${err.message}`);
             alert('인증정보가 없습니다. 로그인해주세요');
-            window.location.href = '/login';
+            // window.location.href = '/login';
             return Promise.reject(err); // 요청 중단
         }
 

@@ -31,6 +31,8 @@ export default function Signup(): JSX.Element {
     const handleCheckEmail = async () => {
         try {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/email-check?email=${email}`);
+            console.log(response);
+            console.log('response.data :', response.data);
             if (response.data.code === 'NO_CONTENT') {
                 console.log(response);
                 setEmailCheck(true);

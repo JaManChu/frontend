@@ -102,7 +102,15 @@ export default function Mypage(): JSX.Element {
                 },
             );
             console.log('비밀번호 확인 response:', response.data);
-            setPasswordCheckMessage(response.data.message);
+            console.log('비밀번호 확인 response.data.data:', response.data.data);
+            console.log('비밀번호 확인 response.data.message:', response.data.message);
+            if (response.data.data === true) {
+                console.log(response);
+                setPasswordCheckMessage(response.data.message);
+            } else if (response.data.data === false) {
+                setPasswordCheckMessage(response.data.message);
+            }
+            console.log('passwordcheckmessage : ', response.data.message);
         } catch (error) {
             console.error('비밀번호 확인 중 오류 발생:', error);
         }

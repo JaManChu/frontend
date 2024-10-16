@@ -6,7 +6,6 @@ import { loginSuccess } from '../../redux/reducer/userSlice';
 // 기본설정 (기본적인 request, response 가로채서 공통로직 처리)
 const instance = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
-    timeout: 1000, // 요청이 `timeout`보다 오래 걸리면 요청중단
     withCredentials: true,
 });
 

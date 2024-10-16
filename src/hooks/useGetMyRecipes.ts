@@ -44,6 +44,9 @@ export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: numbe
         };
         console.log('작성게시글 목록 : ', myRecipes);
         console.log('스크랩 게시물 목록 : ', scrapedRecipes);
+        console.log('게시글 총 페이지 : ', totalMyRecipesPages);
+        console.log('스크랩 총 페이지 : ', totalScrapedRecipesPages);
+
         fetchRecipes();
     }, [myRecipesPage, scrapedRecipesPage]);
 

@@ -33,16 +33,15 @@ instance.interceptors.response.use(
     // 액세스토큰 유효 -> 응답 반환
     (response) => {
         if (response.data.code == 200) {
-            console.log('*instance* data.code가 200 : ', response);
+            console.log(response);
         }
-        console.log('#instance response#: ', response);
         return response;
     },
 
     // 에러 발생시
     async (err) => {
-        console.log('*instance err - config 확인: *', err);
-        console.log('#instance err.response : #', err.response);
+        console.log('*instance err: *', err);
+
         // 1. 액세스 토큰이 만료되었을때 - 재발급 후 기존 요청 재요청
         if (err.response && err.response?.status == 401) {
             const newAccessToken = await reissueToken();
@@ -59,17 +58,15 @@ instance.interceptors.response.use(
         }
         // 2. 리프레시 토큰이 만료되었을때
         if (err.response && err.response?.status == 410) {
-            alert(`err.message: ', ${err.message}`);
-            alert('다시 로그인 후 이용바랍니다.');
+            alert(err.response.data);
             window.location.href = '/login';
             return Promise.reject(err); // 요청 중단
         }
 
         // 3. 쿠키가 없을때
         if (err.response && err.response?.status === 404) {
-            alert(`err.message: ', ${err.message}`);
-            alert('인증정보가 없습니다. 로그인해주세요');
-            // window.location.href = '/login';
+            alert(err.response.data);
+            window.location.href = '/login';
             return Promise.reject(err); // 요청 중단
         }
 

@@ -64,8 +64,8 @@ const UpdateRecipe: React.FC = () => {
                     <RecipeDetails>
                         <h3>레시피 수정</h3>
                         <RecipeSelect value={recipeLevel} onChange={(e) => setRecipeLevel(e.target.value)}>
-                            <option value="EASY">EASY</option>
-                            <option value="NORMAL">NORMAL</option>
+                            <option value="LOW">LOW</option>
+                            <option value="MIDDLE">MIDDLE</option>
                             <option value="HIGH">HIGH</option>
                         </RecipeSelect>
                         <h3>요리 시간 (분)</h3>

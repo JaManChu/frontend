@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import useAuthToken from './useAuthToken';
+// import useAuthToken from './useAuthToken';
 import instance from '../utils/api/instance';
 
 export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: number) => {
@@ -14,7 +14,7 @@ export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: numbe
     const [totalMyRecipesPages, setTotalMyRecipesPages] = useState(1); // 총 작성 레시피 페이지 수
     const [totalScrapedRecipesPages, setTotalScrapedRecipesPages] = useState(1); // 총 스크랩 레시피 페이지 수
 
-    const token = useAuthToken();
+    // const token = useAuthToken();
 
     useEffect(() => {
         const fetchRecipes = async () => {

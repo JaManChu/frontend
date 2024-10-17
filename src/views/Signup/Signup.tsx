@@ -52,11 +52,12 @@ export default function Signup(): JSX.Element {
         try {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/nickname-check?nickname=${nickname}`);
             console.log('nickanme check, response( 204 ok 전): ', response);
-            if (response.data.code === 'NO_CONTENT') {
+            console.log('nick response.data.data', response.data.data);
+            if (response.data.data === true) {
                 console.log(response);
                 setNicknameCheck(true);
                 setNicknameCheckFailMessage(response.data.message);
-            } else if (response.data.code === 'CONFLICT') {
+            } else if (response.data.data === false) {
                 setNicknameCheck(false);
                 setNicknameCheckFailMessage(response.data.message);
             }
@@ -149,7 +150,7 @@ export default function Signup(): JSX.Element {
                     <Button
                         type="submit"
                         variant="contained"
-                        disabled={!(nicknameCheck && emailCheck)}
+                        disabled={!nicknameCheck && !emailCheck}
                         sx={{
                             backgroundColor: nicknameCheck && emailCheck ? 'primary.main' : 'grey.500',
                             ':hover': {

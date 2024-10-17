@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import useAuthToken from './useAuthToken';
 import instance from '../utils/api/instance';
 
@@ -7,7 +7,6 @@ export const useGetUserInfo = () => {
     const token = useAuthToken();
 
     const [userInfo, setUserInfo] = useState({ email: '', nickname: '', img: '' });
-
 
     const fetchUserInfo = useCallback(async () => {
         try {

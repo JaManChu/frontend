@@ -2,8 +2,6 @@ import instance from '../../../utils/api/instance';
 import { validateUserIfno } from '../../../utils/validation/validation';
 import { useUserForm } from '../../../hooks/useUserForm';
 
-
-
 export const useUserUpdate = (
     password: string,
     newPassword: string,
@@ -12,7 +10,7 @@ export const useUserUpdate = (
     handleModalClose: () => void,
     refetchUserInfo: () => void,
 ) => {
-    const token = useAuthToken();
+    // const token = useAuthToken();
 
     const { setInputMessage } = useUserForm();
 

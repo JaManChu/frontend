@@ -150,7 +150,7 @@ export default function Signup(): JSX.Element {
                     <Button
                         type="submit"
                         variant="contained"
-                        disabled={!nicknameCheck && !emailCheck}
+                        disabled={!(nicknameCheck && emailCheck)}
                         sx={{
                             backgroundColor: nicknameCheck && emailCheck ? 'primary.main' : 'grey.500',
                             ':hover': {

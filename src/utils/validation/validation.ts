@@ -38,8 +38,8 @@ export const validateNickname = (nickname: string): string => {
 interface ValidationProps {
     email: string;
     password: string;
-    passwordCheck?: string;
-    nickname?: string;
+    passwordCheck: string;
+    nickname: string;
 }
 interface UserInfoValidationProps {
     password: string;
@@ -53,8 +53,8 @@ export const validateResult = ({ email, password, passwordCheck, nickname }: Val
     return {
         email: validateEmail(email),
         password: validatePassword(password),
-        passwordCheck: passwordCheck ? validatePasswordCheck(password, passwordCheck) : '',
-        nickName: nickname ? validateNickname(nickname) : '',
+        passwordCheck: validatePasswordCheck(password, passwordCheck),
+        nickName: validateNickname(nickname),
     };
 };
 

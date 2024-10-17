@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Layout } from '../../styles/layout';
 import Modal from '../../components/Modal/Modal';
@@ -8,7 +8,9 @@ import axios from 'axios';
 import { Button } from '@mui/material';
 
 export default function Signup(): JSX.Element {
-    const [checkFailMessage, setCheckFailMessage] = useState<string>('');
+    const [emailCheckFailMessage, setEmailCheckFailMessage] = useState<string>('');
+    const [nicknameCheckFailMessage, setNicknameCheckFailMessage] = useState<string>('');
+
     const [emailCheck, setEmailCheck] = useState<boolean>(false);
     const [nicknameCheck, setNicknameCheck] = useState<boolean>(false);
     const {
@@ -37,10 +39,10 @@ export default function Signup(): JSX.Element {
             if (response.data.data === true) {
                 console.log(response);
                 setEmailCheck(true);
-                setCheckFailMessage(response.data.message);
+                setEmailCheckFailMessage(response.data.message);
             } else if (response.data.data === false) {
                 setEmailCheck(false);
-                setCheckFailMessage(response.data.message);
+                setEmailCheckFailMessage(response.data.message);
             }
         } catch (err) {
             console.log(err);
@@ -53,15 +55,20 @@ export default function Signup(): JSX.Element {
             if (response.data.code === 'NO_CONTENT') {
                 console.log(response);
                 setNicknameCheck(true);
-                setCheckFailMessage(response.data.message);
+                setNicknameCheckFailMessage(response.data.message);
             } else if (response.data.code === 'CONFLICT') {
                 setNicknameCheck(false);
-                setCheckFailMessage(response.data.message);
+                setNicknameCheckFailMessage(response.data.message);
             }
         } catch (err) {
             console.log(err);
         }
     };
+
+    useEffect(() => {
+        console.log('emailCheck:', emailCheck);
+        console.log('nicknameCheck:', nicknameCheck);
+    }, [emailCheck, nicknameCheck]);
 
     return (
         <Layout>
@@ -142,6 +149,7 @@ export default function Signup(): JSX.Element {
                     <Button
                         type="submit"
                         variant="contained"
+                        disabled={!(nicknameCheck && emailCheck)}
                         sx={{
                             backgroundColor: nicknameCheck && emailCheck ? 'primary.main' : 'grey.500',
                             ':hover': {
@@ -149,7 +157,6 @@ export default function Signup(): JSX.Element {
                             },
                             textAlign: 'center',
                         }}
-                        disabled={!(nicknameCheck && emailCheck)}
                     >
                         회원가입
                     </Button>
@@ -158,7 +165,7 @@ export default function Signup(): JSX.Element {
                 {isModalVisible && (
                     <Modal visible={isModalVisible} onClose={closeModal} buttons={[{ label: '확인', onClick: closeModal }]}>
                         <h2>중복 확인</h2>
-                        <p> {checkFailMessage} </p>
+                        <p> {emailCheckFailMessage || nicknameCheckFailMessage} </p>
                     </Modal>
                 )}
             </SingupContainer>

@@ -35,12 +35,17 @@ export const validateNickname = (nickname: string): string => {
     return '';
 };
 
-interface ValidationProps {
+interface ValidationSignupProps {
     email: string;
     password: string;
     passwordCheck: string;
     nickname: string;
 }
+interface ValidationLoginProps {
+    email: string;
+    password: string;
+}
+
 interface UserInfoValidationProps {
     password: string;
     newPassword: string;
@@ -48,13 +53,20 @@ interface UserInfoValidationProps {
     nickname?: string;
 }
 
-// 유효성 검사 결과 (success or fail)
-export const validateResult = ({ email, password, passwordCheck, nickname }: ValidationProps) => {
+// 회원가입 유효성 검사 결과 (success or fail)
+export const validateSignup = ({ email, password, passwordCheck, nickname }: ValidationSignupProps) => {
     return {
         email: validateEmail(email),
         password: validatePassword(password),
         passwordCheck: validatePasswordCheck(password, passwordCheck),
         nickName: validateNickname(nickname),
+    };
+};
+
+export const validateLogin = ({ email, password }: ValidationLoginProps) => {
+    return {
+        email: validateEmail(email),
+        password: validatePassword(password),
     };
 };
 

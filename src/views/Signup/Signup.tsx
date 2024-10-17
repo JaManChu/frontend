@@ -5,6 +5,7 @@ import Modal from '../../components/Modal/Modal';
 import { useUserForm } from '../../hooks/useUserForm.ts';
 import { useModal } from '../../hooks/useModal.ts';
 import axios from 'axios';
+import { Button } from '@mui/material';
 
 export default function Signup(): JSX.Element {
     const [checkFailMessage, setCheckFailMessage] = useState<string>('');
@@ -66,7 +67,7 @@ export default function Signup(): JSX.Element {
         <Layout>
             <SingupContainer>
                 <SingupHeader>회원가입</SingupHeader>
-                <form method="POST" onSubmit={handleSignup}>
+                <form method="POST" onSubmit={handleSignup} style={{ width: '50%', display: 'flex', flexDirection: 'column' }}>
                     <SignupFieldset>
                         <legend>Welcome, Register your account</legend>
                         <SignupEmailWrapper>
@@ -86,15 +87,12 @@ export default function Signup(): JSX.Element {
                                     openModal();
                                     handleCheckEmail();
                                 }}
+                                sx={{ width: '80px' }}
                             >
                                 중복확인
                             </Button>
                         </SignupEmailWrapper>
-                        {emailCheck ? (
-                            <ErrorMessage visible={!!inputMessage.email && clickedButEmpty.email}>{inputMessage.email}</ErrorMessage>
-                        ) : (
-                            <ErrorMessage visible={true}>{checkFailMessage}</ErrorMessage>
-                        )}
+                        <ErrorMessage visible={!!inputMessage.email && clickedButEmpty.email}>{inputMessage.email}</ErrorMessage>
                         <NicknameWrapper>
                             <Input
                                 placeholder="닉네임"
@@ -110,15 +108,12 @@ export default function Signup(): JSX.Element {
                                     openModal();
                                     handleCheckNickname();
                                 }}
+                                sx={{ width: '80px' }}
                             >
                                 중복확인
                             </Button>
                         </NicknameWrapper>
-                        {nicknameCheck ? (
-                            <ErrorMessage visible={!!inputMessage.nickname && clickedButEmpty.nickname}>{inputMessage.nickname}</ErrorMessage>
-                        ) : (
-                            <ErrorMessage visible={true}>{checkFailMessage}</ErrorMessage>
-                        )}
+                        <ErrorMessage visible={!!inputMessage.nickname && clickedButEmpty.nickname}>{inputMessage.nickname}</ErrorMessage>
                         <Input
                             name="password"
                             type="password"
@@ -144,7 +139,20 @@ export default function Signup(): JSX.Element {
                             {inputMessage.passwordCheck}
                         </ErrorMessage>
                     </SignupFieldset>
-                    {emailCheck && <Button type="submit">회원가입</Button>}
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        sx={{
+                            backgroundColor: nicknameCheck && emailCheck ? 'primary.main' : 'grey.500',
+                            ':hover': {
+                                backgroundColor: nicknameCheck && emailCheck ? 'primary.dark' : 'grey.700',
+                            },
+                            textAlign: 'center',
+                        }}
+                        disabled={!(nicknameCheck && emailCheck)}
+                    >
+                        회원가입
+                    </Button>
                 </form>
 
                 {isModalVisible && (
@@ -181,13 +189,16 @@ const SignupFieldset = styled.fieldset`
 const SignupEmailWrapper = styled.div`
     display: flex;
     align-items: center;
+    width: 100%;
     justify-content: space-between;
 `;
+
 const NicknameWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
 `;
+
 const Input = styled.input<{ showErrorMessage: boolean }>`
     width: 100%;
     min-width: 300px;
@@ -196,19 +207,6 @@ const Input = styled.input<{ showErrorMessage: boolean }>`
     border-radius: 10px;
     font-size: 1rem;
     border: ${(props) => (props.showErrorMessage ? '2px solid red' : '1px solid #ccc')};
-`;
-
-const Button = styled.button`
-    min-width: 80px;
-    width: 50%;
-    height: 40px;
-    margin: 8px 0 0 20px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 10px;
-    color: white;
-    background-color: #f59910;
-    cursor: pointer;
 `;
 
 // `visible` : 에러메세지가 있을 때 boolean으로 style적용

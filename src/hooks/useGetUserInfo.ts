@@ -1,20 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import useAuthToken from './useAuthToken';
+import instance from '../utils/api/instance';
 
 export const useGetUserInfo = () => {
     const token = useAuthToken();
 
     const [userInfo, setUserInfo] = useState({ email: '', nickname: '', img: '' });
 
+
     const fetchUserInfo = useCallback(async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/users`, {
-                headers: {
-                    'access-token': `Bearer ${token}`,
-                },
-                withCredentials: true,
-            });
+            const response = await instance.get(`/users`);
             console.log('마이페이지 유저정보', response);
             const { email, nickname } = response.data.data;
             setUserInfo({

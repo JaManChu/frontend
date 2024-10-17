@@ -1,7 +1,8 @@
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 
 import useAuthToken from './useAuthToken';
+import instance from '../utils/api/instance';
+
 export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: number) => {
     interface Recipe {
         recipeId: number;
@@ -19,15 +20,7 @@ export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: numbe
         const fetchRecipes = async () => {
             try {
                 console.log('마이페이지레시피 목록 api호출시작');
-                const response = await axios.get(
-                    `${import.meta.env.VITE_BASE_URL}/users/recipes?myRecipePage=${myRecipesPage}&scrapRecipePage=${scrapedRecipesPage}`,
-                    {
-                        headers: {
-                            'access-token': `Bearer ${token}`,
-                        },
-                        withCredentials: true,
-                    },
-                );
+                const response = await instance.get(`/users/recipes?myRecipePage=${myRecipesPage}&scrapRecipePage=${scrapedRecipesPage}`);
                 console.log('마이페이지 작성게시글, 스크랩목록', response);
                 console.log('게시글 불러오기 , response.data: ', response.data);
                 if (response.data.code === 'OK') {

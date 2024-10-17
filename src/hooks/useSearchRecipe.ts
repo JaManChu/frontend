@@ -1,7 +1,6 @@
 import { useEffect, useState, ChangeEvent, KeyboardEvent, FormEvent } from 'react';
 import { SelectChangeEvent } from '@mui/material/Select';
-import useAuthToken from './useAuthToken';
-import axios from 'axios';
+import instance from '../utils/api/instance';
 
 export default function useSearchRecipe() {
     const [searching, setSearching] = useState<boolean>(false); // 검색중 여부
@@ -28,7 +27,6 @@ export default function useSearchRecipe() {
         setSearchIngredients(e.target.value);
     };
 
-    const token = useAuthToken();
     // 검색 버튼 클릭시 api 통신
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -40,10 +38,8 @@ export default function useSearchRecipe() {
         }
 
         try {
-            const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}`, {
+            const response: any = await instance.get('/', {
                 params: { ingredientName: ingredientsList, recipeCookingTime: time, recipeLevel: level },
-                headers: { 'access-token': `Bearer ${token}` },
-                withCredentials: true,
             });
             console.log('search response: ', response);
             console.log('검색내용', ingredientsList, time, level);

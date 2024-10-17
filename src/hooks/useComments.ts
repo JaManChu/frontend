@@ -1,6 +1,4 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
-import useAuthToken from './useAuthToken';
-import axios from 'axios';
 import instance from '../utils/api/instance';
 
 interface CreateHandlerProps {
@@ -37,18 +35,10 @@ export default function useComments() {
     const [currentRate, setCurrentRate] = useState<number>(0);
     const [responseMessage, setResponseMessage] = useState<string>(''); // 메시지 알람창
 
-    // store에 저장된 token
-    const token = useAuthToken();
-
     // get : recipeId
     const fetchCommentHandler = async (recipeId: string) => {
         try {
-            const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/comments/${recipeId}`, {
-                headers: {
-                    'access-token': `Bearer ${token}`,
-                },
-                withCredentials: true,
-            });
+            const response: any = await instance.get(`/comments/${recipeId}`);
             if (response.data.code === 'OK') {
                 console.log('response.data.data: ', response.data.data);
                 setCommentDataList(response.data.data.comments);
@@ -58,9 +48,8 @@ export default function useComments() {
             alert('댓글을 가져오는데 실패했습니다.');
         }
     };
-    console.log('comment-commentId: ', commentId);
-    console.log('comment-updateComment:  ', updateComment);
-    console.log(recipeId);
+    console.log('recipeId', recipeId);
+    console.log('responseMsg', responseMessage);
 
     // create : recipeId, comment, rating
     const createCommentHandler = async (e: FormEvent<HTMLFormElement>, { recipeId, comment, rating }: CreateHandlerProps) => {
@@ -74,9 +63,7 @@ export default function useComments() {
                 comment: comment,
                 rating: rating,
             });
-            console.log('comment create response: ', response);
-            console.log('comment response message:', response.data.message);
-            console.log('rating, comment', rating, comment);
+
             if (response.data.code == 'CREATED') {
                 setResponseMessage(response.data.message);
                 // 초기화
@@ -98,30 +85,16 @@ export default function useComments() {
 
     // update : commentId, comment, rating
     const updateCommentHandler = async ({ commentId, comment, rating }: UpdateHandlerProps, recipeId: string) => {
-        setEditing(false); // 수정완료 : false로 상태변경
+        setEditing(false); // 수정완료 시 false로 상태변경
         try {
-            const response: any = await axios.put(
-                `${import.meta.env.VITE_BASE_URL}/comments`,
-                {
-                    commentsId: commentId,
-                    comment: comment,
-                    rating: rating,
-                },
-                {
-                    headers: {
-                        'access-token': `Bearer ${token}`,
-                    },
-                    withCredentials: true,
-                },
-            );
-            console.log('update response:', response);
-            console.log(commentId, comment, rating);
-            console.log('rating, comment', rating, comment);
+            const response: any = await instance.put('/comments', {
+                commentsId: commentId,
+                comment: comment,
+                rating: rating,
+            });
 
             if (response.data.code === 'OK') {
-                console.log('update response: ', response);
                 setResponseMessage(response.data.message);
-                // 초기화 -> 안하면 다시 수정 버튼 눌렀을때 어떻게 반영되는지 확인
                 setUpdateComment('');
                 setCommentId(0);
                 await fetchCommentHandler(recipeId.toString());
@@ -155,22 +128,14 @@ export default function useComments() {
 
     const deleteCommentHandler = async (commentId: number, recipeId: string) => {
         try {
-            const response: any = await axios.delete(`${import.meta.env.VITE_BASE_URL}/comments`, {
-                headers: {
-                    'access-token': `Bearer ${token}`,
-                },
+            const response: any = await instance.delete('/comments', {
                 data: {
                     commentId: commentId,
                 },
-                withCredentials: true,
             });
-            console.log('delete response: ', response);
+
             if (response.data.code == 'OK') {
                 setResponseMessage(response.data.message);
-                console.log(responseMessage);
-
-                setCommentDataList((prev) => prev.filter((originComment) => originComment.commentId != commentId));
-
                 alert('댓글이 삭제되었습니다.');
                 await fetchCommentHandler(recipeId);
             }

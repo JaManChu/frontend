@@ -11,7 +11,7 @@ import { styled } from '@mui/material/styles';
 import { FaRegBookmark, FaBookmark } from 'react-icons/fa6';
 import colors from '../../styles/colors';
 import useAuthToken from '../../hooks/useAuthToken';
-import axios from 'axios';
+import instance from '../../utils/api/instance';
 
 // ! main 페이지가 아닌 all isMain을 콘솔에 찍으면 false값이 찍힘 -> 최적화 방안 생각(RecipeCard에서는 4번 : main, all, recipeList, recipeCard인듯
 
@@ -36,17 +36,7 @@ export default function RecipeNewCard({ recipeId, recipeName, recipeThumbnail, r
     const handleClickBookmark = async (e: MouseEvent) => {
         e.stopPropagation();
         try {
-            const response = await axios.post(
-                `${import.meta.env.VITE_BASE_URL}/recipes/${recipeId}/scrap`,
-                {},
-                {
-                    headers: {
-                        'access-token': `Bearer ${token}`,
-                    },
-                    withCredentials: true,
-                },
-            );
-
+            const response = await instance.post(`/recipes/${recipeId}/scrap`);
             console.log('scarp response: ', response);
 
             if (response.data.code == 'OK') {
@@ -60,7 +50,6 @@ export default function RecipeNewCard({ recipeId, recipeName, recipeThumbnail, r
             }
         } catch (err: any) {
             console.log(err);
-            console.log('err.response: ', err.response);
             setMessage(marked ? '찜한 레시피에서 삭제하였습니다.' : '레시피를 찜하지 못했습니다.');
         }
     };

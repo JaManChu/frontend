@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
 import RecipeList from '../../../components/Recipe/RecipeList.js';
-import axios from 'axios';
+import instance from '../../../utils/api/instance.js';
 import fakeData from '../../../fakeData/recipeFake.js';
 
 interface RecipeLimitProps {
@@ -26,7 +26,7 @@ export default function PopularRecipes({ limit, page, children }: RecipeLimitPro
     useEffect(() => {
         const fetchRecipes = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes/popular`);
+                const response = await instance.get(`/recipes/popular`);
                 if (response.data.code == 'OK') {
                     console.log('popular recipe response: ', response);
                     setRecipes(response.data.data);

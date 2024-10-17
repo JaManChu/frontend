@@ -1,5 +1,5 @@
 import { useState, ChangeEvent } from 'react';
-// import axios from 'axios';
+
 export const useSearchInput = () => {
     const [searched, setSearched] = useState<string>('');
     const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);

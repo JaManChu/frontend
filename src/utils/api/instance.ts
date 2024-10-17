@@ -1,7 +1,7 @@
 import axios from 'axios';
 import reissueToken from './reissueToken';
 import { store } from '../../redux/store/store';
-import { loginSuccess } from '../../redux/reducer/userSlice';
+import { loginSuccess, logoutSuccess } from '../../redux/reducer/userSlice';
 
 // 기본설정 (기본적인 request, response 가로채서 공통로직 처리)
 const instance = axios.create({
@@ -56,6 +56,7 @@ instance.interceptors.response.use(
         }
         // 2. 리프레시 토큰이 만료되었을때
         if (err.response && err.response?.status == 410) {
+            store.dispatch(logoutSuccess());
             alert(err.response.data);
             window.location.href = '/login';
             return Promise.reject(err); // 요청 중단

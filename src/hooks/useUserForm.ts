@@ -1,5 +1,12 @@
 import { FormEvent, useState } from 'react';
-import { validateEmail, validatePassword, validatePasswordCheck, validateNickname, validateResult } from '../utils/validation/validation.ts';
+import {
+    validateEmail,
+    validatePassword,
+    validatePasswordCheck,
+    validateNickname,
+    validateSignup,
+    validateLogin,
+} from '../utils/validation/validation.ts';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../redux/reducer/userSlice.ts';
@@ -68,7 +75,7 @@ export const useUserForm = () => {
     const handleSignup = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // 유효성 검사 결과 담아서 inputMessage에 반환
-        const inputResult = validateResult({ email, password, passwordCheck, nickname });
+        const inputResult = validateSignup({ email, password, passwordCheck, nickname });
         setInputMessage(inputResult);
         // email, password, passwordCheck, nickName 중 어느 하나라도 ''값이 아닌 경우 false 반환
         const hasMessage = Object.values(inputResult).some((result) => result !== '');
@@ -98,7 +105,7 @@ export const useUserForm = () => {
         e.preventDefault();
 
         // 유효성 검사 결과 담아서 inputMessage에 반환
-        const inputResult = validateResult({ email, password });
+        const inputResult = validateLogin({ email, password });
         setInputMessage(inputResult);
 
         // email, password중 어느 하나라도 ''값이 아닌 경우 false 반환

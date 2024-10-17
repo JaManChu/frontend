@@ -220,7 +220,7 @@ export default function Mypage(): JSX.Element {
                             visible={isModalVisible}
                             onClose={handleModalClose}
                             buttons={[
-                                { label: '수정', onClick: handleUpdate, disabled: !nicknameCheck },
+                                { label: '수정', onClick: handleUpdate, disabled: !(nicknameCheck && passowordInfoCheck) },
                                 { label: '취소', onClick: handleModalClose },
                             ]}
                         >

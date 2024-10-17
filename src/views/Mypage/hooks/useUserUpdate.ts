@@ -29,8 +29,7 @@ export const useUserUpdate = (
         try {
             const response = await instance.put(`/users`, {
                 nickname: nickname,
-                beforePassword: password,
-                afterPassword: passwordCheck,
+                password: newPassword,
             });
             console.log('회원정보 수정 성공', response);
             console.log('response.data : ', response.data);

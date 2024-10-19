@@ -7,7 +7,7 @@ import GuestHome from './views/GuestHome/GuestHome.tsx';
 import HeaderView from './components/Header/HeaderView.tsx';
 import Home from './views/Home/Home.tsx';
 import AllRecipes from './views/Recipes/AllRecipes/AllRecipes.tsx';
-import PopularRecipes from './views/Recipes/PopularRecipes/PopularRecipes.tsx';
+import PopularRecipesView from './views/Recipes/PopularRecipes/PopularRecipesView.tsx';
 import RecommendedRecipes from './views/Recipes/RecommendedRecipes/RecommendedRecipes.tsx';
 import DetailRecipe from './views/Recipes/DetailRecipe/DetailRecipe.tsx';
 import AuthKaKao from './components/AuthKaKao.tsx';
@@ -28,7 +28,7 @@ function App() {
                     <Route path="/guesthome" element={<GuestHome />} />
                     <Route path="/home" element={<Home />} />
                     <Route path="/recipes/all" element={<AllRecipes />} />
-                    <Route path="/recipes/popular" element={<PopularRecipes />} />
+                    <Route path="/recipes/popular" element={<PopularRecipesView />} />
                     <Route path="/recipes/search" element={<SearchViewRecipes />} />
                     <Route path="/recipes/recommended" element={<RecommendedRecipes />} />
                     <Route path="/recipes/:id" element={<DetailRecipe />} />

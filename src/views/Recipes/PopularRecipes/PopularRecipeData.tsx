@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react';
 import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
 import instance from '../../../utils/api/instance.js';
 import PopularRecipes from './PopularRecipes';
-
+interface RecipeLimitProps {
+    limit?: number;
+    page?: string;
+}
 interface RecipeProps {
     recipeId: number;
     recipeName: string;
@@ -14,7 +17,7 @@ interface RecipeProps {
     // desc: string;
 }
 
-export default function PopularRecipeData(): JSX.Element {
+export default function PopularRecipeData({ limit, page }: RecipeLimitProps): JSX.Element {
     const [recipes, setRecipes] = useState<RecipeProps[]>([]);
     const [message, setMessage] = useState<string>();
     const [offset, setOffset] = useState<number>(0);
@@ -54,7 +57,7 @@ export default function PopularRecipeData(): JSX.Element {
 
     return (
         <S_RecipeContainer>
-            <PopularRecipes recipes={recipes} fetchRecipes={fetchRecipes} isLoading={isLoading} />
+            <PopularRecipes limit={limit} page={page} recipes={recipes} fetchRecipes={fetchRecipes} isLoading={isLoading} />
         </S_RecipeContainer>
     );
 }

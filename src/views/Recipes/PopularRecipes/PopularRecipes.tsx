@@ -4,6 +4,7 @@ import RecipeList from '../../../components/Recipe/RecipeList.js';
 import instance from '../../../utils/api/instance.js';
 import fakeData from '../../../fakeData/recipeFake.js';
 import useObserver from '../../../hooks/useObserver.js';
+import { debounce } from 'lodash';
 
 interface RecipeLimitProps {
     limit?: number;
@@ -32,26 +33,38 @@ export default function PopularRecipes({ limit, page, children }: RecipeLimitPro
 
     const fetchRecipes = async () => {
         try {
+            console.log(`Fetching recipes with page: ${offset}, size: 15`);
             const response = await instance.get(`/recipes/popular?page=${offset}&size=15`);
+
             if (response.data.code == 'OK') {
-                setRecipes((prev) => [...prev, ...response.data.data]);
+                const newRecipes: RecipeProps[] = response.data.data;
+                const uniqueRecipes = newRecipes.filter(
+                    (newRecipe) => !recipes.some((existingRecipe) => existingRecipe.recipeId === newRecipe.recipeId),
+                );
+                setRecipes((prev) => [...prev, ...uniqueRecipes]);
                 setMessage(response.data.message);
-                setOffset((prev) => prev + 1);
+                setOffset((prev) => {
+                    console.log(`New offset: ${prev + 1}`);
+                    return prev + 1;
+                });
             }
         } catch (err: any) {
             console.log('popular recipe 조회 err: ', err);
             setMessage(err.message);
             const fakeRecipe = fetchFake(offset, 2);
             setRecipes((prev) => [...prev, ...fakeRecipe]);
-            setOffset((prev) => prev + 1);
+            setOffset((prev) => {
+                console.log(`New offset: ${prev + 1}`);
+                return prev + 1;
+            });
         }
     };
 
-    const handleObserver = async (entry: IntersectionObserverEntry) => {
+    const handleObserver = debounce(async (entry: IntersectionObserverEntry) => {
         if (entry.isIntersecting) {
             await fetchRecipes();
         }
-    };
+    }, 300);
 
     const target = useObserver(handleObserver);
 

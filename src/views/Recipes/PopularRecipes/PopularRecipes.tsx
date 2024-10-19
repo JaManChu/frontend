@@ -1,10 +1,10 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
 import RecipeList from '../../../components/Recipe/RecipeList.js';
 import instance from '../../../utils/api/instance.js';
 import fakeData from '../../../fakeData/recipeFake.js';
 import useObserver from '../../../hooks/useObserver.js';
-import { debounce } from 'lodash';
+// import { debounce } from 'lodash';
 
 interface RecipeLimitProps {
     limit?: number;
@@ -25,7 +25,11 @@ interface RecipeProps {
 export default function PopularRecipes({ limit, page, children }: RecipeLimitProps): JSX.Element {
     const [recipes, setRecipes] = useState<RecipeProps[]>([]);
     const [message, setMessage] = useState<string>();
-    const [offset, setOffset] = useState<number>(0);
+    const [offset, setOffset] = useState<number>(1);
+
+    useEffect(() => {
+        fetchRecipes();
+    }, []);
 
     const fetchFake = (offset: number, size: number) => {
         return fakeData.slice(offset * size, (offset + 1) * size);
@@ -60,11 +64,11 @@ export default function PopularRecipes({ limit, page, children }: RecipeLimitPro
         }
     };
 
-    const handleObserver = debounce(async (entry: IntersectionObserverEntry) => {
+    const handleObserver = async (entry: IntersectionObserverEntry) => {
         if (entry.isIntersecting) {
             await fetchRecipes();
         }
-    }, 300);
+    };
 
     const target = useObserver(handleObserver);
 

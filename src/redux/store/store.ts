@@ -16,6 +16,10 @@ const persistedReducer = persistReducer(persistConfig, rootReuducer);
 // store에서 모든 state관리
 const store = configureStore({
     reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: false,
+        }),
 });
 
 // rootReducer가 정의한 전체 상태를 반환하고, state를 사용하는 컴포넌트에서 RootState를 import

@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 import AllRecipes from '../Recipes/AllRecipes/AllRecipes';
-import PopularRecipes from '../Recipes/PopularRecipes/PopularRecipes';
+import PopularRecipesView from '../Recipes/PopularRecipes/PopularRecipesView';
 import RecommendedRecipes from '../Recipes/RecommendedRecipes/RecommendedRecipes';
 import styled from 'styled-components';
 // import axios from 'axios';
@@ -64,7 +64,7 @@ function Home(): JSX.Element {
                 <AllRecipes limit={1} page="all" />
                 {/* Popular, Visited 분리 작업 후 VisitedWrapper는 float/position으로 css 변경처리 */}
                 <S_VisitedPopularWrapper>
-                    <PopularRecipes limit={2} page="popular" />
+                    <PopularRecipesView limit={2} page="popular" />
                     <Visited />
                 </S_VisitedPopularWrapper>
             </S_RecipeWrapper>

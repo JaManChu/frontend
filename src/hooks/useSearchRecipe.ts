@@ -72,12 +72,14 @@ export default function useSearchRecipe() {
 
     // 난이도를 변경하는 핸들러
     const handleLevel = (e: SelectChangeEvent) => {
+        console.log(e.target.value);
         setLevel(e.target.value);
     };
 
     // 소요시간을 변경하는 핸들러
     const handleTime = (e: SelectChangeEvent) => {
         setTime(e.target.value);
+        console.log(e.target.value);
     };
 
     return {

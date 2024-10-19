@@ -33,7 +33,7 @@ export default function PopularRecipes({ limit, page, children }: RecipeLimitPro
 
     const fetchRecipes = async () => {
         try {
-            const response = await instance.get(`/recipes/popular?page=${offset}&size={15}`);
+            const response = await instance.get(`/recipes/popular?page=${offset}&size=15`);
             if (response.data.code == 'OK') {
                 setRecipes((prev) => [...prev, ...response.data.data]);
                 setMessage(response.data.message);

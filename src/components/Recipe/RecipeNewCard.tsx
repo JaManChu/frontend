@@ -37,7 +37,6 @@ export default function RecipeNewCard({ recipeId, recipeName, recipeThumbnail, r
         e.stopPropagation();
         try {
             const response = await instance.post(`/recipes/${recipeId}/scrap`);
-            console.log('scarp response: ', response);
 
             if (response.data.code == 'OK') {
                 if (response.data.data == 'CANCELED') {

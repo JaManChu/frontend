@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import RecipeList from '../../../components/Recipe/RecipeList.js';
 import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
 import instance from '../../../utils/api/instance.js';
-import fakeData from '../../../fakeData/recipeFake.js';
+import useObserver from '../../../hooks/useObserver.js';
 
 interface RecipeLimitProps {
     limit?: number;
@@ -22,32 +22,43 @@ interface RecipeProps {
 export default function AllRecipes({ limit, page }: RecipeLimitProps): JSX.Element {
     const [recipes, setRecipes] = useState<RecipeProps[]>([]);
     const [message, setMessage] = useState<string>('');
+    const [offset, setOffset] = useState<number>(0);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    useEffect(() => {
-        const fetchRecipes = async () => {
-            try {
-                const response = await instance.get(`/recipes`);
-                if (response.data.code == 'OK') {
-                    setRecipes(response.data.data);
-                    setMessage(response.data.message);
-                }
-            } catch (err: any) {
-                console.log(err);
-                console.log(err.message);
-                setMessage(err.message);
-                setRecipes(fakeData);
+    const fetchRecipes = async () => {
+        try {
+            const response = await instance.get(`/recipes/popular?page=${offset}&size=15`);
+            if (response.data.code == 'OK') {
+                setRecipes((prev) => [...prev, ...response.data.data]);
+                setMessage(response.data.message);
+                setOffset((prev) => prev + 1);
             }
-        };
+        } catch (err: any) {
+            setIsLoading(false);
+            console.log(err);
+            console.log(err.message);
+            setMessage(err.message);
+        }
+    };
 
-        fetchRecipes();
+    const handleObserver = async (entry: IntersectionObserverEntry) => {
+        if (entry.isIntersecting && isLoading) {
+            await fetchRecipes();
+        }
+    };
 
-        return () => {};
-    }, []);
+    const target = useObserver(handleObserver);
+
     console.log('all message: ', message);
 
     return (
         <S_RecipeContainer>
             <RecipeList recipes={recipes} limit={limit} page={page} />
+            {isLoading && (
+                <div id="observer" ref={target}>
+                    Circle
+                </div>
+            )}
         </S_RecipeContainer>
     );
 }

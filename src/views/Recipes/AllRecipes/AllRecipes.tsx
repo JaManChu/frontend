@@ -23,7 +23,6 @@ export default function AllRecipes({ limit, page }: RecipeLimitProps): JSX.Eleme
     const [recipes, setRecipes] = useState<RecipeProps[]>([]);
     const [message, setMessage] = useState<string>('');
     const [offset, setOffset] = useState<number>(0);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const fetchRecipes = async () => {
         try {
@@ -34,7 +33,6 @@ export default function AllRecipes({ limit, page }: RecipeLimitProps): JSX.Eleme
                 setOffset((prev) => prev + 1);
             }
         } catch (err: any) {
-            setIsLoading(false);
             console.log(err);
             console.log(err.message);
             setMessage(err.message);
@@ -42,7 +40,7 @@ export default function AllRecipes({ limit, page }: RecipeLimitProps): JSX.Eleme
     };
 
     const handleObserver = async (entry: IntersectionObserverEntry) => {
-        if (entry.isIntersecting && isLoading) {
+        if (entry.isIntersecting) {
             await fetchRecipes();
         }
     };
@@ -54,11 +52,10 @@ export default function AllRecipes({ limit, page }: RecipeLimitProps): JSX.Eleme
     return (
         <S_RecipeContainer>
             <RecipeList recipes={recipes} limit={limit} page={page} />
-            {isLoading && (
-                <div id="observer" ref={target}>
-                    Circle
-                </div>
-            )}
+
+            <div id="observer" ref={target}>
+                Circle
+            </div>
         </S_RecipeContainer>
     );
 }

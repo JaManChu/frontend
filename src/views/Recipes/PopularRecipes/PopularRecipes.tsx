@@ -1,8 +1,12 @@
+import { ReactNode } from 'react';
 import RecipeList from '../../../components/Recipe/RecipeList.js';
 import useObserver from '../../../hooks/useObserver.js';
 // import { debounce } from 'lodash';
 
 interface RecipeLimitProps {
+    limit?: number;
+    page?: string;
+    children?: ReactNode;
     recipes: RecipeProps[];
     fetchRecipes: () => void;
     isLoading: boolean;
@@ -18,7 +22,7 @@ interface RecipeProps {
     // desc: string;
 }
 
-export default function PopularRecipes({ recipes, fetchRecipes, isLoading }: RecipeLimitProps): JSX.Element {
+export default function PopularRecipes({ limit, page, children, recipes, fetchRecipes, isLoading }: RecipeLimitProps): JSX.Element {
     const handleObserver = async (entry: IntersectionObserverEntry) => {
         if (entry.isIntersecting && !isLoading) {
             await fetchRecipes();
@@ -29,8 +33,8 @@ export default function PopularRecipes({ recipes, fetchRecipes, isLoading }: Rec
 
     return (
         <>
-            <RecipeList recipes={recipes} />
-
+            {children}
+            <RecipeList recipes={recipes} limit={limit} page={page} />
             <div id="observer" ref={target}>
                 Circle
             </div>

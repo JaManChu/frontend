@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import RecipeList from '../../../components/Recipe/RecipeList.js';
 import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
 import instance from '../../../utils/api/instance.js';
@@ -23,6 +23,10 @@ export default function AllRecipes({ limit, page }: RecipeLimitProps): JSX.Eleme
     const [recipes, setRecipes] = useState<RecipeProps[]>([]);
     const [message, setMessage] = useState<string>('');
     const [offset, setOffset] = useState<number>(0);
+
+    useEffect(() => {
+        fetchRecipes();
+    }, []);
 
     const fetchRecipes = async () => {
         try {

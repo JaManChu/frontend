@@ -28,7 +28,11 @@ export default function AllRecipes({ limit, page }: RecipeLimitProps): JSX.Eleme
         try {
             const response = await instance.get(`/recipes/popular?page=${offset}&size=15`);
             if (response.data.code == 'OK') {
-                setRecipes((prev) => [...prev, ...response.data.data]);
+                const newRecipes: RecipeProps[] = response.data.data;
+                const uniqueRecipes = newRecipes.filter(
+                    (newRecipe) => !recipes.some((existingRecipe) => existingRecipe.recipeId === newRecipe.recipeId),
+                );
+                setRecipes((prev) => [...prev, ...uniqueRecipes]);
                 setMessage(response.data.message);
                 setOffset((prev) => prev + 1);
             }

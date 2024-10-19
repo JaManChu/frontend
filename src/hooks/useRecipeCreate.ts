@@ -2,6 +2,7 @@ import { useState } from 'react';
 import instance from '../utils/api/instance';
 import { useNavigate } from 'react-router-dom';
 import useAuthToken from './useAuthToken';
+import axios from 'axios';
 
 export const useRecipeCreate = () => {
     const navigate = useNavigate();
@@ -18,21 +19,20 @@ export const useRecipeCreate = () => {
     const [recipeCookingTime, setRecipeCookingTime] = useState(''); // 조리소요시간
     const [ingredients, setIngredients] = useState([{ ingredientName: '', ingredientQuantity: '' }]); //레시피에 필요한 재료들
     const [steps, setSteps] = useState<Step[]>([{ content: '', picture: null }]); //레시피 조리 순서
-
+    const [thumbnail, setThumbnail] = useState<string>('');
     // 이미지 미리보기 상태
     const [imagePreviews, setImagePreviews] = useState<(string | null)[]>([]);
 
-    //재료추가 버튼 클릭 시 ingredients(재료상태)값에 추가
-    const handleAddIngredient = () => {
-        setIngredients([...ingredients, { ingredientName: '', ingredientQuantity: '' }]);
+    //썸네일 이미지관리.
+    const handleThumbnailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files.length > 0) {
+            const file = event.target.files[0];
+            const tuumbnailImg = URL.createObjectURL(file);
+            setThumbnail(tuumbnailImg); // 썸네일 파일 상태 업데이트
+        }
     };
 
-    //단계 추가 버튼 클릭 시 steps(단계과정)값에 추가
-    const handleAddStep = () => {
-        setSteps([...steps, { content: '', picture: null }]);
-    };
-
-    //미리보기 상태관리.
+    //조리단계 미리보기 상태관리.
     const handleImageChange = (e: any, index: number) => {
         const file = e.target.files?.[0] || null; //사용자가 업로드한 파일있으면 가져오고 없으면 null
         const newSteps = [...steps];
@@ -47,6 +47,16 @@ export const useRecipeCreate = () => {
             newImagePreviews[index] = null;
         }
         setImagePreviews(newImagePreviews);
+    };
+
+    //재료추가 버튼 클릭 시 ingredients(재료상태)값에 추가
+    const handleAddIngredient = () => {
+        setIngredients([...ingredients, { ingredientName: '', ingredientQuantity: '' }]);
+    };
+
+    //단계 추가 버튼 클릭 시 steps(단계과정)값에 추가
+    const handleAddStep = () => {
+        setSteps([...steps, { content: '', picture: null }]);
     };
 
     //재료, 조리과정 삭제버튼
@@ -64,13 +74,8 @@ export const useRecipeCreate = () => {
     };
 
     //레시피 등록 버튼 클릭 시 api호출
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!token) {
-            alert('잘못된 접근입니다. 로그인해주세요.');
-            navigate('/login');
-            return;
-        }
 
         // 유효성 검사
         if (!recipeName || !recipeCookingTime) {
@@ -90,51 +95,74 @@ export const useRecipeCreate = () => {
             return;
         }
 
-        // JSON 객체 생성
-        const requestBody = {
-            recipeName: recipeName,
-            recipeLevel: recipeLevel,
-            recipeCookingTime: recipeCookingTime,
-            recipeThumbnail: '',
-            recipeIngredients: ingredients.map((ingredient) => ({
-                ingredientName: ingredient.ingredientName,
-                ingredientQuantity: ingredient.ingredientQuantity,
-            })),
-            recipeOrderContents: steps.map((step) => ({
-                recipeOrderContent: step.content,
-                recipeOrderImage: '',
-            })),
-        };
-
-        // 첫 번째 조리 단계의 이미지를 썸네일로 설정 (이미지 URL로 설정할 경우)
-        if (steps.length > 0 && typeof steps[0].picture === 'string') {
-            requestBody.recipeThumbnail = steps[0].picture;
-        }
-
-        // 각 단계에 이미지가 있는 경우 이미지 URL을 설정
-        requestBody.recipeOrderContents = steps.map((step) => ({
-            recipeOrderContent: step.content,
-            recipeOrderImage: typeof step.picture === 'string' ? step.picture : '', // 이미지가 URL이면 추가
-        }));
-
-        console.log('전달할 JSON 데이터 확인:', requestBody);
         try {
-            const response = await instance.post(`/recipes`, requestBody, {
+            // 1. S3에 썸네일 이미지 업로드
+            let thumbnailUrl = '';
+            if (thumbnail) {
+                const formDataThumbnail = new FormData();
+                formDataThumbnail.append('file', thumbnail);
+
+                const s3ThumbnailResponse = await instance.post(`/recipes/thumbnail?recipeName=${recipeName}`, formDataThumbnail, {
+                    headers: {
+                        'access-token': `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+                console.log('s3Thumbnail Response : ', s3ThumbnailResponse);
+                console.log('s3Thumbnail Response.data : ', s3ThumbnailResponse.data);
+                //! response된 값 보고 수정필요
+                thumbnailUrl = s3ThumbnailResponse.data['Response body'];
+            }
+
+            // 2. S3에 조리 순서 이미지 업로드
+            const formDataOrderImages = new FormData();
+            steps.forEach((step) => {
+                if (step.picture) {
+                    formDataOrderImages.append('file', step.picture);
+                }
+            });
+
+            const s3OrderImagesResponse = await instance.post(`/recipes/orderImage?recipeName=${recipeName}`, formDataOrderImages, {
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'multipart/form-data',
                 },
             });
-            console.log('게시물 작성 response', response);
-            console.log('response.data', response.data);
+            console.log('s3OrderImageResponse : ', s3OrderImagesResponse);
+            console.log('s3OrderImageResponse.data : ', s3OrderImagesResponse.data);
+            //! response된 값 보고 수정필요
+            const orderImageUrls = s3OrderImagesResponse.data.body; // 조리 과정 이미지 URL 배열
 
+            // 3. 레시피 등록 API 호출
+            const recipeData = {
+                recipeName: recipeName,
+                recipeLevel: recipeLevel,
+                recipeCookingTime: recipeCookingTime,
+                // recipeThumbnail: thumbnailUrl,
+                recipeIngredients: ingredients.map((ingredient) => ({
+                    ingredientName: ingredient.ingredientName,
+                    ingredientQuantity: ingredient.ingredientQuantity,
+                })),
+                recipeOrderContents: steps.map((step) => ({
+                    recipeOrderContent: step.content,
+                    // recipeOrderImage: orderImageUrls[index] || '',
+                })),
+            };
+
+            const response = await axios.post(`/recipes?thumbnailUrl=${thumbnailUrl}&recipeOrderImagesUrl=${orderImageUrls.join(',')}`, recipeData, {
+                headers: {
+                    'access-token': `Bearer ${token}`,
+                },
+            });
+            console.log('레시피등록 최종 response : ', response);
+            console.log('레시피등록 최종 response.data : ', response.data);
+
+            //! 레시피등록 최종 response보고 수정
             if (response.status === 201) {
-                console.log('성공', response.data);
                 alert('레시피가 성공적으로 등록되었습니다!');
-                // 등록 후 리다이렉트
                 navigate('/recipes');
             }
         } catch (error) {
-            console.error('레시피 등록 실패', error);
+            console.error('레시피 등록 실패:', error);
             alert('레시피 등록에 실패했습니다. 다시 시도해주세요.');
         }
     };
@@ -157,5 +185,7 @@ export const useRecipeCreate = () => {
         handleDeleteStep,
         handleImageChange,
         imagePreviews,
+        handleThumbnailChange,
+        thumbnail,
     };
 };

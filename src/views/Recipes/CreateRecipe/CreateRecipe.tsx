@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import { useRecipeCreate } from '../../../hooks/useRecipeCreate';
 import DefaultImg from '../../../assets/img/defaultImg.jpeg';
-import withAuth from '../../../hooks/withAuth';
+// import withAuth from '../../../hooks/withAuth';
 import CustomSelect from '../../../ui/Select/CustomSelect';
 import { levelOptions } from '../../../common/options';
+import withAuth from '../../../hooks/withAuth';
 
 const CreateRecipe: React.FC = () => {
     const {
@@ -24,14 +25,24 @@ const CreateRecipe: React.FC = () => {
         handleDeleteStep,
         handleImageChange,
         imagePreviews,
+        handleThumbnailChange,
+        thumbnail,
     } = useRecipeCreate();
 
     return (
         <RecipeWriteContainer>
             <RecipeHeader>
                 <RecipeNameInput value={recipeName} onChange={(e) => setRecipeName(e.target.value)} placeholder="레시피 이름을 입력하세요." />
+                <ThumbnailUploadBox>
+                    <ThumbnailLabel>썸네일 이미지 업로드</ThumbnailLabel>
+                    <ThumbnailPreviewContainer>
+                        <ThumbnailPreview src={thumbnail} alt="Thumbnail Preview" />
+                        <ThumbnailFileInput type="file" onChange={(e) => handleThumbnailChange(e)} />
+                    </ThumbnailPreviewContainer>
+                </ThumbnailUploadBox>
             </RecipeHeader>
 
+            <StepsLabel>조리단계</StepsLabel>
             <RecipeContent>
                 <RecipeSteps>
                     {steps.map((step, index) => (
@@ -104,7 +115,7 @@ const CreateRecipe: React.FC = () => {
                         <AddButton onClick={handleAddIngredient}>재료 추가</AddButton>
                     </RecipeIngredients>
 
-                    <SubmitButton onClick={handleSubmit}>레시피 등록</SubmitButton>
+                    <SubmitButton onClick={() => handleSubmit}>레시피 등록</SubmitButton>
                 </RecipeSidebar>
             </RecipeContent>
         </RecipeWriteContainer>
@@ -120,15 +131,16 @@ const RecipeWriteContainer = styled.section`
 
 //헤더부분
 const RecipeHeader = styled.div`
+    display: flex;
     text-align: start;
     margin-bottom: 20px;
 `;
 
 const RecipeNameInput = styled.input`
     font-size: 32px;
-    width: 100%;
+    width: 80%;
+    height: 100px;
     padding: 10px;
-    margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
 `;
@@ -138,6 +150,12 @@ const RecipeContent = styled.div`
     display: flex;
     justify-content: space-between;
     gap: 16px;
+`;
+
+const StepsLabel = styled.h3`
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #333;
 `;
 
 const RecipeSteps = styled.div`
@@ -277,6 +295,37 @@ const CustomStyledSelect = styled.div`
         outline: none;
     }
 `;
+const ThumbnailUploadBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+`;
 
+const ThumbnailLabel = styled.h3`
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #333;
+`;
+
+const ThumbnailPreviewContainer = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+const ThumbnailPreview = styled.img`
+    width: 50%;
+    height: 200px;
+    object-fit: contain;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    border-radius: 8px;
+`;
+
+const ThumbnailFileInput = styled.input`
+    width: 50%;
+`;
 const CreateRecipeWithAuth = withAuth(CreateRecipe);
 export default CreateRecipeWithAuth;

@@ -18,11 +18,10 @@ export default function useObserver(onIntersect: IntersectCallbackProps) {
     };
 
     useEffect(() => {
-        let observer: IntersectionObserver;
-        if (ref.current) {
-            observer = new IntersectionObserver(handleObserver, { threshold: 0.6 });
-            observer.observe(ref.current);
-        }
+        if (!ref.current) return;
+        const observer = new IntersectionObserver(handleObserver, { threshold: 0.6 });
+        observer.observe(ref.current);
+
         return () => observer && observer.disconnect();
     }, [ref, handleObserver]);
 

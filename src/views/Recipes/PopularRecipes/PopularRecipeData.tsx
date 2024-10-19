@@ -1,13 +1,8 @@
 import { useState, useEffect } from 'react';
-import RecipeList from '../../../components/Recipe/RecipeList.js';
 import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
 import instance from '../../../utils/api/instance.js';
-import useObserver from '../../../hooks/useObserver.js';
+import PopularRecipes from './PopularRecipes';
 
-interface RecipeLimitProps {
-    limit?: number;
-    page?: string;
-}
 interface RecipeProps {
     recipeId: number;
     recipeName: string;
@@ -19,18 +14,23 @@ interface RecipeProps {
     // desc: string;
 }
 
-export default function AllRecipes({ limit, page }: RecipeLimitProps): JSX.Element {
+export default function PopularRecipeData(): JSX.Element {
     const [recipes, setRecipes] = useState<RecipeProps[]>([]);
-    const [message, setMessage] = useState<string>('');
+    const [message, setMessage] = useState<string>();
     const [offset, setOffset] = useState<number>(0);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
         fetchRecipes();
     }, []);
 
     const fetchRecipes = async () => {
+        if (isLoading) return;
+        setIsLoading(true);
         try {
-            const response = await instance.get(`/recipes?page=${offset}&size=15`);
+            console.log(`try Fetching recipes with page: ${offset}, size: 15`);
+            const response = await instance.get(`/recipes/popular?page=${offset}&size=15`);
+
             if (response.data.code == 'OK') {
                 const newRecipes: RecipeProps[] = response.data.data;
                 const uniqueRecipes = newRecipes.filter(
@@ -38,32 +38,23 @@ export default function AllRecipes({ limit, page }: RecipeLimitProps): JSX.Eleme
                 );
                 setRecipes((prev) => [...prev, ...uniqueRecipes]);
                 setMessage(response.data.message);
-                setOffset((prev) => prev + 1);
+                setOffset((prev) => {
+                    console.log(`New offset: ${prev + 1}`);
+                    return prev + 1;
+                });
             }
         } catch (err: any) {
-            console.log(err);
-            console.log(err.message);
             setMessage(err.message);
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    const handleObserver = async (entry: IntersectionObserverEntry) => {
-        if (entry.isIntersecting) {
-            await fetchRecipes();
-        }
-    };
-
-    const target = useObserver(handleObserver);
-
-    console.log('all message: ', message);
+    console.log(message);
 
     return (
         <S_RecipeContainer>
-            <RecipeList recipes={recipes} limit={limit} page={page} />
-
-            <div id="observer" ref={target}>
-                Circle
-            </div>
+            <PopularRecipes recipes={recipes} fetchRecipes={fetchRecipes} isLoading={isLoading} />
         </S_RecipeContainer>
     );
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState, ChangeEvent, KeyboardEvent, FormEvent } from 'react';
 import { SelectChangeEvent } from '@mui/material/Select';
 import instance from '../utils/api/instance';
+import qs from 'qs';
 
 export default function useSearchRecipe() {
     const [searching, setSearching] = useState<boolean>(false); // 검색중 여부
@@ -40,6 +41,9 @@ export default function useSearchRecipe() {
         try {
             const response: any = await instance.get('/', {
                 params: { ingredientName: ingredientsList, recipeCookingTime: time, recipeLevel: level },
+                paramsSerializer: (params) => {
+                    return qs.stringify(params);
+                },
             });
             console.log('search response: ', response);
             console.log('검색내용', ingredientsList, time, level);

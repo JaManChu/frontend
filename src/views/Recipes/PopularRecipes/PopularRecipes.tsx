@@ -25,7 +25,6 @@ export default function PopularRecipes({ limit, page, children }: RecipeLimitPro
     const [recipes, setRecipes] = useState<RecipeProps[]>([]);
     const [message, setMessage] = useState<string>();
     const [offset, setOffset] = useState<number>(0);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const fetchFake = (offset: number, size: number) => {
         return fakeData.slice(offset * size, (offset + 1) * size);
@@ -40,7 +39,6 @@ export default function PopularRecipes({ limit, page, children }: RecipeLimitPro
                 setOffset((prev) => prev + 1);
             }
         } catch (err: any) {
-            setIsLoading(false);
             console.log('popular recipe 조회 err: ', err);
             setMessage(err.message);
             const fakeRecipe = fetchFake(offset, 2);
@@ -50,7 +48,7 @@ export default function PopularRecipes({ limit, page, children }: RecipeLimitPro
     };
 
     const handleObserver = async (entry: IntersectionObserverEntry) => {
-        if (entry.isIntersecting && isLoading) {
+        if (entry.isIntersecting) {
             await fetchRecipes();
         }
     };
@@ -63,11 +61,10 @@ export default function PopularRecipes({ limit, page, children }: RecipeLimitPro
         <S_RecipeContainer>
             {children}
             <RecipeList recipes={recipes} limit={limit} page={page} />
-            {isLoading && (
-                <div id="observer" ref={target}>
-                    Circle
-                </div>
-            )}
+
+            <div id="observer" ref={target}>
+                Circle
+            </div>
         </S_RecipeContainer>
     );
 }

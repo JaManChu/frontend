@@ -104,7 +104,7 @@ export const useRecipeCreate = () => {
                 formDataThumbnail.append('file', thumbnail);
 
                 console.log('recipeName :', recipeName);
-                const s3ThumbnailResponse = await instance.post(`/recipes/thumbnail?recipeName=${recipeName}`, formDataThumbnail, {
+                const s3ThumbnailResponse = await instance.post(`/pictures/thumbnail?recipeName=${recipeName}`, formDataThumbnail, {
                     headers: {
                         'access-token': `Bearer ${token}`,
                     },
@@ -125,7 +125,7 @@ export const useRecipeCreate = () => {
             });
             console.log('2.formDataOrderImages : ', formDataOrderImages);
 
-            const s3OrderImagesResponse = await instance.post(`/recipes/orderImage?recipeName=${recipeName}`, formDataOrderImages, {
+            const s3OrderImagesResponse = await instance.post(`/pictures/orderImage?recipeName=${recipeName}`, formDataOrderImages, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

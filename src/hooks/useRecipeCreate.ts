@@ -132,6 +132,7 @@ export const useRecipeCreate = () => {
 
             const s3OrderImagesResponse = await instance.post(`/pictures/orderImage?recipeName=${recipeName}`, formDataOrderImages, {
                 headers: {
+                    'access-token': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
                 },
             });

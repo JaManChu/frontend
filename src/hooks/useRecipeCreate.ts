@@ -98,6 +98,7 @@ export const useRecipeCreate = () => {
         try {
             // 1. S3에 썸네일 이미지 업로드
             let thumbnailUrl = '';
+            console.log(' 1. thumbnail : ', thumbnail);
             if (thumbnail) {
                 const formDataThumbnail = new FormData();
                 formDataThumbnail.append('file', thumbnail);
@@ -113,6 +114,7 @@ export const useRecipeCreate = () => {
                 //! response된 값 보고 수정필요
                 thumbnailUrl = s3ThumbnailResponse.data['Response body'];
             }
+            console.log(' 1. thumbnailUrl : ', thumbnailUrl);
 
             // 2. S3에 조리 순서 이미지 업로드
             const formDataOrderImages = new FormData();
@@ -121,6 +123,7 @@ export const useRecipeCreate = () => {
                     formDataOrderImages.append('file', step.picture);
                 }
             });
+            console.log('2.formDataOrderImages : ', formDataOrderImages);
 
             const s3OrderImagesResponse = await instance.post(`/recipes/orderImage?recipeName=${recipeName}`, formDataOrderImages, {
                 headers: {
@@ -131,7 +134,7 @@ export const useRecipeCreate = () => {
             console.log('s3OrderImageResponse.data : ', s3OrderImagesResponse.data);
             //! response된 값 보고 수정필요
             const orderImageUrls = s3OrderImagesResponse.data.body; // 조리 과정 이미지 URL 배열
-
+            console.log('orderImageUrls : ', orderImageUrls);
             // 3. 레시피 등록 API 호출
             const recipeData = {
                 recipeName: recipeName,
@@ -147,6 +150,7 @@ export const useRecipeCreate = () => {
                     // recipeOrderImage: orderImageUrls[index] || '',
                 })),
             };
+            console.log('recipeData : ', recipeData);
 
             const response = await axios.post(`/recipes?thumbnailUrl=${thumbnailUrl}&recipeOrderImagesUrl=${orderImageUrls.join(',')}`, recipeData, {
                 headers: {

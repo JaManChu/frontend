@@ -1,12 +1,5 @@
 import { FormEvent, useState } from 'react';
-import {
-    validateEmail,
-    validatePassword,
-    validatePasswordCheck,
-    validateNickname,
-    validateSignup,
-    validateLogin,
-} from '../utils/validation/validation.ts';
+import { validateEmail, validatePassword, validatePasswordCheck, validateNickname, validateSignup } from '../utils/validation/validation.ts';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../redux/reducer/userSlice.ts';

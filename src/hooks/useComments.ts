@@ -1,5 +1,7 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
 import instance from '../utils/api/instance';
+import { useDispatch } from 'react-redux';
+import { showModal } from '../redux/reducer/modalSlice';
 
 interface CreateHandlerProps {
     recipeId: number;
@@ -33,8 +35,8 @@ export default function useComments() {
     const [createComment, setCreateComment] = useState<string>('');
     const [updateComment, setUpdateComment] = useState<string>('');
     const [currentRate, setCurrentRate] = useState<number>(0);
-    const [responseMessage, setResponseMessage] = useState<string>(''); // 메시지 알람창
 
+    const dispatch = useDispatch();
     // get : recipeId
     const fetchCommentHandler = async (recipeId: string) => {
         try {
@@ -45,11 +47,10 @@ export default function useComments() {
             }
         } catch (err) {
             console.log(err);
-            alert('댓글을 가져오는데 실패했습니다.');
+            dispatch(showModal({ isOpen: true, content: '댓글을 가져오는데 실패했습니다.' }));
         }
     };
     console.log('recipeId', recipeId);
-    console.log('responseMsg', responseMessage);
 
     // create : recipeId, comment, rating
     const createCommentHandler = async (e: FormEvent<HTMLFormElement>, { recipeId, comment, rating }: CreateHandlerProps) => {
@@ -65,20 +66,20 @@ export default function useComments() {
             });
 
             if (response.data.code == 'CREATED') {
-                setResponseMessage(response.data.message);
+                console.log(response);
+                dispatch(showModal({ isOpen: true, content: '댓글 작성 성공!' }));
                 // 초기화
                 setCreateComment('');
                 setCurrentRate(0);
                 await fetchCommentHandler(recipeId.toString());
-                alert('댓글 작성 성공!');
             }
         } catch (err: any) {
             if (err.message == 'No token') {
-                alert('로그인 후 이용바랍니다.');
+                dispatch(showModal({ isOpen: true, content: '로그인 후 이용바랍니다.' }));
                 window.location.href = '/login';
             } else {
-                console.log(err);
-                alert('댓글 작성에 실패하였습니다.');
+                console.log('댓글작성 error: ', err);
+                dispatch(showModal({ isOpen: true, content: err.response.message }));
             }
         }
     };
@@ -94,15 +95,15 @@ export default function useComments() {
             });
 
             if (response.data.code === 'OK') {
-                setResponseMessage(response.data.message);
+                console.log(response);
                 setUpdateComment('');
                 setCommentId(0);
                 await fetchCommentHandler(recipeId.toString());
-                alert('댓글이 수정되었습니다.');
+                dispatch(showModal({ isOpen: true, content: '댓글이 수정되었습니다.' }));
             }
         } catch (err) {
-            console.log(err);
-            alert('댓글 수정에 실패하였습니다.');
+            console.log('댓글 수정 error: ', err);
+            dispatch(showModal({ isOpen: true, content: '댓글 수정에 실패하였습니다.' }));
         }
     };
 
@@ -135,13 +136,13 @@ export default function useComments() {
             });
 
             if (response.data.code == 'OK') {
-                setResponseMessage(response.data.message);
-                alert('댓글이 삭제되었습니다.');
+                console.log(response);
+                dispatch(showModal({ isOpen: true, content: '댓글이 삭제되었습니다.' }));
                 await fetchCommentHandler(recipeId);
             }
         } catch (err) {
             console.log(err);
-            alert('댓글 삭제에 실패하였습니다.');
+            dispatch(showModal({ isOpen: true, content: '댓글 삭제에 실패하였습니다.' }));
         }
     };
 

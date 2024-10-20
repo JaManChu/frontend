@@ -3,11 +3,24 @@ import { hideModal } from '../../redux/reducer/modalSlice';
 import { RootState } from '../../redux/store/store';
 import styled from 'styled-components';
 
+interface ModalProps {
+    isOpen: boolean;
+    content: string;
+    onConfirm?: () => void | null; // "확인" 버튼 클릭 시 실행할 함수
+}
+
 export default function Globalmodal() {
-    const { isOpen, content } = useSelector((state: RootState) => state.modal);
+    const { isOpen, content, onConfirm }: ModalProps = useSelector((state: RootState) => state.modal);
     const dispatch = useDispatch();
 
     if (!isOpen) return;
+
+    const handleConfirm = () => {
+        if (onConfirm) {
+            onConfirm(); // onConfirm 함수 호출
+        }
+        dispatch(hideModal()); // 모달 닫기
+    };
 
     return (
         <S_ModalOverlay onClick={() => dispatch(hideModal())}>
@@ -15,7 +28,7 @@ export default function Globalmodal() {
                 <S_ModalTitle>{content}</S_ModalTitle>
                 <S_ModalButtonWrapper>
                     <S_CancelBtn onClick={() => dispatch(hideModal())}>취소</S_CancelBtn>
-                    <S_CheckBtn onClick={() => dispatch(hideModal())}>확인</S_CheckBtn>
+                    <S_CheckBtn onClick={handleConfirm}>확인</S_CheckBtn>
                 </S_ModalButtonWrapper>
             </S_ModalContent>
         </S_ModalOverlay>

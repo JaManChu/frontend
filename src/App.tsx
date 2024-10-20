@@ -1,4 +1,5 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import './App.css';
 import Onboard from './views/Onboard/Onboard.tsx';
 import Login from './views/Login/Login.tsx';
 import Signup from './views/Signup/Signup.tsx';

@@ -78,8 +78,13 @@ export const useRecipeCreate = () => {
         e.preventDefault();
 
         // 유효성 검사
-        if (!recipeName || !recipeCookingTime) {
-            alert('레시피명과 요리 시간을 입력해주세요.');
+        if (!recipeName || recipeName.trim() === '') {
+            alert('레시피명을 입력해주세요.');
+            return;
+        }
+
+        if (!recipeCookingTime) {
+            alert('요리 시간을 입력해주세요.');
             return;
         }
 

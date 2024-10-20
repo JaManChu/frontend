@@ -8,8 +8,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 
 export default function Signup(): JSX.Element {
-    const [emailCheckFailMessage, setEmailCheckFailMessage] = useState<string>('');
-    const [nicknameCheckFailMessage, setNicknameCheckFailMessage] = useState<string>('');
+    const [modalMessage, setModalMessage] = useState<string>('');
 
     const [emailCheck, setEmailCheck] = useState<boolean>(false);
     const [nicknameCheck, setNicknameCheck] = useState<boolean>(false);
@@ -39,10 +38,10 @@ export default function Signup(): JSX.Element {
             if (response.data.data === true) {
                 console.log(response);
                 setEmailCheck(true);
-                setEmailCheckFailMessage(response.data.message);
+                setModalMessage(response.data.message);
             } else if (response.data.data === false) {
                 setEmailCheck(false);
-                setEmailCheckFailMessage(response.data.message);
+                setModalMessage(response.data.message);
             }
         } catch (err) {
             console.log(err);
@@ -56,10 +55,10 @@ export default function Signup(): JSX.Element {
             if (response.data.data === true) {
                 console.log(response);
                 setNicknameCheck(true);
-                setNicknameCheckFailMessage(response.data.message);
+                setModalMessage(response.data.message);
             } else if (response.data.data === false) {
                 setNicknameCheck(false);
-                setNicknameCheckFailMessage(response.data.message);
+                setModalMessage(response.data.message);
             }
         } catch (err) {
             console.log(err);
@@ -166,7 +165,7 @@ export default function Signup(): JSX.Element {
                 {isModalVisible && (
                     <Modal visible={isModalVisible} onClose={closeModal} buttons={[{ label: '확인', onClick: closeModal }]}>
                         <h2>중복 확인</h2>
-                        <p> {emailCheckFailMessage || nicknameCheckFailMessage} </p>
+                        <p> {modalMessage} </p>
                     </Modal>
                 )}
             </SingupContainer>

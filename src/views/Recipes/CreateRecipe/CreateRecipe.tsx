@@ -115,7 +115,7 @@ const CreateRecipe: React.FC = () => {
                         <AddButton onClick={handleAddIngredient}>재료 추가</AddButton>
                     </RecipeIngredients>
 
-                    <SubmitButton onClick={() => handleSubmit}>레시피 등록</SubmitButton>
+                    <SubmitButton onClick={(e) => handleSubmit(e)}>레시피 등록</SubmitButton>
                 </RecipeSidebar>
             </RecipeContent>
         </RecipeWriteContainer>

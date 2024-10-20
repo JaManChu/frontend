@@ -74,7 +74,7 @@ export const useRecipeCreate = () => {
     };
 
     //레시피 등록 버튼 클릭 시 api호출
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
         // 유효성 검사

@@ -1,6 +1,6 @@
 import instance from '../../../utils/api/instance';
 import { validateUserIfno } from '../../../utils/validation/validation';
-import { useUserForm } from '../../../hooks/useUserForm';
+import { userFormHandler } from '../../../handler/userFormHandler';
 
 export const useUserUpdate = (
     password: string,
@@ -12,7 +12,7 @@ export const useUserUpdate = (
 ) => {
     // const token = useAuthToken();
 
-    const { setInputMessage } = useUserForm();
+    const { setInputMessage } = userFormHandler();
 
     const handleUpdate = async () => {
         const inputResult = validateUserIfno({ password, newPassword, passwordCheck, nickname });

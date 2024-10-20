@@ -12,7 +12,7 @@ import colors from '../../styles/colors';
 import { useBookmark } from './hooks/useBookmark';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useUserForm } from '../../hooks/useUserForm';
+import { userFormHandler } from '../../handler/userFormHandler';
 import useAuthToken from '../../hooks/useAuthToken';
 import { useNavigate } from 'react-router-dom';
 
@@ -65,7 +65,7 @@ export default function Mypage(): JSX.Element {
     const { handleUpdate } = useUserUpdate(password, newPassword, passwordCheck, nickname, handleModalClose, refetchUserInfo);
 
     //닉네임중복확인
-    const { inputMessage, clickedButEmpty } = useUserForm();
+    const { inputMessage, clickedButEmpty } = userFormHandler();
     const [nicknameCheck, setNicknameCheck] = useState<boolean>(false);
     const [checkFailMessage, setCheckFailMessage] = useState<string>('');
 

@@ -103,10 +103,10 @@ export const useRecipeCreate = () => {
                 const formDataThumbnail = new FormData();
                 formDataThumbnail.append('file', thumbnail);
 
+                console.log('recipeName :', recipeName);
                 const s3ThumbnailResponse = await instance.post(`/recipes/thumbnail?recipeName=${recipeName}`, formDataThumbnail, {
                     headers: {
                         'access-token': `Bearer ${token}`,
-                        'Content-Type': 'multipart/form-data',
                     },
                 });
                 console.log('s3Thumbnail Response : ', s3ThumbnailResponse);

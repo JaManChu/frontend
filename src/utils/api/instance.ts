@@ -15,6 +15,7 @@ instance.interceptors.request.use(
     (config) => {
         const token = store.getState().user.value.token;
         if (!token) {
+            window.location.href = '/login';
             return Promise.reject(new Error('No token')); // 요청을 중단 - api호출하는 컴포넌트에서는 err.message == 'No token'로 구분 가능 & if - else 조거문 필요 (예상하지 못한 error 발생시)
         }
         config.headers['access-token'] = `Bearer ${token}`;

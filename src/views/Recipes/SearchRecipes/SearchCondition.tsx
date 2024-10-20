@@ -1,47 +1,112 @@
-import { ChangeEvent, FormEvent, KeyboardEvent } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent, KeyboardEvent } from 'react';
 import { SearchBox } from './SearchBox';
-import { CiSearch } from 'react-icons/ci';
-import CustomSelect from '../../../ui/Select/CustomSelect';
-import { SelectChangeEvent } from '@mui/material/Select';
 import { levelOptions, timeOption } from '../../../common/options';
+import CustomSelect from '../../../ui/Select/CustomSelect';
+import { useDispatch } from 'react-redux';
+import { showModal } from '../../../redux/reducer/modalSlice';
+import { SelectChangeEvent } from '@mui/material/Select';
+import { CiSearch } from 'react-icons/ci';
+import { RecipeProps } from './SearchContainer';
 import colors from '../../../styles/colors';
 import styled from 'styled-components';
+import instance from '../../../utils/api/instance';
+import qs from 'qs';
 
-interface SearchConditionProps {
-    time: string;
-    level: string;
-    value: string;
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-    handleKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
-    handleSubmit: (e: FormEvent) => Promise<void>;
-    handleTime: (e: SelectChangeEvent) => void;
-    handleLevel: (e: SelectChangeEvent) => void;
-    ingredientsList: string[];
+interface SearchCondition {
+    setSearching: React.Dispatch<React.SetStateAction<boolean>>;
+    setRecipes: React.Dispatch<React.SetStateAction<RecipeProps[]>>; // 수정
 }
 
-export default function SearchCondition({
-    time,
-    level,
-    value,
-    onChange,
-    handleSubmit,
-    handleKeyDown,
-    handleTime,
-    handleLevel,
-    ingredientsList,
-}: SearchConditionProps): JSX.Element {
-    console.log(typeof ingredientsList.length);
+export default function SearchCondition({ setSearching, setRecipes }: SearchCondition): JSX.Element {
+    const dispatch = useDispatch();
+    const [searchIngredients, setSearchIngredients] = useState<string>(''); // 입력 검색어
+    const [ingredientsList, setIngredientsList] = useState<string[]>([]); // 입력 검색어 저장 리스트
+    const [time, setTime] = useState<string>(''); // 소요시간(select에서 선택)
+    const [level, setLevel] = useState<string>(''); // 난이도(select에서 선택)
+
+    // 재료 입력시에 검색어 리스트 입력 재료로 갱신
+    useEffect(() => {
+        if (searchIngredients.trim()) {
+            // 입력값이 공백이 아닐 경우에만 처리
+            const ingredients = searchIngredients.split(' ').filter((ingredient) => ingredient);
+            setIngredientsList([...ingredients]);
+        } else {
+            setIngredientsList([]); // 입력값이 공백인 경우 빈 배열 설정
+        }
+    }, [searchIngredients]);
+
+    // 검색어 상태관리
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setSearchIngredients(e.target.value);
+    };
+
+    // 검색 버튼 클릭시 api 통신
+    const handleSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+        setSearching(true); // 검색 중임을 나타내는 상태
+        if (!ingredientsList.length) {
+            dispatch(showModal({ isOpen: true, content: '재료명을 입력해주시기 바랍니다.' }));
+            setSearching(false); // 재료명을 입력하지 않았음 : 검색 중이 아님
+            return;
+        }
+
+        try {
+            const response: any = await instance.get('/', {
+                params: { ingredientName: ingredientsList, recipeCookingTime: time, recipeLevel: level },
+                paramsSerializer: (params) => {
+                    return qs.stringify(params);
+                },
+            });
+            console.log('search response: ', response);
+            console.log('검색내용', ingredientsList, time, level);
+            if (response.data.code == 'OK') {
+                console.log('search response.data: ', response.data);
+                console.log('search response: ', response);
+                setRecipes(response.data.data);
+                dispatch(showModal({ isOpen: true, content: response.data.message }));
+            } else {
+                console.log('code ok 아닐때');
+                dispatch(showModal({ isOpen: true, content: '재료명을 다시 입력해주시기 바랍니다.' }));
+            }
+        } catch (err) {
+            console.log('레시피 검색 error : ', err);
+            dispatch(showModal({ isOpen: true, content: '검색 중 오류가 발생했습니다. 다시 시도해주세요.' }));
+        } finally {
+            setSearching(false);
+            setSearchIngredients('');
+        }
+    };
+
+    // 재료 입력후 enter 키를 누른 경우 handleSumbit 호출
+    const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key == 'Enter') {
+            await handleSubmit(e);
+        }
+    };
+
+    // 난이도를 변경하는 핸들러
+    const handleLevel = (e: SelectChangeEvent) => {
+        console.log(e.target.value);
+        setLevel(e.target.value);
+    };
+
+    // 소요시간을 변경하는 핸들러
+    const handleTime = (e: SelectChangeEvent) => {
+        setTime(e.target.value);
+        console.log(e.target.value);
+    };
+
     return (
         <>
             <S_ConditionList>
                 <S_SearchItem>
-                    <SearchBox value={value} onChange={onChange} handleKeyDown={handleKeyDown} />
+                    <SearchBox value={searchIngredients} onChange={handleChange} handleKeyDown={handleKeyDown} />
                 </S_SearchItem>
                 <S_SearchItem>
-                    <CustomSelect id="recipeLevel" options={timeOption} value={level} label="난이도" handleChange={handleTime} />
+                    <CustomSelect id="recipeLevel" options={timeOption} value={level} label="난이도" handleChange={handleLevel} />
                 </S_SearchItem>
                 <S_SearchItem>
-                    <CustomSelect id="recipeTime" options={levelOptions} value={time} label="조리시간" handleChange={handleLevel} />
+                    <CustomSelect id="recipeTime" options={levelOptions} value={time} label="조리시간" handleChange={handleTime} />
                 </S_SearchItem>
                 <S_SearchIcon onClick={handleSubmit} />
             </S_ConditionList>

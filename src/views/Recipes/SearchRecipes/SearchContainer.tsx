@@ -1,9 +1,8 @@
-import { ChangeEvent, FormEvent, KeyboardEvent } from 'react';
+import { useState } from 'react';
 import { SearchResult } from './SearchResult';
 import SearchCondition from './SearchCondition';
-import { SelectChangeEvent } from '@mui/material/Select';
 
-interface RecipeProps {
+export interface RecipeProps {
     recipeId: number;
     recipeName: string;
     recipeAuthor: string;
@@ -16,47 +15,14 @@ interface RecipeProps {
     overview: string;
     instructions: Record<number | string, string>[];
 }
-interface ContainerProps {
-    time: string;
-    level: string;
-    value: string;
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-    handleKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
-    handleSubmit: (e: FormEvent) => Promise<void>;
-    handleTime: (e: SelectChangeEvent) => void;
-    handleLevel: (e: SelectChangeEvent) => void;
-    ingredientsList: string[];
-    recipes: RecipeProps[];
-    searching: boolean;
-}
 
-export default function SearchContainer({
-    time,
-    level,
-    value,
-    onChange,
-    handleSubmit,
-    handleKeyDown,
-    handleLevel,
-    handleTime,
-    ingredientsList,
-    recipes,
-    searching,
-}: ContainerProps): JSX.Element {
+export default function SearchContainer(): JSX.Element {
+    const [searching, setSearching] = useState<boolean>(false); // 검색중 여부
+    const [recipes, setRecipes] = useState<RecipeProps[]>([]); // 레시피 데이터 저장
+
     return (
         <>
-            <SearchCondition
-                time={time}
-                level={level}
-                value={value}
-                onChange={onChange}
-                handleSubmit={handleSubmit}
-                handleKeyDown={handleKeyDown}
-                handleLevel={handleLevel}
-                handleTime={handleTime}
-                ingredientsList={ingredientsList}
-            />
-
+            <SearchCondition setSearching={setSearching} setRecipes={setRecipes} />
             <SearchResult recipes={recipes} searching={searching} />
         </>
     );

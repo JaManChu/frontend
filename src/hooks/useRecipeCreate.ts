@@ -131,7 +131,7 @@ export const useRecipeCreate = () => {
 
             const s3OrderImagesResponse = await axios.post(`/pictures/orderImage?recipeName=${recipeName}`, formDataOrderImages, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    'access-token': `Bearer ${token}`,
                 },
             });
             console.log('s3OrderImageResponse : ', s3OrderImagesResponse);

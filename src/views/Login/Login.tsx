@@ -1,10 +1,14 @@
 import { useNavigate } from 'react-router-dom';
-import { useModal } from '../../hooks/useModal';
-import { useUserForm } from '../../hooks/useUserForm';
-import Modal from '../../components/Modal/Modal';
+import { useAuth } from '../../hooks/useAuth';
+import { authHandler } from '../../handler/authHandler';
+// import { useUserForm } from '../../hooks/useUserForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { showModal } from '../../redux/reducer/modalSlice';
+import { RootState } from '../../redux/store/store';
 import SocialKakao from './SocialKakao';
-import { Container, Box, Typography, TextField, Button, Divider, Link } from '@mui/material';
-// import KakaoLoginButton from '../../components/KaKaoButton/KaKaoLoginButton';
+import { Container, Box, Typography, TextField, Button, Divider } from '@mui/material';
+// import Modal from '../../components/Modal/Modal';
+// import { useModal } from '../../hooks/useModal';
 
 export default function Login(): JSX.Element {
     const navigate = useNavigate();
@@ -13,20 +17,21 @@ export default function Login(): JSX.Element {
         setEmail,
         password,
         setPassword,
-        nickname,
-        setNickname,
         clickedButEmpty,
         handleEmptyInput,
         clearInputMessage,
         inputMessage,
-        handleLogin,
-    } = useUserForm();
-    const { openModal, closeModal, handleConfirm, isModalVisible } = useModal();
+        // nickname,
+        // setNickname,
+    } = useAuth();
+    const { handleLogin } = authHandler();
+    // const { openModal, closeModal, isModalVisible } = useModal();
 
-    // const handleCheckPassword = async() => {}
+    const dispatch = useDispatch();
+    const modalContent = useSelector((state: RootState) => state.modal.content);
 
     return (
-        <Container maxWidth="sm">
+        <Container maxWidth="sm" sx={{ marginBottom: '64px' }}>
             <Box
                 sx={{
                     display: 'flex',
@@ -71,11 +76,12 @@ export default function Login(): JSX.Element {
                         type="submit"
                         variant="contained"
                         sx={{ mt: 3, backgroundColor: '#b2dfdb', color: 'black', fontWeight: 'bold', ':hover': { backgroundColor: '#80cbc4' } }}
+                        onClick={() => dispatch(showModal({ isOpen: true, content: modalContent }))}
                     >
                         로그인
                     </Button>
                 </form>
-                <Link
+                {/* <Link
                     component="button"
                     variant="body2"
                     onClick={() => {
@@ -90,7 +96,7 @@ export default function Login(): JSX.Element {
                         visible={isModalVisible}
                         onClose={closeModal}
                         buttons={[
-                            { label: '찾기', onClick: handleConfirm },
+                            { label: '찾기', onClick: closeModal },
                             { label: '취소', onClick: closeModal },
                         ]}
                     >
@@ -118,7 +124,7 @@ export default function Login(): JSX.Element {
                             margin="normal"
                         />
                     </Modal>
-                )}
+                )} */}
                 <Divider sx={{ width: '100%', mt: 4 }} />
                 <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', width: '100%' }}>
                     <Typography variant="body1">아직 회원이 아니세요?</Typography>

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import instance from '../utils/api/instance';
 import { useNavigate } from 'react-router-dom';
 import useAuthToken from './useAuthToken';
 import axios from 'axios';
@@ -109,7 +108,7 @@ export const useRecipeCreate = () => {
                 formDataThumbnail.append('file', thumbnail);
 
                 console.log('recipeName :', recipeName);
-                const s3ThumbnailResponse = await instance.post(`/pictures/thumbnail?recipeName=${recipeName}`, formDataThumbnail, {
+                const s3ThumbnailResponse = await axios.post(`/pictures/thumbnail?recipeName=${recipeName}`, formDataThumbnail, {
                     headers: {
                         'access-token': `Bearer ${token}`,
                     },
@@ -130,9 +129,9 @@ export const useRecipeCreate = () => {
             });
             console.log('2.formDataOrderImages : ', formDataOrderImages);
 
-            const s3OrderImagesResponse = await instance.post(`/pictures/orderImage?recipeName=${recipeName}`, formDataOrderImages, {
+            const s3OrderImagesResponse = await axios.post(`/pictures/orderImage?recipeName=${recipeName}`, formDataOrderImages, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    'access-token': `Bearer ${token}`,
                 },
             });
             console.log('s3OrderImageResponse : ', s3OrderImagesResponse);

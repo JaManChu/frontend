@@ -2,7 +2,7 @@ import PopularRecipeData from './PopularRecipeData.js';
 
 // import { debounce } from 'lodash';
 
-interface RecipeLimitProps {
+export interface RecipeLimitProps {
     limit?: number;
     page?: string;
 }

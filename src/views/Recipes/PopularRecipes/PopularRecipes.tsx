@@ -1,5 +1,7 @@
 import RecipeList from '../../../components/Recipe/RecipeList.js';
 import useObserver from '../../../hooks/useObserver.js';
+import Loading from '../../../components/Loading/Loading.js';
+import { RecipeProps } from './PopularRecipeData.js';
 // import { debounce } from 'lodash';
 
 interface RecipeLimitProps {
@@ -8,16 +10,6 @@ interface RecipeLimitProps {
     recipes: RecipeProps[];
     fetchRecipes: () => void;
     isLoading: boolean;
-}
-interface RecipeProps {
-    recipeId: number;
-    recipeName: string;
-    recipeAuthor: string;
-    recipeLevel: string;
-    recipeCookingTime: string;
-    recipeThumbnail: string;
-    // rate: string;
-    // desc: string;
 }
 
 export default function PopularRecipes({ limit, page, recipes, fetchRecipes, isLoading }: RecipeLimitProps): JSX.Element {
@@ -32,8 +24,8 @@ export default function PopularRecipes({ limit, page, recipes, fetchRecipes, isL
     return (
         <>
             <RecipeList recipes={recipes} limit={limit} page={page} />
-            <div id="observer" ref={target}>
-                Circle
+            <div ref={target}>
+                <Loading />
             </div>
         </>
     );

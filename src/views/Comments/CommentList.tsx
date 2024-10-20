@@ -91,7 +91,6 @@ CommentsListProps): JSX.Element {
                     </CommentsWrapper>
                 ))}
             </CommentsContainer>
-            s
         </>
     );
 }

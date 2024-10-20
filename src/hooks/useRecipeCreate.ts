@@ -109,7 +109,7 @@ export const useRecipeCreate = () => {
                 formDataThumbnail.append('file', thumbnail);
 
                 console.log('recipeName :', recipeName);
-                const s3ThumbnailResponse = await instance.post(`/pictures/thumbnail?recipeName=${recipeName}`, formDataThumbnail, {
+                const s3ThumbnailResponse = await axios.post(`/pictures/thumbnail?recipeName=${encodeURIComponent(recipeName)}`, formDataThumbnail, {
                     headers: {
                         'access-token': `Bearer ${token}`,
                     },
@@ -130,10 +130,9 @@ export const useRecipeCreate = () => {
             });
             console.log('2.formDataOrderImages : ', formDataOrderImages);
 
-            const s3OrderImagesResponse = await instance.post(`/pictures/orderImage?recipeName=${recipeName}`, formDataOrderImages, {
+            const s3OrderImagesResponse = await axios.post(`/pictures/orderImage?recipeName=${encodeURIComponent(recipeName)}`, formDataOrderImages, {
                 headers: {
                     'access-token': `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data',
                 },
             });
             console.log('s3OrderImageResponse : ', s3OrderImagesResponse);

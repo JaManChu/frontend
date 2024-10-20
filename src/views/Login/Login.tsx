@@ -62,7 +62,7 @@ export default function Login(): JSX.Element {
                         type="submit"
                         variant="contained"
                         sx={{ mt: 3, backgroundColor: '#b2dfdb', color: 'black', fontWeight: 'bold', ':hover': { backgroundColor: '#80cbc4' } }}
-                        onClick={() => dispatch(showModal({ isOpen: true, content: modalContent }))}
+                        onClick={() => dispatch(showModal({ isOpen: true, content: modalContent, onConfirm: null }))}
                     >
                         로그인
                     </Button>

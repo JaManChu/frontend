@@ -47,7 +47,7 @@ export default function useComments() {
             }
         } catch (err) {
             console.log(err);
-            dispatch(showModal({ isOpen: true, content: '댓글을 가져오는데 실패했습니다.' }));
+            dispatch(showModal({ isOpen: true, content: '댓글을 가져오는데 실패했습니다.', onConfirm: null }));
         }
     };
     console.log('recipeId', recipeId);
@@ -67,19 +67,22 @@ export default function useComments() {
 
             if (response.data.code == 'CREATED') {
                 console.log(response);
-                dispatch(showModal({ isOpen: true, content: '댓글 작성 성공!' }));
+                dispatch(showModal({ isOpen: true, content: '댓글 작성 성공!', onConfirm: await fetchCommentHandler(recipeId.toString()) }));
                 // 초기화
                 setCreateComment('');
                 setCurrentRate(0);
-                await fetchCommentHandler(recipeId.toString());
             }
         } catch (err: any) {
             if (err.message == 'No token') {
-                dispatch(showModal({ isOpen: true, content: '로그인 후 이용바랍니다.' }));
+                dispatch(showModal({ isOpen: true, content: '로그인 후 이용바랍니다.', onConfirm: null }));
                 window.location.href = '/login';
             } else {
                 console.log('댓글작성 error: ', err);
-                dispatch(showModal({ isOpen: true, content: err.response.message }));
+                if (createComment == '') {
+                    dispatch(showModal({ isOpen: true, content: '코멘트는 1글자 이상 300글자 이하로 작성해주세요.', onConfirm: null }));
+                } else {
+                    dispatch(showModal({ isOpen: true, content: '평점은 1.0이상 입력해주세요', onConfirm: null }));
+                }
             }
         }
     };
@@ -98,12 +101,11 @@ export default function useComments() {
                 console.log(response);
                 setUpdateComment('');
                 setCommentId(0);
-                await fetchCommentHandler(recipeId.toString());
-                dispatch(showModal({ isOpen: true, content: '댓글이 수정되었습니다.' }));
+                dispatch(showModal({ isOpen: true, content: '댓글이 수정되었습니다.', onConfirm: await fetchCommentHandler(recipeId.toString()) }));
             }
         } catch (err) {
             console.log('댓글 수정 error: ', err);
-            dispatch(showModal({ isOpen: true, content: '댓글 수정에 실패하였습니다.' }));
+            dispatch(showModal({ isOpen: true, content: '코멘트 수정시에는 1글자 이상 300글자 이하로 작성해주세요.', onConfirm: null }));
         }
     };
 
@@ -137,12 +139,11 @@ export default function useComments() {
 
             if (response.data.code == 'OK') {
                 console.log(response);
-                dispatch(showModal({ isOpen: true, content: '댓글이 삭제되었습니다.' }));
-                await fetchCommentHandler(recipeId);
+                dispatch(showModal({ isOpen: true, content: '댓글이 삭제되었습니다.', onConfirm: await fetchCommentHandler(recipeId) }));
             }
         } catch (err) {
             console.log(err);
-            dispatch(showModal({ isOpen: true, content: '댓글 삭제에 실패하였습니다.' }));
+            dispatch(showModal({ isOpen: true, content: '댓글 삭제에 실패하였습니다.', onConfirm: null }));
         }
     };
 

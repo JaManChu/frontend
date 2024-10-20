@@ -74,27 +74,27 @@ export const userFormHandler = () => {
         const hasMessage = Object.values(inputResult).some((result) => result !== '');
         // hasMessage가 false인 경우(모든 validation 통과한 경우)
         if (hasMessage) {
-            dispatch(showModal({ isOpen: true, content: '모든 필드값을 입력해주시기 바랍니다.' }));
+            dispatch(showModal({ isOpen: true, content: '모든 필드값을 입력해주시기 바랍니다.', onConfirm: null }));
             return;
         }
 
         try {
             const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/signup`, { email, password, nickname });
             if (response.status == 201) {
-                dispatch(showModal({ isOpen: true, content: response.data.message })); // 회원가입 성공 modal
+                dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null })); // 회원가입 성공 modal
                 navigate('/login');
             }
         } catch (err: any) {
             console.log('회원가입 에러: ', err);
-            dispatch(showModal({ isOpen: true, content: err.response.data })); // 회원가입 실패 modal
+            dispatch(showModal({ isOpen: true, content: err.response.data, onConfirm: null })); // 회원가입 실패 modal
         }
     };
 
     // 로그인 버튼 눌렀을때 호출되는 함수
     const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (email == '') dispatch(showModal({ isOpen: true, content: '이메일을 입력해주시기 바랍니다.' }));
-        else if (password == '') dispatch(showModal({ isOpen: true, content: '비밀번호를 입력해주시기 바랍니다.' }));
+        if (email == '') dispatch(showModal({ isOpen: true, content: '이메일을 입력해주시기 바랍니다.', onConfirm: null }));
+        else if (password == '') dispatch(showModal({ isOpen: true, content: '비밀번호를 입력해주시기 바랍니다.', onConfirm: null }));
 
         try {
             const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, { email, password });
@@ -103,7 +103,7 @@ export const userFormHandler = () => {
                 const accessToken = token?.replace('Bearer ', ''); // Bearer 삭제 후 저장
                 const userDispatchData = { isLoggedIn: true, token: accessToken, nickname: response.data.data };
                 dispatch(loginSuccess(userDispatchData));
-                dispatch(showModal({ isOpen: true, content: response.data.message })); // 로그인 성공 modal
+                dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null })); // 로그인 성공 modal
                 navigate('/home');
             }
         } catch (err: any) {

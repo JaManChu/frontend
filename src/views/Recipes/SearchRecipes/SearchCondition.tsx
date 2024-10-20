@@ -44,8 +44,8 @@ export default function SearchCondition({ setSearching, setRecipes }: SearchCond
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setSearching(true); // 검색 중임을 나타내는 상태
-        if (!ingredientsList.length) {
-            dispatch(showModal({ isOpen: true, content: '재료명을 입력해주시기 바랍니다.' }));
+        if (!ingredientsList.length && !time && !level) {
+            dispatch(showModal({ isOpen: true, content: '재료명, 조리시간, 난이도 중 하나는 입력해주시기 바랍니다.', onConfirm: null }));
             setSearching(false); // 재료명을 입력하지 않았음 : 검색 중이 아님
             return;
         }
@@ -63,14 +63,14 @@ export default function SearchCondition({ setSearching, setRecipes }: SearchCond
                 console.log('search response.data: ', response.data);
                 console.log('search response: ', response);
                 setRecipes(response.data.data);
-                dispatch(showModal({ isOpen: true, content: response.data.message }));
+                dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
             } else {
                 console.log('code ok 아닐때');
-                dispatch(showModal({ isOpen: true, content: '재료명을 다시 입력해주시기 바랍니다.' }));
+                dispatch(showModal({ isOpen: true, content: '재료명을 다시 입력해주시기 바랍니다.', onConfirm: null }));
             }
         } catch (err) {
             console.log('레시피 검색 error : ', err);
-            dispatch(showModal({ isOpen: true, content: '검색 중 오류가 발생했습니다. 다시 시도해주세요.' }));
+            dispatch(showModal({ isOpen: true, content: '검색 중 오류가 발생했습니다. 다시 시도해주세요.', onConfirm: null }));
         } finally {
             setSearching(false);
             setSearchIngredients('');

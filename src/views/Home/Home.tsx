@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react';
-import AllRecipes from '../Recipes/AllRecipes/AllRecipes';
+import AllRecipesView from '../Recipes/AllRecipes/AllRecipesView';
 import PopularRecipesView from '../Recipes/PopularRecipes/PopularRecipesView';
 import RecommendedRecipes from '../Recipes/RecommendedRecipes/RecommendedRecipes';
 import styled from 'styled-components';
@@ -61,7 +61,7 @@ function Home(): JSX.Element {
             {/* 리덕스 툴킷 도입 : 레시피페이지 전역상태관리 - RecipePageHeader + RecipeList 호출가능?  */}
             <S_RecipeWrapper>
                 <RecommendedRecipes limit={4} page="recommended" />
-                <AllRecipes limit={1} page="all" />
+                <AllRecipesView limit={1} page="all" />
                 {/* Popular, Visited 분리 작업 후 VisitedWrapper는 float/position으로 css 변경처리 */}
                 <S_VisitedPopularWrapper>
                     <PopularRecipesView limit={2} page="popular" />

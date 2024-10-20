@@ -7,7 +7,7 @@ import Mypage from './views/Mypage/Mypage.tsx';
 import GuestHome from './views/GuestHome/GuestHome.tsx';
 import HeaderView from './components/Header/HeaderView.tsx';
 import Home from './views/Home/Home.tsx';
-import AllRecipes from './views/Recipes/AllRecipes/AllRecipes.tsx';
+import AllRecipesView from './views/Recipes/AllRecipes/AllRecipesView.tsx';
 import PopularRecipesView from './views/Recipes/PopularRecipes/PopularRecipesView.tsx';
 import RecommendedRecipes from './views/Recipes/RecommendedRecipes/RecommendedRecipes.tsx';
 import DetailRecipe from './views/Recipes/DetailRecipe/DetailRecipe.tsx';
@@ -28,7 +28,7 @@ function App() {
                     <Route path="/mypage" element={<Mypage />} />
                     <Route path="/guesthome" element={<GuestHome />} />
                     <Route path="/home" element={<Home />} />
-                    <Route path="/recipes/all" element={<AllRecipes />} />
+                    <Route path="/recipes/all" element={<AllRecipesView />} />
                     <Route path="/recipes/popular" element={<PopularRecipesView />} />
                     <Route path="/recipes/search" element={<SearchViewRecipes />} />
                     <Route path="/recipes/recommended" element={<RecommendedRecipes />} />

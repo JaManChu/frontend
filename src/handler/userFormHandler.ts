@@ -100,18 +100,9 @@ export const userFormHandler = () => {
     // 로그인 버튼 눌렀을때 호출되는 함수
     const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (email == '') dispatch(showModal({ isOpen: true, content: '이메일을 입력해주시기 바랍니다.' }));
+        else if (password == '') dispatch(showModal({ isOpen: true, content: '비밀번호를 입력해주시기 바랍니다.' }));
 
-        // 유효성 검사 결과 담아서 inputMessage에 반환
-        const inputResult = validateLogin({ email, password });
-        setInputMessage(inputResult);
-
-        // email, password중 어느 하나라도 ''값이 아닌 경우 false 반환
-        const hasMessage = Object.values(inputResult).some((result) => result !== '');
-
-        // hasMessage가 false인 경우(모든 validation 통과한 경우)
-        if (hasMessage) {
-            dispatch(showModal({ isOpen: true, content: '모든 필드값을 입력해주시기 바랍니다.' }));
-        }
         try {
             const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, { email, password });
             if (response.data.code == 'OK') {
@@ -124,7 +115,6 @@ export const userFormHandler = () => {
             }
         } catch (err: any) {
             console.log('로그인 에러: ', err);
-            dispatch(showModal({ isOpen: true, content: err.response.data })); // 로그인 성공 modal
         }
     };
 

@@ -13,7 +13,7 @@ import { loginSuccess } from '../redux/reducer/userSlice.ts';
 import { showModal } from '../redux/reducer/modalSlice.ts';
 import axios from 'axios';
 
-export const useUserForm = () => {
+export const userFormHandler = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 

@@ -1,20 +1,18 @@
 import { useEffect, useState } from 'react';
 import { Layout } from '../../styles/layout';
-import Modal from '../../components/Modal/Modal';
-// import { useUserForm } from '../../hooks/useUserForm.ts';
-import { useAuth } from '../../hooks/useAuth.ts';
-import { authHandler } from '../../handler/authHandler.ts';
+import { userFormHandler } from '../../handler/userFormHandler.ts';
 import { useModal } from '../../hooks/useModal.ts';
 import { Button } from '@mui/material';
-import styled from 'styled-components';
+import Modal from '../../components/Modal/Modal';
 import axios from 'axios';
+import styled from 'styled-components';
 
 export default function Signup(): JSX.Element {
     const [emailCheckFailMessage, setEmailCheckFailMessage] = useState<string>('');
     const [nicknameCheckFailMessage, setNicknameCheckFailMessage] = useState<string>('');
+
     const [emailCheck, setEmailCheck] = useState<boolean>(false);
     const [nicknameCheck, setNicknameCheck] = useState<boolean>(false);
-
     const {
         email,
         setEmail,
@@ -28,8 +26,9 @@ export default function Signup(): JSX.Element {
         clickedButEmpty,
         handleEmptyInput,
         clearInputMessage,
-    } = useAuth();
-    const { handleSignup } = authHandler();
+        handleSignup,
+    } = userFormHandler();
+
     const { isModalVisible, openModal, closeModal } = useModal();
 
     const handleCheckEmail = async () => {

@@ -1,37 +1,23 @@
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
-import { authHandler } from '../../handler/authHandler';
-// import { useUserForm } from '../../hooks/useUserForm';
+import { userFormHandler } from '../../handler/userFormHandler';
+import SocialKakao from './SocialKakao';
+import { Container, Box, Typography, TextField, Button, Divider } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { showModal } from '../../redux/reducer/modalSlice';
 import { RootState } from '../../redux/store/store';
-import SocialKakao from './SocialKakao';
-import { Container, Box, Typography, TextField, Button, Divider } from '@mui/material';
 // import Modal from '../../components/Modal/Modal';
 // import { useModal } from '../../hooks/useModal';
 
 export default function Login(): JSX.Element {
     const navigate = useNavigate();
-    const {
-        email,
-        setEmail,
-        password,
-        setPassword,
-        clickedButEmpty,
-        handleEmptyInput,
-        clearInputMessage,
-        inputMessage,
-        // nickname,
-        // setNickname,
-    } = useAuth();
-    const { handleLogin } = authHandler();
-    // const { openModal, closeModal, isModalVisible } = useModal();
-
+    const { email, setEmail, password, setPassword, clickedButEmpty, handleEmptyInput, clearInputMessage, inputMessage, handleLogin } =
+        userFormHandler();
+    // const { openModal, closeModal, handleConfirm, isModalVisible } = useModal();
     const dispatch = useDispatch();
     const modalContent = useSelector((state: RootState) => state.modal.content);
 
     return (
-        <Container maxWidth="sm" sx={{ marginBottom: '64px' }}>
+        <Container maxWidth="sm">
             <Box
                 sx={{
                     display: 'flex',
@@ -96,7 +82,7 @@ export default function Login(): JSX.Element {
                         visible={isModalVisible}
                         onClose={closeModal}
                         buttons={[
-                            { label: '찾기', onClick: closeModal },
+                            { label: '찾기', onClick: handleConfirm },
                             { label: '취소', onClick: closeModal },
                         ]}
                     >

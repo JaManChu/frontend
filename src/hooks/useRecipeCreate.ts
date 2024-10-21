@@ -108,11 +108,15 @@ export const useRecipeCreate = () => {
                 formDataThumbnail.append('file', thumbnail);
 
                 console.log('recipeName :', recipeName);
-                const s3ThumbnailResponse = await axios.post(`/pictures/thumbnail?recipeName=${recipeName}`, formDataThumbnail, {
-                    headers: {
-                        'access-token': `Bearer ${token}`,
+                const s3ThumbnailResponse = await axios.post(
+                    `${import.meta.env.VITE_BASE_URL}/pictures/thumbnail?recipeName=${recipeName}`,
+                    formDataThumbnail,
+                    {
+                        headers: {
+                            'access-token': `Bearer ${token}`,
+                        },
                     },
-                });
+                );
                 console.log('s3Thumbnail Response : ', s3ThumbnailResponse);
                 console.log('s3Thumbnail Response.data : ', s3ThumbnailResponse.data);
                 //! response된 값 보고 수정필요
@@ -129,11 +133,15 @@ export const useRecipeCreate = () => {
             });
             console.log('2.formDataOrderImages : ', formDataOrderImages);
 
-            const s3OrderImagesResponse = await axios.post(`/pictures/orderImage?recipeName=${recipeName}`, formDataOrderImages, {
-                headers: {
-                    'access-token': `Bearer ${token}`,
+            const s3OrderImagesResponse = await axios.post(
+                `${import.meta.env.VITE_BASE_URL}/pictures/orderImage?recipeName=${recipeName}`,
+                formDataOrderImages,
+                {
+                    headers: {
+                        'access-token': `Bearer ${token}`,
+                    },
                 },
-            });
+            );
             console.log('s3OrderImageResponse : ', s3OrderImagesResponse);
             console.log('s3OrderImageResponse.data : ', s3OrderImagesResponse.data);
             //! response된 값 보고 수정필요
@@ -156,11 +164,15 @@ export const useRecipeCreate = () => {
             };
             console.log('recipeData : ', recipeData);
 
-            const response = await axios.post(`/recipes?thumbnailUrl=${thumbnailUrl}&recipeOrderImagesUrl=${orderImageUrls.join(',')}`, recipeData, {
-                headers: {
-                    'access-token': `Bearer ${token}`,
+            const response = await axios.post(
+                `${import.meta.env.VITE_BASE_URL}/recipes?thumbnailUrl=${thumbnailUrl}&recipeOrderImagesUrl=${orderImageUrls.join(',')}`,
+                recipeData,
+                {
+                    headers: {
+                        'access-token': `Bearer ${token}`,
+                    },
                 },
-            });
+            );
             console.log('레시피등록 최종 response : ', response);
             console.log('레시피등록 최종 response.data : ', response.data);
 

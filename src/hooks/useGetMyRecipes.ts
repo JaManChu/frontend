@@ -4,20 +4,20 @@ import { useState, useEffect } from 'react';
 import instance from '../utils/api/instance';
 
 export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: number) => {
-    interface MyRecipeProps {
+    interface MyRecipe {
         myRecipeId: number;
         myRecipeName: string;
         myRecipeThumbnail: string;
     }
 
-    interface ScrabRecipeProps {
+    interface ScrabRecipe {
         recipeAuthor: string;
         recipeId: number;
         recipeName: string;
         recipeThumbnail: string;
     }
-    const [myRecipes, setMyRecipes] = useState<MyRecipeProps[]>([]);
-    const [scrapedRecipes, setScrapedRecipes] = useState<ScrabRecipeProps[]>([]);
+    const [myRecipes, setMyRecipes] = useState<MyRecipe[]>([]);
+    const [scrapedRecipes, setScrapedRecipes] = useState<ScrabRecipe[]>([]);
     const [totalMyRecipesPages, setTotalMyRecipesPages] = useState(1); // 총 작성 레시피 페이지 수
     const [totalScrapedRecipesPages, setTotalScrapedRecipesPages] = useState(1); // 총 스크랩 레시피 페이지 수
 

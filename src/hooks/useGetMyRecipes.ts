@@ -53,6 +53,7 @@ export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: numbe
 
     return {
         myRecipes,
+        setMyRecipes,
         scrapedRecipes,
         totalMyRecipesPages,
         totalScrapedRecipesPages,

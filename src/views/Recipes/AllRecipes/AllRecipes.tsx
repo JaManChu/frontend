@@ -5,13 +5,12 @@ import { RecipeProps } from './AllRecipesData.js';
 
 interface RecipeLimitProps {
     limit?: number;
-    page?: string;
     recipes: RecipeProps[];
     fetchRecipes: () => void;
     isLoading: boolean;
 }
 
-export default function AllRecipes({ limit, page, recipes, fetchRecipes, isLoading }: RecipeLimitProps): JSX.Element {
+export default function AllRecipes({ limit, recipes, fetchRecipes, isLoading }: RecipeLimitProps): JSX.Element {
     const handleObserver = async (entry: IntersectionObserverEntry) => {
         if (entry.isIntersecting && !isLoading) {
             await fetchRecipes();
@@ -22,10 +21,14 @@ export default function AllRecipes({ limit, page, recipes, fetchRecipes, isLoadi
 
     return (
         <>
-            <RecipeList recipes={recipes} limit={limit} page={page} />
-            <div ref={target}>
-                <Loading />
-            </div>
+            <RecipeList recipes={recipes} limit={limit} />
+            {limit ? (
+                ''
+            ) : (
+                <div ref={target}>
+                    <Loading />
+                </div>
+            )}
         </>
     );
 }

@@ -5,6 +5,7 @@ import { showModal } from '../../../redux/reducer/modalSlice.js';
 import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
 import AllRecipes from './AllRecipes.js';
 import { RecipeLimitProps } from './AllRecipesView.js';
+import fakeData from '../../../fakeData/recipeFake.js';
 
 export interface RecipeProps {
     recipeId: number;
@@ -16,7 +17,7 @@ export interface RecipeProps {
     // rate: string;
     // desc: string;
 }
-export default function AllRecipesData({ limit, page }: RecipeLimitProps) {
+export default function AllRecipesData({ limit }: RecipeLimitProps) {
     const [recipes, setRecipes] = useState<RecipeProps[]>([]);
     const [offset, setOffset] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -41,6 +42,7 @@ export default function AllRecipesData({ limit, page }: RecipeLimitProps) {
             }
         } catch (err: any) {
             console.log('전체레시피 error: ', err);
+            setRecipes(fakeData);
             dispatch(showModal({ isOpen: true, content: '전체 레시피 조회에 실패했습니다. 잠시 후 다시 시도해주세요.', onConfirm: null }));
         } finally {
             setIsLoading(false);
@@ -49,7 +51,7 @@ export default function AllRecipesData({ limit, page }: RecipeLimitProps) {
 
     return (
         <S_RecipeContainer>
-            <AllRecipes limit={limit} page={page} recipes={recipes} fetchRecipes={fetchRecipes} isLoading={isLoading} />
+            <AllRecipes limit={limit} recipes={recipes} fetchRecipes={fetchRecipes} isLoading={isLoading} />
         </S_RecipeContainer>
     );
 }

@@ -105,7 +105,7 @@ export const useRecipeCreate = () => {
             console.log(' 1. thumbnail : ', thumbnail);
             if (thumbnail) {
                 const formDataThumbnail = new FormData();
-                formDataThumbnail.append('file', thumbnail);
+                formDataThumbnail.append('recipeThumbnail', thumbnail);
 
                 console.log('recipeName :', recipeName);
                 const s3ThumbnailResponse = await axios.post(
@@ -128,7 +128,7 @@ export const useRecipeCreate = () => {
             const formDataOrderImages = new FormData();
             steps.forEach((step) => {
                 if (step.picture) {
-                    formDataOrderImages.append('file', step.picture);
+                    formDataOrderImages.append('recipeOrderImages', step.picture);
                 }
             });
             console.log('2.formDataOrderImages : ', formDataOrderImages);

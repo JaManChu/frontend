@@ -4,7 +4,7 @@ import instance from '../../../utils/api/instance.js';
 import PopularRecipes from './PopularRecipes';
 import { useDispatch } from 'react-redux';
 import { showModal } from '../../../redux/reducer/modalSlice.js';
-import { RecipeLimitProps } from './PopularRecipesView.js';
+
 export interface RecipeProps {
     recipeId: number;
     recipeName: string;
@@ -16,7 +16,7 @@ export interface RecipeProps {
     // desc: string;
 }
 
-export default function PopularRecipeData({ limit, page }: RecipeLimitProps): JSX.Element {
+export default function PopularRecipeData(): JSX.Element {
     const [recipes, setRecipes] = useState<RecipeProps[]>([]);
     const [offset, setOffset] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -54,7 +54,7 @@ export default function PopularRecipeData({ limit, page }: RecipeLimitProps): JS
 
     return (
         <S_RecipeContainer>
-            <PopularRecipes limit={limit} page={page} recipes={recipes} fetchRecipes={fetchRecipes} isLoading={isLoading} />
+            <PopularRecipes recipes={recipes} fetchRecipes={fetchRecipes} isLoading={isLoading} />
         </S_RecipeContainer>
     );
 }

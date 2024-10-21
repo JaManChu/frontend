@@ -5,11 +5,7 @@ import withAuth from '../../../hooks/withAuth.js';
 import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
 // import instance from '../../../utils/api/instance.js';
 
-interface RecipeLimitProps {
-    limit?: number;
-    page?: string;
-}
-function RecommendedRecipes({ limit, page }: RecipeLimitProps): JSX.Element {
+function RecommendedRecipes(): JSX.Element {
     // const [recipes, setRecipes] = useState<string[]>([]);
     // useEffect(() => {
     //     const fetchRecipes = async () => {
@@ -21,7 +17,7 @@ function RecommendedRecipes({ limit, page }: RecipeLimitProps): JSX.Element {
 
     return (
         <S_RecipeContainer>
-            <RecipeList recipes={fakeData} limit={limit} page={page} />
+            <RecipeList recipes={fakeData} />
         </S_RecipeContainer>
     );
 }

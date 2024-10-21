@@ -5,14 +5,12 @@ import { RecipeProps } from './PopularRecipeData.js';
 // import { debounce } from 'lodash';
 
 interface RecipeLimitProps {
-    limit?: number;
-    page?: string;
     recipes: RecipeProps[];
     fetchRecipes: () => void;
     isLoading: boolean;
 }
 
-export default function PopularRecipes({ limit, page, recipes, fetchRecipes, isLoading }: RecipeLimitProps): JSX.Element {
+export default function PopularRecipes({ recipes, fetchRecipes, isLoading }: RecipeLimitProps): JSX.Element {
     const handleObserver = async (entry: IntersectionObserverEntry) => {
         if (entry.isIntersecting && !isLoading) {
             await fetchRecipes();
@@ -23,7 +21,7 @@ export default function PopularRecipes({ limit, page, recipes, fetchRecipes, isL
 
     return (
         <>
-            <RecipeList recipes={recipes} limit={limit} page={page} />
+            <RecipeList recipes={recipes} />
             <div ref={target}>
                 <Loading />
             </div>

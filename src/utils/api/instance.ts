@@ -15,8 +15,9 @@ instance.interceptors.request.use(
     (config) => {
         const token = store.getState().user.value.token;
         if (!token) {
-            window.location.href = '/login';
-            return new Promise(() => {});
+            // window.location.href = '/login';
+            return Promise.reject(new Error('no token'));
+            // return new Promise(() => {});
         }
         config.headers['access-token'] = `Bearer ${token}`;
         config.headers['Content-Type'] = 'application/json';
@@ -65,6 +66,7 @@ instance.interceptors.response.use(
 
         // 3. 쿠키가 없을때
         if (err.response && err.response?.status === 404) {
+            console.log('쿠키 null', err);
             alert(err.response.data);
             window.location.href = '/login';
             return Promise.reject(err); // 요청 중단

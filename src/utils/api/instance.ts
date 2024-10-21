@@ -14,11 +14,11 @@ instance.interceptors.request.use(
     // request 서버 전송 전 처리되는 코드로 config는 http 요청 시 사용할 설정과 데이터를 포함
     (config) => {
         const token = store.getState().user.value.token;
-        if (!token) {
-            // window.location.href = '/login';
-            return Promise.reject(new Error('no token'));
-            // return new Promise(() => {});
-        }
+        // if (!token) {
+        // window.location.href = '/login';
+        // return Promise.reject(new Error('no token'));
+        // return new Promise(() => {});
+        // }
         config.headers['access-token'] = `Bearer ${token}`;
         config.headers['Content-Type'] = 'application/json';
         return config;

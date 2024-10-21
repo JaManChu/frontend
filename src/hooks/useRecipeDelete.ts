@@ -1,7 +1,15 @@
 import axios from 'axios';
 import useAuthToken from './useAuthToken';
 
-export const useRecipeDelete = () => {
+interface Recipe {
+    myRecipeId: number;
+    myRecipeThumbnail: string;
+    myRecipeName: string;
+}
+
+type SetMyRecipes = React.Dispatch<React.SetStateAction<Recipe[]>>;
+
+export const useRecipeDelete = (setMyRecipes: SetMyRecipes) => {
     const token = useAuthToken();
 
     const handleMyRecipeDelete = async (myRecipeId: number) => {
@@ -14,6 +22,7 @@ export const useRecipeDelete = () => {
                     recipeId: myRecipeId,
                 },
             });
+            setMyRecipes((prevRecipes) => prevRecipes.filter((recipe) => recipe.myRecipeId !== myRecipeId));
             console.log('response : ', response);
         } catch (error) {
             console.error('레시피 삭제 실패', error);

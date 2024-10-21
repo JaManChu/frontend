@@ -122,7 +122,7 @@ export const useRecipeCreate = () => {
                 console.log('s3Thumbnail Response : ', s3ThumbnailResponse);
                 console.log('s3Thumbnail Response.data : ', s3ThumbnailResponse.data);
                 //! response된 값 보고 수정필요
-                thumbnailUrl = s3ThumbnailResponse.data['Response body'];
+                thumbnailUrl = s3ThumbnailResponse.data;
             }
             console.log(' 1. thumbnailUrl : ', thumbnailUrl);
 
@@ -136,7 +136,7 @@ export const useRecipeCreate = () => {
             console.log('2.formDataOrderImages : ', formDataOrderImages);
 
             const s3OrderImagesResponse = await axios.post(
-                `${import.meta.env.VITE_BASE_URL}/pictures/orderImage?recipeName=${recipeName}`,
+                `${import.meta.env.VITE_BASE_URL}/pictures/orderImages?recipeName=${recipeName}`,
                 formDataOrderImages,
                 {
                     headers: {
@@ -147,7 +147,7 @@ export const useRecipeCreate = () => {
             console.log('s3OrderImageResponse : ', s3OrderImagesResponse);
             console.log('s3OrderImageResponse.data : ', s3OrderImagesResponse.data);
             //! response된 값 보고 수정필요
-            const orderImageUrls = s3OrderImagesResponse.data.body; // 조리 과정 이미지 URL 배열
+            const orderImageUrls = s3OrderImagesResponse.data; // 조리 과정 이미지 URL 배열
             console.log('orderImageUrls : ', orderImageUrls);
             // 3. 레시피 등록 API 호출
             const recipeData = {

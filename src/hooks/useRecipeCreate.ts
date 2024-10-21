@@ -179,7 +179,7 @@ export const useRecipeCreate = () => {
             console.log('레시피등록 최종 response.data : ', response.data);
 
             //! 레시피등록 최종 response보고 수정
-            if (response.status === 201) {
+            if (response.data.code === 'CREATED') {
                 alert('레시피가 성공적으로 등록되었습니다!');
                 navigate('/recipes');
             }

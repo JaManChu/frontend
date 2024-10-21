@@ -4,13 +4,20 @@ import { useState, useEffect } from 'react';
 import instance from '../utils/api/instance';
 
 export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: number) => {
-    interface Recipe {
+    interface MyRecipeProps {
+        myRecipeId: number;
+        myRecipeName: string;
+        myRecipeThumbnail: string;
+    }
+
+    interface ScrabRecipeProps {
+        recipeAuthor: string;
         recipeId: number;
         recipeName: string;
         recipeThumbnail: string;
     }
-    const [myRecipes, setMyRecipes] = useState<Recipe[]>([]);
-    const [scrapedRecipes, setScrapedRecipes] = useState<Recipe[]>([]);
+    const [myRecipes, setMyRecipes] = useState<MyRecipeProps[]>([]);
+    const [scrapedRecipes, setScrapedRecipes] = useState<ScrabRecipeProps[]>([]);
     const [totalMyRecipesPages, setTotalMyRecipesPages] = useState(1); // 총 작성 레시피 페이지 수
     const [totalScrapedRecipesPages, setTotalScrapedRecipesPages] = useState(1); // 총 스크랩 레시피 페이지 수
 
@@ -30,15 +37,17 @@ export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: numbe
                     // 총 페이지 수 업데이트
                     setTotalMyRecipesPages(response.data.data.myRecipes.totalPage);
                     setTotalScrapedRecipesPages(response.data.data.myScrapedRecipes.totalPage);
+
+                    console.log('작성게시글 목록 : ', myRecipes);
+                    console.log('스크랩 게시물 목록 : ', scrapedRecipes);
+                    console.log('게시글 총 페이지 : ', totalMyRecipesPages);
+                    console.log('스크랩 총 페이지 : ', totalScrapedRecipesPages);
                 }
             } catch (error) {
                 console.error('게시물 정보를 불러오는데 실패하였습니다', error);
             }
         };
-        console.log('작성게시글 목록 : ', myRecipes);
-        console.log('스크랩 게시물 목록 : ', scrapedRecipes);
-        console.log('게시글 총 페이지 : ', totalMyRecipesPages);
-        console.log('스크랩 총 페이지 : ', totalScrapedRecipesPages);
+
         fetchRecipes();
     }, [myRecipesPage, scrapedRecipesPage]);
 

@@ -29,10 +29,13 @@ export default function Mypage(): JSX.Element {
     const { userInfo, refetchUserInfo: refetchUserInfo } = useGetUserInfo();
 
     // 스크랩, 작성 게시물 불러오는 hook
-    const { myRecipes, scrapedRecipes, totalMyRecipesPages, totalScrapedRecipesPages } = useGetMyRecipes(myRecipesPage, scrapedRecipesPage);
+    const { myRecipes, setMyRecipes, scrapedRecipes, totalMyRecipesPages, totalScrapedRecipesPages } = useGetMyRecipes(
+        myRecipesPage,
+        scrapedRecipesPage,
+    );
 
     //게시물 삭제 hook
-    const { handleMyRecipeDelete } = useRecipeDelete();
+    const { handleMyRecipeDelete } = useRecipeDelete(setMyRecipes);
 
     //북마크 hook
     const { bookmarkRecipes, handleClickBookmark } = useBookmark();

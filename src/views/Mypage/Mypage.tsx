@@ -164,10 +164,10 @@ export default function Mypage(): JSX.Element {
                     <S_Subtitle variant="h5">작성한 레시피</S_Subtitle>
                     <Grid container spacing={2}>
                         {myRecipes.map((myRecipe) => (
-                            <Grid item xs={12} sm={6} md={6} key={myRecipe.recipeId}>
+                            <Grid item xs={12} sm={6} md={6} key={myRecipe.myRecipeId}>
                                 <S_MyFigure>
-                                    <img src={myRecipe.recipeThumbnail} alt="작성 레시피 이미지" style={{ width: '100%', borderRadius: '8px' }} />
-                                    <S_MyFigcaption>{myRecipe.recipeName}</S_MyFigcaption>
+                                    <img src={myRecipe.myRecipeThumbnail} alt="작성 레시피 이미지" style={{ width: '100%', borderRadius: '8px' }} />
+                                    <S_MyFigcaption>{myRecipe.myRecipeName}</S_MyFigcaption>
                                 </S_MyFigure>
                             </Grid>
                         ))}

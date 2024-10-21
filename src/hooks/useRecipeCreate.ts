@@ -18,7 +18,8 @@ export const useRecipeCreate = () => {
     const [recipeCookingTime, setRecipeCookingTime] = useState(''); // 조리소요시간
     const [ingredients, setIngredients] = useState([{ ingredientName: '', ingredientQuantity: '' }]); //레시피에 필요한 재료들
     const [steps, setSteps] = useState<Step[]>([{ content: '', picture: null }]); //레시피 조리 순서
-    const [thumbnail, setThumbnail] = useState<string>('');
+    const [thumbnailPreview, setThumbnailPreview] = useState<string>(''); // 썸네일 이미지 미리보기 상태
+    const [thumbnailFile, setThumbnailFile] = useState<File | null>(null); // 실제 파일 객체
     // 이미지 미리보기 상태
     const [imagePreviews, setImagePreviews] = useState<(string | null)[]>([]);
 
@@ -27,7 +28,8 @@ export const useRecipeCreate = () => {
         if (event.target.files && event.target.files.length > 0) {
             const file = event.target.files[0];
             const tuumbnailImg = URL.createObjectURL(file);
-            setThumbnail(tuumbnailImg); // 썸네일 파일 상태 업데이트
+            setThumbnailPreview(tuumbnailImg);
+            setThumbnailFile(file); // 썸네일 파일 상태 업데이트
         }
     };
 
@@ -102,10 +104,10 @@ export const useRecipeCreate = () => {
         try {
             // 1. S3에 썸네일 이미지 업로드
             let thumbnailUrl = '';
-            console.log(' 1. thumbnail : ', thumbnail);
-            if (thumbnail) {
+            console.log(' 1. thumbnail : ', thumbnailFile);
+            if (thumbnailFile) {
                 const formDataThumbnail = new FormData();
-                formDataThumbnail.append('recipeThumbnail', thumbnail);
+                formDataThumbnail.append('recipeThumbnail', thumbnailFile);
 
                 console.log('recipeName :', recipeName);
                 const s3ThumbnailResponse = await axios.post(
@@ -206,6 +208,6 @@ export const useRecipeCreate = () => {
         handleImageChange,
         imagePreviews,
         handleThumbnailChange,
-        thumbnail,
+        thumbnailPreview,
     };
 };

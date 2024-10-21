@@ -26,7 +26,7 @@ const CreateRecipe: React.FC = () => {
         handleImageChange,
         imagePreviews,
         handleThumbnailChange,
-        thumbnail,
+        thumbnailPreview,
     } = useRecipeCreate();
 
     return (
@@ -36,7 +36,7 @@ const CreateRecipe: React.FC = () => {
                 <ThumbnailUploadBox>
                     <ThumbnailLabel>썸네일 이미지 업로드</ThumbnailLabel>
                     <ThumbnailPreviewContainer>
-                        <ThumbnailPreview src={thumbnail} alt="Thumbnail Preview" />
+                        <ThumbnailPreview src={thumbnailPreview} alt="Thumbnail Preview" />
                         <ThumbnailFileInput type="file" onChange={(e) => handleThumbnailChange(e)} />
                     </ThumbnailPreviewContainer>
                 </ThumbnailUploadBox>

@@ -16,7 +16,8 @@ instance.interceptors.request.use(
         const token = store.getState().user.value.token;
         if (!token) {
             // window.location.href = '/login';
-            return new Promise(() => {});
+            return Promise.reject(new Error('no token'));
+            // return new Promise(() => {});
         }
         config.headers['access-token'] = `Bearer ${token}`;
         config.headers['Content-Type'] = 'application/json';

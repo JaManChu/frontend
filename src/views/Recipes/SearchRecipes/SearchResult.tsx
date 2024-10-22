@@ -19,10 +19,11 @@ interface RecipeProps {
 interface SearchResultProps {
     recipes: RecipeProps[];
     isLoading: boolean;
+    hasSearched: boolean;
     fetchRecipes: () => void;
 }
 
-export function SearchResult({ recipes, isLoading, fetchRecipes }: SearchResultProps) {
+export function SearchResult({ recipes, isLoading, fetchRecipes, hasSearched }: SearchResultProps) {
     const handleObserver = async (entry: IntersectionObserverEntry) => {
         if (entry.isIntersecting && !isLoading) {
             await fetchRecipes();
@@ -33,9 +34,11 @@ export function SearchResult({ recipes, isLoading, fetchRecipes }: SearchResultP
     return (
         <ResultContainer>
             <RecipeList recipes={recipes} />
-            <div ref={target}>
-                <Loading />
-            </div>
+            {hasSearched && recipes.length > 0 && (
+                <div ref={target}>
+                    <Loading />
+                </div>
+            )}
         </ResultContainer>
     );
 }

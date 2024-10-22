@@ -16,7 +16,7 @@ export const useRecipeCreate = () => {
     const [recipeName, setRecipeName] = useState(''); // 레시피명
     const [recipeLevel, setRecipeLevel] = useState('LOW'); // 레시피난이도
     const [recipeCookingTime, setRecipeCookingTime] = useState(''); // 조리소요시간
-    const [ingredients, setIngredients] = useState<{ ingredientName: ''; ingredientQuantity: '' }[]>([]); //레시피에 필요한 재료들
+    const [ingredients, setIngredients] = useState([{ ingredientName: '', ingredientQuantity: '' }]); //레시피에 필요한 재료들
     const [steps, setSteps] = useState<Step[]>([{ content: '', picture: null }]); //레시피 조리 순서
     const [thumbnailPreview, setThumbnailPreview] = useState<string>(''); // 썸네일 이미지 미리보기 상태
     const [thumbnailFile, setThumbnailFile] = useState<File | null>(null); // 실제 파일 객체

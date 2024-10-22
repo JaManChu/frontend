@@ -24,6 +24,8 @@ const UpdateRecipe: React.FC = () => {
         steps,
         setSteps,
         handleUpdateRecipe,
+        thumbnailPreview,
+        handleThumbnailChange,
     } = useUpdateRecipes(id);
     if (!id) {
         return <div>잘못된 접근입니다.</div>; // recipeId가 없는 경우에 대한 처리
@@ -33,6 +35,13 @@ const UpdateRecipe: React.FC = () => {
         <RecipeWriteContainer>
             <RecipeHeader>
                 <RecipeNameInput value={recipeName} onChange={(e) => setRecipeName(e.target.value)} placeholder="레시피 이름을 수정하세요." />
+                <ThumbnailUploadBox>
+                    <ThumbnailLabel>썸네일 이미지 업로드</ThumbnailLabel>
+                    <ThumbnailPreviewContainer>
+                        <ThumbnailPreview src={thumbnailPreview || DefaultImg} alt="Thumbnail Preview" />
+                        <ThumbnailFileInput type="file" onChange={(e) => handleThumbnailChange(e)} />
+                    </ThumbnailPreviewContainer>
+                </ThumbnailUploadBox>
             </RecipeHeader>
             <RecipeContent>
                 <RecipeSteps>
@@ -277,4 +286,37 @@ const CustomStyledSelect = styled.div`
         border-radius: 8px;
         outline: none;
     }
+`;
+
+const ThumbnailUploadBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+`;
+
+const ThumbnailLabel = styled.h3`
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #333;
+`;
+
+const ThumbnailPreviewContainer = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+const ThumbnailPreview = styled.img`
+    width: 50%;
+    height: 200px;
+    object-fit: contain;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    border-radius: 8px;
+`;
+
+const ThumbnailFileInput = styled.input`
+    width: 50%;
 `;

@@ -1,10 +1,10 @@
-import SearchContainer from './SearchContainer';
+import SearchCondition from './SearchCondition';
 import { S_RecipeContainer } from '../../../styles/RecipeContainer';
 
 export default function SearchViewRecipes() {
     return (
         <S_RecipeContainer>
-            <SearchContainer />
+            <SearchCondition />
         </S_RecipeContainer>
     );
 }

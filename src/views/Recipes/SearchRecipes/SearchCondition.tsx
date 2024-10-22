@@ -1,28 +1,40 @@
 import { useState, useEffect, ChangeEvent, FormEvent, KeyboardEvent } from 'react';
 import { SearchBox } from './SearchBox';
+import { SearchResult } from './SearchResult';
 import { levelOptions, timeOption } from '../../../common/options';
 import CustomSelect from '../../../ui/Select/CustomSelect';
 import { useDispatch } from 'react-redux';
 import { showModal } from '../../../redux/reducer/modalSlice';
 import { SelectChangeEvent } from '@mui/material/Select';
 import { CiSearch } from 'react-icons/ci';
-import { RecipeProps } from './SearchContainer';
 import colors from '../../../styles/colors';
 import styled from 'styled-components';
 import instance from '../../../utils/api/instance';
 import qs from 'qs';
 
-interface SearchCondition {
-    setSearching: React.Dispatch<React.SetStateAction<boolean>>;
-    setRecipes: React.Dispatch<React.SetStateAction<RecipeProps[]>>; // 수정
+export interface RecipeProps {
+    recipeId: number;
+    recipeName: string;
+    recipeAuthor: string;
+    recipeLevel: string;
+    recipeCookingTime: string;
+    recipeThumbnail: string;
+    // rate: string;
+    // desc: string;
+    ingredients: Record<string, string | number>[];
+    overview: string;
+    instructions: Record<number | string, string>[];
 }
 
-export default function SearchCondition({ setSearching, setRecipes }: SearchCondition): JSX.Element {
+export default function SearchCondition(): JSX.Element {
     const dispatch = useDispatch();
+    const [recipes, setRecipes] = useState<RecipeProps[]>([]); // 레시피 데이터 저장
     const [searchIngredients, setSearchIngredients] = useState<string>(''); // 입력 검색어
     const [ingredientsList, setIngredientsList] = useState<string[]>([]); // 입력 검색어 저장 리스트
     const [time, setTime] = useState<string>(''); // 소요시간(select에서 선택)
     const [level, setLevel] = useState<string>(''); // 난이도(select에서 선택)
+    const [offset, setOffset] = useState<number>(0);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     // 재료 입력시에 검색어 리스트 입력 재료로 갱신
     useEffect(() => {
@@ -43,16 +55,26 @@ export default function SearchCondition({ setSearching, setRecipes }: SearchCond
     // 검색 버튼 클릭시 api 통신
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        setSearching(true); // 검색 중임을 나타내는 상태
+
         if (!ingredientsList.length && !time && !level) {
             dispatch(showModal({ isOpen: true, content: '재료명, 조리시간, 난이도 중 하나는 입력해주시기 바랍니다.', onConfirm: null }));
-            setSearching(false); // 재료명을 입력하지 않았음 : 검색 중이 아님
             return;
         }
+        await fetchRecipes();
+    };
 
+    const fetchRecipes = async () => {
+        if (isLoading) return;
+        setIsLoading(true);
         try {
-            const response: any = await instance.get('/recipes/search', {
-                params: { ingredientName: ingredientsList, recipeCookingTime: time, recipeLevel: level },
+            const response: any = await instance.get(`/recipes/search`, {
+                params: {
+                    ingredientName: ingredientsList,
+                    ...(time && { recipeCookingTime: time }),
+                    ...(level && { recipeLevel: level }),
+                    page: offset,
+                    size: 15,
+                },
                 paramsSerializer: (params) => {
                     return qs.stringify(params);
                 },
@@ -62,7 +84,12 @@ export default function SearchCondition({ setSearching, setRecipes }: SearchCond
             if (response.data.code == 'OK') {
                 console.log('search response.data: ', response.data);
                 console.log('search response: ', response);
-                setRecipes(response.data.data);
+                const newRecipes: RecipeProps[] = response.data.data;
+                const uniqueRecipes = newRecipes.filter(
+                    (newRecipe) => !recipes.some((existingRecipe) => existingRecipe.recipeId === newRecipe.recipeId),
+                );
+                setRecipes((prev) => [...prev, ...uniqueRecipes]);
+                setOffset((prev) => prev + 1);
                 dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
             } else {
                 console.log('code ok 아닐때');
@@ -72,7 +99,7 @@ export default function SearchCondition({ setSearching, setRecipes }: SearchCond
             console.log('레시피 검색 error : ', err);
             dispatch(showModal({ isOpen: true, content: '검색 중 오류가 발생했습니다. 다시 시도해주세요.', onConfirm: null }));
         } finally {
-            setSearching(false);
+            setIsLoading(false);
             setSearchIngredients('');
         }
     };
@@ -111,7 +138,7 @@ export default function SearchCondition({ setSearching, setRecipes }: SearchCond
                 <S_SearchIcon onClick={handleSubmit} />
             </S_ConditionList>
             {ingredientsList.length != 0 && (
-                <S_ConditionContent>
+                <S_SearchedContent>
                     <h4>선택하신 재료를 확인후, 엔터 혹은 검색버튼을 눌러주세요</h4>
                     <S_ConditionContentList length={ingredientsList.length}>
                         {ingredientsList.map((ingredient, idx) => (
@@ -121,8 +148,9 @@ export default function SearchCondition({ setSearching, setRecipes }: SearchCond
                             </S_ConditionContentItem>
                         ))}
                     </S_ConditionContentList>
-                </S_ConditionContent>
+                </S_SearchedContent>
             )}
+            <SearchResult recipes={recipes} isLoading={isLoading} fetchRecipes={fetchRecipes} />
         </>
     );
 }
@@ -162,7 +190,7 @@ const S_SearchIcon = styled(CiSearch)`
     }
 `;
 
-const S_ConditionContent = styled.div`
+const S_SearchedContent = styled.div`
     h4 {
         font-size: 20px;
         font-weight: 400;

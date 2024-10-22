@@ -52,7 +52,7 @@ export default function SearchCondition({ setSearching, setRecipes }: SearchCond
 
         try {
             const response: any = await instance.get('/recipes/search', {
-                params: { ingredientName: ingredientsList, recipeCookingTime: time, recipeLevel: level },
+                params: { ingredientName: ingredientsList, ...(time && { recipeCookingTime: time }), ...(level && { recipeLevel: level }) },
                 paramsSerializer: (params) => {
                     return qs.stringify(params);
                 },

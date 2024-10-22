@@ -32,7 +32,9 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
     return (
         <>
             <S_HeaderSection onClick={() => setShowAlarm(false)}>
-                <S_Logo src={logo} alt="LOGO" />
+                <Link to="/main">
+                    <S_Logo src={logo} alt="LOGO" />
+                </Link>
                 <S_MenuList>
                     {menuItems.map((item, idx) => {
                         return (
@@ -46,7 +48,7 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
                 </S_MenuList>
                 <S_UserAction>
                     {isLogin ? (
-                        <>
+                        <S_LoginUserList>
                             <S_StyledLink to="/">
                                 <FiLogOut onClick={logout} />
                             </S_StyledLink>
@@ -55,7 +57,7 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
                             </S_StyledLink>
                             <FiBell onClick={handleShowAlarm} />
                             {showAlarm && <Alarm />}
-                        </>
+                        </S_LoginUserList>
                     ) : (
                         <>
                             <S_HeaderButton>
@@ -112,6 +114,10 @@ const S_UserAction = styled.div`
     display: flex;
     justify-content: flex-end;
     cursor: pointer;
+`;
+const S_LoginUserList = styled.div`
+    display: flex;
+    align-items: center;
 `;
 const S_HeaderButton = styled.div`
     margin-left: 16px;

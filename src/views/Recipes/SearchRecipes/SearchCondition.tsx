@@ -35,6 +35,7 @@ export default function SearchCondition(): JSX.Element {
     const [level, setLevel] = useState<string>(''); // 난이도(select에서 선택)
     const [offset, setOffset] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [hasSearched, setHasSearched] = useState<boolean>(false);
 
     // 재료 입력시에 검색어 리스트 입력 재료로 갱신
     useEffect(() => {
@@ -90,6 +91,7 @@ export default function SearchCondition(): JSX.Element {
                 );
                 setRecipes((prev) => [...prev, ...uniqueRecipes]);
                 setOffset((prev) => prev + 1);
+                setHasSearched(true);
                 dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
             } else {
                 console.log('code ok 아닐때');
@@ -150,7 +152,7 @@ export default function SearchCondition(): JSX.Element {
                     </S_ConditionContentList>
                 </S_SearchedContent>
             )}
-            <SearchResult recipes={recipes} isLoading={isLoading} fetchRecipes={fetchRecipes} />
+            <SearchResult recipes={recipes} isLoading={isLoading} hasSearched={hasSearched} fetchRecipes={fetchRecipes} />
         </>
     );
 }

@@ -15,11 +15,12 @@ instance.interceptors.request.use(
     (config) => {
         const token = store.getState().user.value.token;
         // if (!token) {
-        // window.location.href = '/login';
         // return Promise.reject(new Error('no token'));
         // return new Promise(() => {});
         // }
-        config.headers['access-token'] = `Bearer ${token}`;
+        if (token) {
+            config.headers['access-token'] = `Bearer ${token}`;
+        }
         config.headers['Content-Type'] = 'application/json';
         return config;
     },

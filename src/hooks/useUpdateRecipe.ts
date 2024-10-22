@@ -48,6 +48,7 @@ export const useUpdateRecipes = (id: string | undefined) => {
             try {
                 const response = await instance.get(`/recipes/${id}`);
                 console.log('게시물수정 레시피데이터', response);
+                console.log('게시물수정 레시피데이터.data', response.data);
 
                 const recipeData = response.data.data;
 
@@ -65,6 +66,11 @@ export const useUpdateRecipes = (id: string | undefined) => {
                 setRecipeCookingTime(recipeData.recipeCookingTime);
                 setIngredients(recipeData.recipeIngredients);
                 setSteps(recipeData.recipeManuals);
+                console.log('recipeData.recipeName :', recipeData.recipeName);
+                console.log('recipeData.recipeLevel :', recipeData.recipeLevel);
+                console.log('recipeData.recipeCookingTime :', recipeData.recipeCookingTime);
+                console.log('recipeData.recipeIngredients :', recipeData.recipeIngredients);
+                console.log('recipeData.recipeManuals :', recipeData.recipeManuals);
             } catch (error) {
                 console.error('레시피 데이터를 불러오는 데 실패했습니다', error);
                 navigate('/recipes');

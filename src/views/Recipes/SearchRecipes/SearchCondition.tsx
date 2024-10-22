@@ -77,7 +77,7 @@ export default function SearchCondition(): JSX.Element {
                     size: 15,
                 },
                 paramsSerializer: (params) => {
-                    return qs.stringify(params);
+                    return qs.stringify(params, { arrayFormat: 'repeat' });
                 },
             });
             console.log('search response: ', response);

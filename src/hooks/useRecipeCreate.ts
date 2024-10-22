@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import instance from '../utils/api/instance';
 import { useNavigate } from 'react-router-dom';
 import useAuthToken from './useAuthToken';
 import axios from 'axios';
@@ -19,7 +18,8 @@ export const useRecipeCreate = () => {
     const [recipeCookingTime, setRecipeCookingTime] = useState(''); // 조리소요시간
     const [ingredients, setIngredients] = useState([{ ingredientName: '', ingredientQuantity: '' }]); //레시피에 필요한 재료들
     const [steps, setSteps] = useState<Step[]>([{ content: '', picture: null }]); //레시피 조리 순서
-    const [thumbnail, setThumbnail] = useState<string>('');
+    const [thumbnailPreview, setThumbnailPreview] = useState<string>(''); // 썸네일 이미지 미리보기 상태
+    const [thumbnailFile, setThumbnailFile] = useState<File | null>(null); // 실제 파일 객체
     // 이미지 미리보기 상태
     const [imagePreviews, setImagePreviews] = useState<(string | null)[]>([]);
 
@@ -28,7 +28,8 @@ export const useRecipeCreate = () => {
         if (event.target.files && event.target.files.length > 0) {
             const file = event.target.files[0];
             const tuumbnailImg = URL.createObjectURL(file);
-            setThumbnail(tuumbnailImg); // 썸네일 파일 상태 업데이트
+            setThumbnailPreview(tuumbnailImg);
+            setThumbnailFile(file); // 썸네일 파일 상태 업데이트
         }
     };
 
@@ -103,21 +104,25 @@ export const useRecipeCreate = () => {
         try {
             // 1. S3에 썸네일 이미지 업로드
             let thumbnailUrl = '';
-            console.log(' 1. thumbnail : ', thumbnail);
-            if (thumbnail) {
+            console.log(' 1. thumbnail : ', thumbnailFile);
+            if (thumbnailFile) {
                 const formDataThumbnail = new FormData();
-                formDataThumbnail.append('file', thumbnail);
+                formDataThumbnail.append('recipeThumbnail', thumbnailFile);
 
                 console.log('recipeName :', recipeName);
-                const s3ThumbnailResponse = await instance.post(`/pictures/thumbnail?recipeName=${recipeName}`, formDataThumbnail, {
-                    headers: {
-                        'access-token': `Bearer ${token}`,
+                const s3ThumbnailResponse = await axios.post(
+                    `${import.meta.env.VITE_BASE_URL}/pictures/thumbnail?recipeName=${recipeName}`,
+                    formDataThumbnail,
+                    {
+                        headers: {
+                            'access-token': `Bearer ${token}`,
+                        },
                     },
-                });
+                );
                 console.log('s3Thumbnail Response : ', s3ThumbnailResponse);
                 console.log('s3Thumbnail Response.data : ', s3ThumbnailResponse.data);
                 //! response된 값 보고 수정필요
-                thumbnailUrl = s3ThumbnailResponse.data['Response body'];
+                thumbnailUrl = s3ThumbnailResponse.data;
             }
             console.log(' 1. thumbnailUrl : ', thumbnailUrl);
 
@@ -125,20 +130,24 @@ export const useRecipeCreate = () => {
             const formDataOrderImages = new FormData();
             steps.forEach((step) => {
                 if (step.picture) {
-                    formDataOrderImages.append('file', step.picture);
+                    formDataOrderImages.append('recipeOrderImages', step.picture);
                 }
             });
             console.log('2.formDataOrderImages : ', formDataOrderImages);
 
-            const s3OrderImagesResponse = await instance.post(`/pictures/orderImage?recipeName=${recipeName}`, formDataOrderImages, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
+            const s3OrderImagesResponse = await axios.post(
+                `${import.meta.env.VITE_BASE_URL}/pictures/orderImages?recipeName=${recipeName}`,
+                formDataOrderImages,
+                {
+                    headers: {
+                        'access-token': `Bearer ${token}`,
+                    },
                 },
-            });
+            );
             console.log('s3OrderImageResponse : ', s3OrderImagesResponse);
             console.log('s3OrderImageResponse.data : ', s3OrderImagesResponse.data);
             //! response된 값 보고 수정필요
-            const orderImageUrls = s3OrderImagesResponse.data.body; // 조리 과정 이미지 URL 배열
+            const orderImageUrls = s3OrderImagesResponse.data; // 조리 과정 이미지 URL 배열
             console.log('orderImageUrls : ', orderImageUrls);
             // 3. 레시피 등록 API 호출
             const recipeData = {
@@ -157,18 +166,22 @@ export const useRecipeCreate = () => {
             };
             console.log('recipeData : ', recipeData);
 
-            const response = await axios.post(`/recipes?thumbnailUrl=${thumbnailUrl}&recipeOrderImagesUrl=${orderImageUrls.join(',')}`, recipeData, {
-                headers: {
-                    'access-token': `Bearer ${token}`,
+            const response = await axios.post(
+                `${import.meta.env.VITE_BASE_URL}/recipes?thumbnailUrl=${thumbnailUrl}&recipeOrderImagesUrl=${orderImageUrls.join(',')}`,
+                recipeData,
+                {
+                    headers: {
+                        'access-token': `Bearer ${token}`,
+                    },
                 },
-            });
+            );
             console.log('레시피등록 최종 response : ', response);
             console.log('레시피등록 최종 response.data : ', response.data);
 
             //! 레시피등록 최종 response보고 수정
-            if (response.status === 201) {
+            if (response.data.code === 'CREATED') {
                 alert('레시피가 성공적으로 등록되었습니다!');
-                navigate('/recipes');
+                navigate('/recipes/all');
             }
         } catch (error) {
             console.error('레시피 등록 실패:', error);
@@ -195,6 +208,6 @@ export const useRecipeCreate = () => {
         handleImageChange,
         imagePreviews,
         handleThumbnailChange,
-        thumbnail,
+        thumbnailPreview,
     };
 };

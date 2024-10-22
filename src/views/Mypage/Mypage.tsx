@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import Modal from '../../components/Modal/Modal';
 import { useModal } from './hooks/useModal';
 import { useUpdateForm } from './hooks/updateForm';
@@ -7,6 +8,7 @@ import { useGetUserInfo } from '../../hooks/useGetUserInfo';
 import { Button, Typography, Avatar, Grid, Pagination, Box } from '@mui/material';
 
 import { useUserUpdate } from './hooks/useUserUpdate';
+import { useRecipeDelete } from '../../hooks/useRecipeDelete';
 import { FaRegBookmark, FaBookmark } from 'react-icons/fa6';
 import colors from '../../styles/colors';
 import { useBookmark } from './hooks/useBookmark';
@@ -27,7 +29,13 @@ export default function Mypage(): JSX.Element {
     const { userInfo, refetchUserInfo: refetchUserInfo } = useGetUserInfo();
 
     // 스크랩, 작성 게시물 불러오는 hook
-    const { myRecipes, scrapedRecipes, totalMyRecipesPages, totalScrapedRecipesPages } = useGetMyRecipes(myRecipesPage, scrapedRecipesPage);
+    const { myRecipes, setMyRecipes, scrapedRecipes, totalMyRecipesPages, totalScrapedRecipesPages } = useGetMyRecipes(
+        myRecipesPage,
+        scrapedRecipesPage,
+    );
+
+    //게시물 삭제 hook
+    const { handleMyRecipeDelete } = useRecipeDelete(setMyRecipes);
 
     //북마크 hook
     const { bookmarkRecipes, handleClickBookmark } = useBookmark();
@@ -164,10 +172,13 @@ export default function Mypage(): JSX.Element {
                     <S_Subtitle variant="h5">작성한 레시피</S_Subtitle>
                     <Grid container spacing={2}>
                         {myRecipes.map((myRecipe) => (
-                            <Grid item xs={12} sm={6} md={6} key={myRecipe.recipeId}>
+                            <Grid item xs={12} sm={6} md={6} key={myRecipe.myRecipeId}>
                                 <S_MyFigure>
-                                    <img src={myRecipe.recipeThumbnail} alt="작성 레시피 이미지" style={{ width: '100%', borderRadius: '8px' }} />
-                                    <S_MyFigcaption>{myRecipe.recipeName}</S_MyFigcaption>
+                                    <Button onClick={() => handleMyRecipeDelete(myRecipe.myRecipeId)}>삭제</Button>
+                                    <img src={myRecipe.myRecipeThumbnail} alt="작성 레시피 이미지" style={{ width: '100%', borderRadius: '8px' }} />
+                                    <M_Linked to={`/recipes/${myRecipe.myRecipeId}`}>
+                                        <S_MyFigcaption>{myRecipe.myRecipeName}</S_MyFigcaption>
+                                    </M_Linked>
                                 </S_MyFigure>
                             </Grid>
                         ))}
@@ -417,3 +428,14 @@ const ErrorMessage = styled.p<{ visible: boolean }>`
     text-align: start;
     visibility: ${(props) => (props.visible ? 'visible' : 'none')}; /* 에러가 없을 때는 숨김 */
 `;
+
+const M_Linked = styled(Link)({
+    display: 'block',
+    textDecorationLine: 'none',
+    color: '#000',
+
+    '&:hover': {
+        color: colors[400],
+        cursor: 'pointer',
+    },
+});

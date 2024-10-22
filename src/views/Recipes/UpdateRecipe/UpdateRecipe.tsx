@@ -7,8 +7,9 @@ import { useUpdateRecipes } from '../../../hooks/useUpdateRecipe';
 import withAuth from '../../../hooks/withAuth';
 
 const UpdateRecipe: React.FC = () => {
-    const { id } = useParams<{ id: string }>(); // URL에서 recipeId를 가져옴
+    const { id } = useParams<{ id: string }>();
 
+    const { handleImageChange, handleDeleteStep, handleAddStep, handleDeleteIngredient, handleAddIngredient, imagePreviews } = useRecipeCreate();
     const {
         recipeName,
         setRecipeName,
@@ -18,20 +19,13 @@ const UpdateRecipe: React.FC = () => {
         setRecipeCookingTime,
         ingredients,
         setIngredients,
-        handleAddIngredient,
-        handleAddStep,
         steps,
         setSteps,
-        handleDeleteIngredient,
-        handleDeleteStep,
-        handleImageChange,
-        imagePreviews,
-    } = useRecipeCreate();
+        handleUpdateRecipe,
+    } = useUpdateRecipes(id);
     if (!id) {
         return <div>잘못된 접근입니다.</div>; // recipeId가 없는 경우에 대한 처리
     }
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { handleUpdateRecipe } = useUpdateRecipes(id);
 
     return (
         <RecipeWriteContainer>
@@ -109,7 +103,9 @@ const UpdateRecipe: React.FC = () => {
         </RecipeWriteContainer>
     );
 };
-export default withAuth(UpdateRecipe);
+
+const UpdateRecipeWithAuth = withAuth(UpdateRecipe);
+export default UpdateRecipeWithAuth;
 
 const RecipeWriteContainer = styled.section`
     display: flex;

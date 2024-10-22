@@ -4,7 +4,7 @@ import { useRecipeCreate } from './useRecipeCreate';
 import useAuthToken from './useAuthToken';
 import instance from '../utils/api/instance';
 
-export const useUpdateRecipes = (id: string) => {
+export const useUpdateRecipes = (id: string | undefined) => {
     const navigate = useNavigate();
     const token = useAuthToken();
     const [userNickname, setUserNickname] = useState(''); // 로그인된 유저의 닉네임
@@ -83,6 +83,10 @@ export const useUpdateRecipes = (id: string) => {
             alert('이 레시피를 수정할 권한이 없습니다.');
             return;
         }
+        if (!id) {
+            alert('레시피 ID가 없습니다.');
+            return;
+        }
 
         try {
             const formData = new FormData();
@@ -114,6 +118,16 @@ export const useUpdateRecipes = (id: string) => {
         }
     };
     return {
+        recipeName,
+        setRecipeName,
+        recipeLevel,
+        setRecipeLevel,
+        recipeCookingTime,
+        setRecipeCookingTime,
+        ingredients,
+        setIngredients,
+        steps,
+        setSteps,
         handleUpdateRecipe,
     };
 };

@@ -209,5 +209,6 @@ export const useRecipeCreate = () => {
         imagePreviews,
         handleThumbnailChange,
         thumbnailPreview,
+        setImagePreviews,
     };
 };

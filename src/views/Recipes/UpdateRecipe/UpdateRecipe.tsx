@@ -11,7 +11,7 @@ import { levelOptions } from '../../../common/options';
 const UpdateRecipe: React.FC = () => {
     const { id } = useParams<{ id: string }>();
 
-    const { handleImageChange, handleDeleteStep, handleAddStep, handleDeleteIngredient, handleAddIngredient, imagePreviews } = useRecipeCreate();
+    const { handleImageChange, handleDeleteStep, handleAddStep, handleDeleteIngredient, handleAddIngredient } = useRecipeCreate();
     const {
         recipeName,
         setRecipeName,
@@ -26,6 +26,7 @@ const UpdateRecipe: React.FC = () => {
         handleUpdateRecipe,
         thumbnailPreview,
         handleThumbnailChange,
+        imagePreviews,
     } = useUpdateRecipes(id);
     if (!id) {
         return <div>잘못된 접근입니다.</div>; // recipeId가 없는 경우에 대한 처리
@@ -130,15 +131,16 @@ const RecipeWriteContainer = styled.section`
 
 //헤더부분
 const RecipeHeader = styled.div`
+    display: flex;
     text-align: start;
     margin-bottom: 20px;
 `;
 
 const RecipeNameInput = styled.input`
     font-size: 32px;
-    width: 100%;
+    width: 80%;
+    height: 100px;
     padding: 10px;
-    margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
 `;

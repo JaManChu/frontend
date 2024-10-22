@@ -50,28 +50,21 @@ export const useRecipeCreate = () => {
         setImagePreviews(newImagePreviews);
     };
 
-    //재료추가 버튼 클릭 시 ingredients(재료상태)값에 추가
     const handleAddIngredient = () => {
-        setIngredients([...ingredients, { ingredientName: '', ingredientQuantity: '' }]);
+        setIngredients((prevIngredients) => [...prevIngredients, { ingredientName: '', ingredientQuantity: '' }]);
     };
 
-    //단계 추가 버튼 클릭 시 steps(단계과정)값에 추가
     const handleAddStep = () => {
-        setSteps([...steps, { content: '', picture: null }]);
+        setSteps((prevSteps) => [...prevSteps, { content: '', picture: null }]);
     };
 
-    //재료, 조리과정 삭제버튼
     const handleDeleteIngredient = (index: number) => {
-        const newIngredient = ingredients.filter((_, i) => i !== index);
-        setIngredients(newIngredient);
+        setIngredients((prevIngredients) => prevIngredients.filter((_, i) => i !== index));
     };
 
     const handleDeleteStep = (index: number) => {
-        const newStep = steps.filter((_, i) => i !== index);
-        setSteps(newStep);
-
-        const newImagePreviews = imagePreviews.filter((_, i) => i !== index);
-        setImagePreviews(newImagePreviews);
+        setSteps((prevSteps) => prevSteps.filter((_, i) => i !== index));
+        setImagePreviews((prevPreviews) => prevPreviews.filter((_, i) => i !== index));
     };
 
     //레시피 등록 버튼 클릭 시 api호출

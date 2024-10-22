@@ -27,6 +27,7 @@ export const useUpdateRecipes = (id: string | undefined) => {
         thumbnailFile,
         setThumbnailFile,
         handleThumbnailChange,
+        imagePreviews,
     } = useRecipeCreate();
 
     // 1. 로그인된 유저의 닉네임 가져오기
@@ -35,18 +36,6 @@ export const useUpdateRecipes = (id: string | undefined) => {
             navigate('/login');
             return;
         }
-
-        const fetchUserInfo = async () => {
-            try {
-                const response = await instance.get('/users');
-                console.log('게시물수정 유저정보', response);
-                setUserNickname(response.data.data.nickname);
-            } catch (error) {
-                console.error('유저 정보를 불러오는 데 실패했습니다', error);
-                navigate('/login');
-            }
-        };
-        fetchUserInfo();
     }, [navigate]);
 
     // 2. 레시피 데이터 불러오기 및 작성자 확인
@@ -72,7 +61,7 @@ export const useUpdateRecipes = (id: string | undefined) => {
                 setRecipeLevel(recipeData.recipeLevel);
                 setRecipeCookingTime(recipeData.recipeCookingTime);
                 setIngredients(recipeData.recipeIngredients);
-
+                setThumbnailPreview(recipeData.recipeThumbnail);
                 // Steps 데이터를 변환하여 상태에 저장
                 const stepsData =
                     recipeData.recipesManuals?.map((manual: any) => ({
@@ -90,6 +79,7 @@ export const useUpdateRecipes = (id: string | undefined) => {
                 console.log('recipeData.recipeCookingTime :', recipeData.recipeCookingTime);
                 console.log('recipeData.recipeIngredients :', recipeData.recipeIngredients);
                 console.log('recipeData.recipesManuals :', recipeData.recipesManuals);
+                console.log('imagePreivew :', imagePreviews);
             } catch (error) {
                 console.error('레시피 데이터를 불러오는 데 실패했습니다', error);
                 navigate('/recipes');
@@ -212,5 +202,6 @@ export const useUpdateRecipes = (id: string | undefined) => {
         setThumbnailPreview,
         thumbnailFile,
         setThumbnailFile,
+        imagePreviews,
     };
 };

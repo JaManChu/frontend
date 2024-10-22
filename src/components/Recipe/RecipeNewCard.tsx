@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import { FaRegBookmark, FaBookmark } from 'react-icons/fa6';
 import colors from '../../styles/colors';
-// import useAuthToken from '../../hooks/useAuthToken';
+import useAuthToken from '../../hooks/useAuthToken';
 import instance from '../../utils/api/instance';
 
 // ! main 페이지가 아닌 all isMain을 콘솔에 찍으면 false값이 찍힘 -> 최적화 방안 생각(RecipeCard에서는 4번 : main, all, recipeList, recipeCard인듯
@@ -31,11 +31,15 @@ export default function RecipeNewCard({ recipeId, recipeName, recipeThumbnail, r
     const [marked, setMarked] = useState<boolean>(false);
     const [message, setMessage] = useState<string>('');
 
-    // const token = useAuthToken();
+    const token = useAuthToken();
 
     const handleClickBookmark = async (e: MouseEvent) => {
         e.stopPropagation();
         try {
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
             const response = await instance.post(`/recipes/${recipeId}/scrap`);
 
             if (response.data.code == 'OK') {

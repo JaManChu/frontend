@@ -68,21 +68,22 @@ export const useUpdateRecipes = (id: string | undefined) => {
                 setIngredients(recipeData.recipeIngredients);
 
                 // Steps 데이터를 변환하여 상태에 저장
-                const stepsData = recipeData.recipeManuals.map((manual: any) => ({
-                    content: manual.recipeOrderContent,
-                    picture: manual.recipeOrderImage || null,
-                }));
+                const stepsData =
+                    recipeData.recipesManuals?.map((manual: any) => ({
+                        content: manual.recipeOrderContent,
+                        picture: manual.recipeOrderImage || null,
+                    })) || [];
                 setSteps(stepsData);
 
                 // 이미지 미리보기 데이터를 동기화
-                const imagePreviewsData = recipeData.recipeManuals.map((manual: any) => manual.recipeOrderImage || DefaultImg);
+                const imagePreviewsData = recipeData.recipesManuals?.map((manual: any) => manual.recipeOrderImage || DefaultImg) || [];
                 setImagePreviews(imagePreviewsData);
 
                 console.log('recipeData.recipeName :', recipeData.recipeName);
                 console.log('recipeData.recipeLevel :', recipeData.recipeLevel);
                 console.log('recipeData.recipeCookingTime :', recipeData.recipeCookingTime);
                 console.log('recipeData.recipeIngredients :', recipeData.recipeIngredients);
-                console.log('recipeData.recipeManuals :', recipeData.recipesManuals);
+                console.log('recipeData.recipesManuals :', recipeData.recipesManuals);
             } catch (error) {
                 console.error('레시피 데이터를 불러오는 데 실패했습니다', error);
                 navigate('/recipes');

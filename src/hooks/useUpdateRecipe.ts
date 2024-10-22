@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecipeCreate } from './useRecipeCreate';
 import useAuthToken from './useAuthToken';
 import instance from '../utils/api/instance';
-
+import DefaultImg from '../assets/img/defaultImg.jpeg';
 export const useUpdateRecipes = (id: string | undefined) => {
     const navigate = useNavigate();
     const token = useAuthToken();
@@ -20,6 +20,7 @@ export const useUpdateRecipes = (id: string | undefined) => {
         recipeCookingTime,
         ingredients,
         steps,
+        setImagePreviews,
     } = useRecipeCreate();
 
     // 1. 로그인된 유저의 닉네임 가져오기
@@ -65,7 +66,18 @@ export const useUpdateRecipes = (id: string | undefined) => {
                 setRecipeLevel(recipeData.recipeLevel);
                 setRecipeCookingTime(recipeData.recipeCookingTime);
                 setIngredients(recipeData.recipeIngredients);
-                setSteps(recipeData.recipesManuals);
+
+                // Steps 데이터를 변환하여 상태에 저장
+                const stepsData = recipeData.recipeManuals.map((manual: any) => ({
+                    content: manual.recipeOrderContent,
+                    picture: manual.recipeOrderImage || null,
+                }));
+                setSteps(stepsData);
+
+                // 이미지 미리보기 데이터를 동기화
+                const imagePreviewsData = recipeData.recipeManuals.map((manual: any) => manual.recipeOrderImage || DefaultImg);
+                setImagePreviews(imagePreviewsData);
+
                 console.log('recipeData.recipeName :', recipeData.recipeName);
                 console.log('recipeData.recipeLevel :', recipeData.recipeLevel);
                 console.log('recipeData.recipeCookingTime :', recipeData.recipeCookingTime);

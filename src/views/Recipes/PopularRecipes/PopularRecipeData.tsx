@@ -30,7 +30,6 @@ export default function PopularRecipeData(): JSX.Element {
         if (isLoading) return;
         setIsLoading(true);
         try {
-            console.log(`try Fetching recipes with page: ${offset}, size: 15`);
             const response = await instance.get(`/recipes/popular?page=${offset}&size=15`);
 
             if (response.data.code == 'OK') {
@@ -39,10 +38,7 @@ export default function PopularRecipeData(): JSX.Element {
                     (newRecipe) => !recipes.some((existingRecipe) => existingRecipe.recipeId === newRecipe.recipeId),
                 );
                 setRecipes((prev) => [...prev, ...uniqueRecipes]);
-                setOffset((prev) => {
-                    console.log(`New offset: ${prev + 1}`);
-                    return prev + 1;
-                });
+                setOffset((prev) => prev + 1);
             }
         } catch (err: any) {
             console.log(err);

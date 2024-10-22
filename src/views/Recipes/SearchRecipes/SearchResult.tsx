@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import RecipeList from '../../../components/Recipe/RecipeList';
+import useObserver from '../../../hooks/useObserver.js';
+import Loading from '../../../components/Loading/Loading.js';
 
 interface RecipeProps {
     recipeId: number;
@@ -16,11 +18,26 @@ interface RecipeProps {
 }
 interface SearchResultProps {
     recipes: RecipeProps[];
-    searching: boolean;
+    isLoading: boolean;
+    fetchRecipes: () => void;
 }
 
-export function SearchResult({ recipes, searching }: SearchResultProps) {
-    return <ResultContainer>{searching ? <div>검색중입니다.</div> : <RecipeList recipes={recipes} />}</ResultContainer>;
+export function SearchResult({ recipes, isLoading, fetchRecipes }: SearchResultProps) {
+    const handleObserver = async (entry: IntersectionObserverEntry) => {
+        if (entry.isIntersecting && !isLoading) {
+            await fetchRecipes();
+        }
+    };
+    const target = useObserver(handleObserver);
+
+    return (
+        <ResultContainer>
+            <RecipeList recipes={recipes} />
+            <div ref={target}>
+                <Loading />
+            </div>
+        </ResultContainer>
+    );
 }
 
 const ResultContainer = styled.section``;

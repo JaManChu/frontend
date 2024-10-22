@@ -104,7 +104,7 @@ export const userFormHandler = () => {
                 const userDispatchData = { isLoggedIn: true, token: accessToken, nickname: response.data.data };
                 dispatch(loginSuccess(userDispatchData));
                 dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null })); // 로그인 성공 modal
-                navigate('/home');
+                navigate('/');
             }
         } catch (err: any) {
             console.log('로그인 에러: ', err);

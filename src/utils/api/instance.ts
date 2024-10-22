@@ -66,7 +66,7 @@ instance.interceptors.response.use(
         }
 
         // 3. 쿠키가 없을때
-        if (err.response && err.response?.status === 404) {
+        if (err.response && err.response?.status === 412) {
             console.log('쿠키 null', err);
             alert(err.response.data);
             window.location.href = '/login';

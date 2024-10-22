@@ -15,7 +15,7 @@ export default function AuthKaKao() {
 
         if (token && nickname) {
             dispatch(loginSuccess({ isLoggedIn: true, token: token, nickname: nickname }));
-            navigate('/home');
+            navigate('/');
         }
     }, [navigate]);
 

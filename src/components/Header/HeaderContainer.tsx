@@ -32,7 +32,7 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
     return (
         <>
             <S_HeaderSection onClick={() => setShowAlarm(false)}>
-                <Link to="/main">
+                <Link to="/">
                     <S_Logo src={logo} alt="LOGO" />
                 </Link>
                 <S_MenuList>

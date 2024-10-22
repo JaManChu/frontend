@@ -1,12 +1,9 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import './App.css';
-import Onboard from './views/Onboard/Onboard.tsx';
 import Login from './views/Login/Login.tsx';
 import Signup from './views/Signup/Signup.tsx';
 import Mypage from './views/Mypage/Mypage.tsx';
-import GuestHome from './views/GuestHome/GuestHome.tsx';
 import HeaderView from './components/Header/HeaderView.tsx';
-// import Home from './views/Home/Home.tsx';
 import NewHome from './views/Home/NewHome.tsx';
 import AllRecipesView from './views/Recipes/AllRecipes/AllRecipesView.tsx';
 import PopularRecipesView from './views/Recipes/PopularRecipes/PopularRecipesView.tsx';
@@ -21,15 +18,12 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Onboard />} />
                 <Route element={<HeaderView />}>
+                    <Route path="/" element={<NewHome />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/users/login/auth/kakao" element={<AuthKaKao />} />
                     <Route path="/mypage" element={<Mypage />} />
-                    <Route path="/guesthome" element={<GuestHome />} />
-                    {/* <Route path="/home" element={<Home />} /> */}
-                    <Route path="/main" element={<NewHome />} />
                     <Route path="/recipes/all" element={<AllRecipesView />} />
                     <Route path="/recipes/popular" element={<PopularRecipesView />} />
                     <Route path="/recipes/search" element={<SearchViewRecipes />} />

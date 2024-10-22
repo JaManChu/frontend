@@ -36,19 +36,19 @@ export default function NewHome(): JSX.Element {
                 </HomeContent>
                 <Carousel images={images} />
             </HomeMain>
-            <RecipesList>
+            {/* <RecipesList>
                 <h3>전체 레시피</h3>
                 <AllRecipesView limit={3} />
                 <StyledLink to="/recipes/all">view more</StyledLink>
-            </RecipesList>
+            </RecipesList> */}
         </HomeContainer>
     );
 }
 
 const HomeContainer = styled.section``;
 const HomeMain = styled.div`
-    display: grid;
-    grid-template-columns: 34% 65%;
+    /* display: grid;
+    grid-template-columns: 34% 65%; */
 `;
 
 const HomeContent = styled.div`

@@ -9,7 +9,7 @@ export default function HeaderView(): JSX.Element {
     return (
         <>
             <HeaderContainer isActive={isActive} menuItems={menuItems} handleClickMenu={handleClickMenu} />
-            {pathname != '/main' ? <PageHero title={isActive} /> : ''}
+            {pathname != '/' ? <PageHero title={isActive} /> : ''}
             <Outlet />
         </>
     );

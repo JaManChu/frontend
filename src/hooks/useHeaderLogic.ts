@@ -24,7 +24,7 @@ export default function useHeaderLogic() {
     console.log(isActive);
 
     const menuItems = [
-        { name: 'Home', to: '/main' },
+        { name: 'Home', to: '/' },
         { name: 'All', to: '/recipes/all' },
         { name: 'Popular', to: '/recipes/popular' },
         { name: 'Search', to: '/recipes/search' },

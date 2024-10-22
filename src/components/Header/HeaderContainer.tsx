@@ -32,7 +32,7 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
     return (
         <>
             <S_HeaderSection onClick={() => setShowAlarm(false)}>
-                <Link to="/main">
+                <Link to="/">
                     <S_Logo src={logo} alt="LOGO" />
                 </Link>
                 <S_MenuList>
@@ -55,7 +55,9 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
                             <S_StyledLink to="/mypage">
                                 <FiUser />
                             </S_StyledLink>
-                            <FiBell onClick={handleShowAlarm} />
+                            <S_BellIcon>
+                                <FiBell onClick={handleShowAlarm} />
+                            </S_BellIcon>
                             {showAlarm && <Alarm />}
                         </S_LoginUserList>
                     ) : (
@@ -108,6 +110,10 @@ const S_StyledLink = styled(Link)`
     text-decoration: none;
     margin: 10px;
     color: inherit;
+`;
+const S_BellIcon = styled.div`
+    margin: 10px;
+    cursor: pointer;
 `;
 const S_UserAction = styled.div`
     flex-grow: 1;

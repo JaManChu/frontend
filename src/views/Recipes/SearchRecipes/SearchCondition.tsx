@@ -51,7 +51,7 @@ export default function SearchCondition({ setSearching, setRecipes }: SearchCond
         }
 
         try {
-            const response: any = await instance.get('/', {
+            const response: any = await instance.get('/recipes/search', {
                 params: { ingredientName: ingredientsList, recipeCookingTime: time, recipeLevel: level },
                 paramsSerializer: (params) => {
                     return qs.stringify(params);

@@ -65,12 +65,12 @@ export const useUpdateRecipes = (id: string | undefined) => {
                 setRecipeLevel(recipeData.recipeLevel);
                 setRecipeCookingTime(recipeData.recipeCookingTime);
                 setIngredients(recipeData.recipeIngredients);
-                setSteps(recipeData.recipeManuals);
+                setSteps(recipeData.recipesManuals);
                 console.log('recipeData.recipeName :', recipeData.recipeName);
                 console.log('recipeData.recipeLevel :', recipeData.recipeLevel);
                 console.log('recipeData.recipeCookingTime :', recipeData.recipeCookingTime);
                 console.log('recipeData.recipeIngredients :', recipeData.recipeIngredients);
-                console.log('recipeData.recipeManuals :', recipeData.recipeManuals);
+                console.log('recipeData.recipeManuals :', recipeData.recipesManuals);
             } catch (error) {
                 console.error('레시피 데이터를 불러오는 데 실패했습니다', error);
                 navigate('/recipes');

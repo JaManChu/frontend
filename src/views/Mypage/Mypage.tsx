@@ -75,6 +75,9 @@ export default function Mypage(): JSX.Element {
         handlePasswordModalOpen,
         handlePasswordModalClose,
         isPasswordModal,
+        handleDelUserModalOpen,
+        handleDelUserModalClose,
+        isDelUserModal,
     } = useModal();
 
     //회원정보수정 hook
@@ -225,18 +228,33 @@ export default function Mypage(): JSX.Element {
                 </S_MyInfoText>
                 <S_ButtonWrapper>
                     {parsedProvider === 'kakao' ? (
-                        <Button
-                            variant="contained"
-                            color="error"
-                            sx={{
-                                width: '100%',
-                                mb: 2,
-                                boxShadow: 3,
-                            }}
-                            onClick={handleDeleteUser}
-                        >
-                            회원탈퇴
-                        </Button>
+                        <>
+                            <Button
+                                variant="contained"
+                                color="error"
+                                sx={{
+                                    width: '100%',
+                                    mb: 2,
+                                    boxShadow: 3,
+                                }}
+                                onClick={handleDeleteUser}
+                            >
+                                회원탈퇴
+                            </Button>
+                            {isDelUserModal && (
+                                <Modal
+                                    visible={isDelUserModal}
+                                    onClose={handleDelUserModalClose}
+                                    buttons={[
+                                        { label: '확인', onClick: handleDeleteUser },
+                                        { label: '취소', onClick: handleDelUserModalClose },
+                                    ]}
+                                >
+                                    <h2>회원탈퇴</h2>
+                                    <p>정말 탈퇴하시겠습니까? </p>
+                                </Modal>
+                            )}
+                        </>
                     ) : (
                         <>
                             <Button
@@ -259,9 +277,23 @@ export default function Mypage(): JSX.Element {
                                     mb: 2,
                                     boxShadow: 3,
                                 }}
+                                onClick={handleDeleteUser}
                             >
                                 회원탈퇴
                             </Button>
+                            {isDelUserModal && (
+                                <Modal
+                                    visible={isDelUserModal}
+                                    onClose={handleDelUserModalClose}
+                                    buttons={[
+                                        { label: '확인', onClick: handleDeleteUser },
+                                        { label: '취소', onClick: handleDelUserModalClose },
+                                    ]}
+                                >
+                                    <h2>회원탈퇴</h2>
+                                    <p>정말 탈퇴하시겠습니까? </p>
+                                </Modal>
+                            )}
                             {isModalVisible && (
                                 <Modal
                                     visible={isModalVisible}

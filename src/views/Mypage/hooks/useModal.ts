@@ -6,6 +6,15 @@ export const useModal = () => {
     const [updatePassword, setUpdatePassword] = useState('');
     const [isCheckModal, setIsCheckModal] = useState(false);
     const [isPasswordModal, setIsPasswordModal] = useState(false);
+    const [isDelUserModal, setIsDelUserModal] = useState(false);
+
+    const handleDelUserModalOpen = () => {
+        setIsDelUserModal(true);
+    };
+
+    const handleDelUserModalClose = () => {
+        setIsDelUserModal(false);
+    };
 
     const handlePasswordModalOpen = () => {
         setIsPasswordModal(true);
@@ -50,5 +59,8 @@ export const useModal = () => {
         handlePasswordModalOpen,
         handlePasswordModalClose,
         isPasswordModal,
+        handleDelUserModalOpen,
+        handleDelUserModalClose,
+        isDelUserModal,
     };
 };

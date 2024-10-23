@@ -5,7 +5,7 @@ import {
     validatePasswordCheck,
     validateNickname,
     validateNewPasswordCheck,
-} from '../../../utils/validation/validation.ts';
+} from '../utils/validation/validation.ts';
 
 export const useUpdateForm = () => {
     const [email, setEmail] = useState('');

@@ -2,22 +2,22 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Modal from '../../components/Modal/Modal';
 import { useModal } from '../../hooks/useModal';
-import { useUpdateForm } from './hooks/updateForm';
+import { useUpdateForm } from '../../hooks/useUpdateForm';
 import { useGetMyRecipes } from '../../hooks/useGetMyRecipes';
 import { useGetUserInfo } from '../../hooks/useGetUserInfo';
 import { Button, Typography, Avatar, Grid, Pagination, Box } from '@mui/material';
 
-import { useUserUpdate } from './hooks/useUserUpdate';
+import { useUserUpdate } from '../../hooks/useUserUpdate';
 import { useRecipeDelete } from '../../hooks/useRecipeDelete';
 import { FaRegBookmark, FaBookmark } from 'react-icons/fa6';
 import colors from '../../styles/colors';
-import { useBookmark } from './hooks/useBookmark';
+import { useBookmark } from '../../hooks/useBookmark';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { userFormHandler } from '../../handler/userFormHandler';
 import useAuthToken from '../../hooks/useAuthToken';
 import { useNavigate } from 'react-router-dom';
-import { useDeleteUser } from '../../handler/useDeleteUser';
+import { useDeleteUser } from '../../hooks/useDeleteUser';
 export default function Mypage(): JSX.Element {
     const { handleDeleteUser } = useDeleteUser();
 

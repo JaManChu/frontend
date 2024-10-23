@@ -1,6 +1,6 @@
-import instance from '../../../utils/api/instance';
-import { validateUserIfno } from '../../../utils/validation/validation';
-import { userFormHandler } from '../../../handler/userFormHandler';
+import instance from '../utils/api/instance';
+import { validateUserIfno } from '../utils/validation/validation';
+import { userFormHandler } from '../handler/userFormHandler';
 
 export const useUserUpdate = (
     password: string,

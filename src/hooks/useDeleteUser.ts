@@ -1,6 +1,6 @@
 import instance from '../utils/api/instance';
 import { useNavigate } from 'react-router-dom';
-export const useDeleteUser = () => {
+export const deleteUserHandler = () => {
     const navigate = useNavigate();
     const handleDeleteUser = async () => {
         try {

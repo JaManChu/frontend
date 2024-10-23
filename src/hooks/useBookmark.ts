@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import instance from '../../../utils/api/instance';
+import instance from '../utils/api/instance';
 
 export const useBookmark = () => {
     //map함수에서 개별 게시물 북마크 상태관리 상태배열

@@ -4,6 +4,7 @@ import instance from '../../../utils/api/instance.js';
 import { showModal } from '../../../redux/reducer/modalSlice.js';
 import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
 import AllRecipes from './AllRecipes.js';
+import Navibar from '../../../components/Navibar/Navibar.js';
 import { RecipeLimitProps } from './AllRecipesView.js';
 import fakeData from '../../../fakeData/recipeFake.js';
 
@@ -14,8 +15,7 @@ export interface RecipeProps {
     recipeLevel: string;
     recipeCookingTime: string;
     recipeThumbnail: string;
-    // rate: string;
-    // desc: string;
+    recipeRating: string;
 }
 export default function AllRecipesData({ limit }: RecipeLimitProps) {
     const [recipes, setRecipes] = useState<RecipeProps[]>([]);
@@ -52,6 +52,7 @@ export default function AllRecipesData({ limit }: RecipeLimitProps) {
     return (
         <S_RecipeContainer>
             <AllRecipes limit={limit} recipes={recipes} fetchRecipes={fetchRecipes} isLoading={isLoading} />
+            <Navibar />
         </S_RecipeContainer>
     );
 }

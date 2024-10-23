@@ -11,6 +11,7 @@ import colors from '../../../styles/colors';
 import styled from 'styled-components';
 import instance from '../../../utils/api/instance';
 import qs from 'qs';
+import Navibar from '../../../components/Navibar/Navibar';
 
 export interface RecipeProps {
     recipeId: number;
@@ -126,7 +127,7 @@ export default function SearchCondition(): JSX.Element {
     };
 
     return (
-        <>
+        <S_ConditionContainer>
             <S_ConditionList>
                 <S_SearchItem>
                     <SearchBox value={searchIngredients} onChange={handleChange} handleKeyDown={handleKeyDown} />
@@ -153,13 +154,14 @@ export default function SearchCondition(): JSX.Element {
                 </S_SearchedContent>
             )}
             <SearchResult recipes={recipes} isLoading={isLoading} hasSearched={hasSearched} fetchRecipes={fetchRecipes} />
-        </>
+            <Navibar />
+        </S_ConditionContainer>
     );
 }
-
+const S_ConditionContainer = styled.div`
+    padding: 38px;
+`;
 const S_ConditionList = styled.ul`
-    width: 80%;
-    margin: 40px auto;
     list-style: none;
     border-radius: 16px;
     background-color: ${colors[400]};

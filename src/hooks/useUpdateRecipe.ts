@@ -90,10 +90,15 @@ export const useUpdateRecipes = (id: string | undefined) => {
                 setIngredients(recipeData.recipeIngredients);
                 setThumbnailPreview(recipeData.recipeThumbnail);
                 // Steps 데이터를 변환하여 상태에 저장
-                setSteps(recipeData.recipesManuals);
+                const stepsData =
+                    recipeData.recipesManuals?.map((manual: any) => ({
+                        content: manual.recipeOrderContent,
+                        picture: manual.recipeOrderImage || null,
+                    })) || [];
+                setSteps(stepsData);
 
                 // 이미지 미리보기 데이터를 동기화
-                const imagePreviewsData = recipeData.recipesManuals?.map((manual: any) => manual.picture || DefaultImg) || [];
+                const imagePreviewsData = recipeData.recipesManuals?.map((manual: any) => manual.recipeOrderImage || DefaultImg) || [];
                 setImagePreviews(imagePreviewsData);
 
                 console.log('recipeData.recipeName :', recipeData.recipeName);

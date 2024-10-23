@@ -19,6 +19,12 @@ import useAuthToken from '../../hooks/useAuthToken';
 import { useNavigate } from 'react-router-dom';
 
 export default function Mypage(): JSX.Element {
+    //provider에서 kakao or 일반유저 확인하기위해 사용.
+    const parsedData = JSON.parse(sessionStorage.getItem('persist:root')!);
+    const userData = JSON.parse(parsedData.user);
+    const parsedProvider = userData.value.provider;
+    console.log(parsedProvider);
+
     const navigate = useNavigate();
     const token = useAuthToken();
     // 페이지 번호 상태
@@ -216,116 +222,136 @@ export default function Mypage(): JSX.Element {
                     </Typography>
                 </S_MyInfoText>
                 <S_ButtonWrapper>
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={() => setIsModalVisible(true)}
-                        sx={{
-                            width: '100%',
-                            mb: 2,
-                            boxShadow: 3,
-                        }}
-                    >
-                        회원정보 수정
-                    </Button>
-                    {isModalVisible && (
-                        <Modal
-                            visible={isModalVisible}
-                            onClose={handleModalClose}
-                            buttons={[
-                                { label: '수정', onClick: handleUpdate, disabled: !(nicknameCheck && passowordInfoCheck) },
-                                { label: '취소', onClick: handleModalClose },
-                            ]}
+                    {parsedProvider === 'kakao' ? (
+                        <Button
+                            variant="contained"
+                            color="error"
+                            sx={{
+                                width: '100%',
+                                mb: 2,
+                                boxShadow: 3,
+                            }}
                         >
-                            <h1>회원정보 수정</h1>
-                            <S_Input
-                                value={nickname}
-                                placeholder="변경할 닉네임을 입력하세요"
-                                onChange={(e) => setNickname(e.target.value)}
-                                isError={!!errors.nickname && touched.nickname}
-                                onFocus={() => clearFieldError('nickname')}
-                                onBlur={() => handleBlur('nickname')}
-                            />
+                            회원탈퇴
+                        </Button>
+                    ) : (
+                        <>
                             <Button
-                                type="button"
-                                onClick={() => {
-                                    handleCheckModalOpen();
-                                    handleCheckNickname();
+                                variant="contained"
+                                color="secondary"
+                                onClick={() => setIsModalVisible(true)}
+                                sx={{
+                                    width: '100%',
+                                    mb: 2,
+                                    boxShadow: 3,
                                 }}
                             >
-                                중복확인
+                                회원정보 수정
                             </Button>
-                            {isCheckModal && (
+                            {isModalVisible && (
                                 <Modal
-                                    visible={isCheckModal}
-                                    onClose={handleCheckModalClose}
-                                    buttons={[{ label: '확인', onClick: handleCheckModalClose }]}
+                                    visible={isModalVisible}
+                                    onClose={handleModalClose}
+                                    buttons={[
+                                        { label: '수정', onClick: handleUpdate, disabled: !(nicknameCheck && passowordInfoCheck) },
+                                        { label: '취소', onClick: handleModalClose },
+                                    ]}
                                 >
-                                    <h2>중복 확인</h2>
-                                    <p> {checkFailMessage} </p>
+                                    <h1>회원정보 수정</h1>
+                                    <S_Input
+                                        value={nickname}
+                                        placeholder="변경할 닉네임을 입력하세요"
+                                        onChange={(e) => setNickname(e.target.value)}
+                                        isError={!!errors.nickname && touched.nickname}
+                                        onFocus={() => clearFieldError('nickname')}
+                                        onBlur={() => handleBlur('nickname')}
+                                    />
+                                    <Button
+                                        type="button"
+                                        onClick={() => {
+                                            handleCheckModalOpen();
+                                            handleCheckNickname();
+                                        }}
+                                    >
+                                        중복확인
+                                    </Button>
+                                    {isCheckModal && (
+                                        <Modal
+                                            visible={isCheckModal}
+                                            onClose={handleCheckModalClose}
+                                            buttons={[{ label: '확인', onClick: handleCheckModalClose }]}
+                                        >
+                                            <h2>중복 확인</h2>
+                                            <p> {checkFailMessage} </p>
+                                        </Modal>
+                                    )}
+                                    {nicknameCheck ? (
+                                        <ErrorMessage visible={!!inputMessage.nickname && clickedButEmpty.nickname}>
+                                            {inputMessage.nickname}
+                                        </ErrorMessage>
+                                    ) : (
+                                        <ErrorMessage visible={true}>{checkFailMessage}</ErrorMessage>
+                                    )}
+                                    <S_ErrorMessage visible={!!errors.nickname && touched.nickname}>{errors.nickname}</S_ErrorMessage>
+                                    <S_Input
+                                        value={password}
+                                        placeholder="기존 비밀번호를 입력하세요"
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        isError={!!errors.password && touched.password}
+                                        onFocus={() => clearFieldError('password')}
+                                        onBlur={() => handleBlur('password')}
+                                        type="password"
+                                    />
+                                    <Button
+                                        type="button"
+                                        onClick={() => {
+                                            handlePasswordModalOpen();
+                                            handlePasswordCheck();
+                                        }}
+                                    >
+                                        비밀번호 확인
+                                    </Button>
+                                    {isPasswordModal && (
+                                        <Modal
+                                            visible={isPasswordModal}
+                                            onClose={handlePasswordModalClose}
+                                            buttons={[{ label: '확인', onClick: handlePasswordModalClose }]}
+                                        >
+                                            <h2>비밀번호 확인</h2>
+                                            <p> {checkFailMsg} </p>
+                                        </Modal>
+                                    )}
+                                    {passowordInfoCheck ? (
+                                        <ErrorMessage visible={!!inputMessage.password && clickedButEmpty.password}>
+                                            {inputMessage.password}
+                                        </ErrorMessage>
+                                    ) : (
+                                        <ErrorMessage visible={true}>{checkFailMsg}</ErrorMessage>
+                                    )}
+                                    <S_ErrorMessage visible={!!errors.password && touched.password}>{errors.password}</S_ErrorMessage>
+                                    <S_Input
+                                        value={newPassword}
+                                        placeholder="변경할 비밀번호를 입력하세요"
+                                        onChange={(e) => setNewPassword(e.target.value)}
+                                        isError={!!errors.newPassword && touched.newPassword}
+                                        onFocus={() => clearFieldError('newpassword')}
+                                        onBlur={() => handleBlur('newpassword')}
+                                        type="password"
+                                    />
+                                    <S_ErrorMessage visible={!!errors.newpassword && touched.newpassword}>{errors.newpassword}</S_ErrorMessage>
+                                    <S_Input
+                                        value={passwordCheck}
+                                        placeholder="변경할 비밀번호를 한번 더 입력하세요"
+                                        onChange={(e) => setPasswordCheck(e.target.value)}
+                                        isError={!!errors.passwordCheck && touched.passwordCheck}
+                                        onFocus={() => clearFieldError('passwordCheck')}
+                                        onBlur={() => handleBlur('passwordCheck')}
+                                        type="password"
+                                    />
+                                    <S_ErrorMessage visible={!!errors.passwordCheck && touched.passwordCheck}>{errors.passwordCheck}</S_ErrorMessage>
                                 </Modal>
                             )}
-                            {nicknameCheck ? (
-                                <ErrorMessage visible={!!inputMessage.nickname && clickedButEmpty.nickname}>{inputMessage.nickname}</ErrorMessage>
-                            ) : (
-                                <ErrorMessage visible={true}>{checkFailMessage}</ErrorMessage>
-                            )}
-                            <S_ErrorMessage visible={!!errors.nickname && touched.nickname}>{errors.nickname}</S_ErrorMessage>
-                            <S_Input
-                                value={password}
-                                placeholder="기존 비밀번호를 입력하세요"
-                                onChange={(e) => setPassword(e.target.value)}
-                                isError={!!errors.password && touched.password}
-                                onFocus={() => clearFieldError('password')}
-                                onBlur={() => handleBlur('password')}
-                                type="password"
-                            />
-                            <Button
-                                type="button"
-                                onClick={() => {
-                                    handlePasswordModalOpen();
-                                    handlePasswordCheck();
-                                }}
-                            >
-                                비밀번호 확인
-                            </Button>
-                            {isPasswordModal && (
-                                <Modal
-                                    visible={isPasswordModal}
-                                    onClose={handlePasswordModalClose}
-                                    buttons={[{ label: '확인', onClick: handlePasswordModalClose }]}
-                                >
-                                    <h2>비밀번호 확인</h2>
-                                    <p> {checkFailMsg} </p>
-                                </Modal>
-                            )}
-                            {passowordInfoCheck ? (
-                                <ErrorMessage visible={!!inputMessage.password && clickedButEmpty.password}>{inputMessage.password}</ErrorMessage>
-                            ) : (
-                                <ErrorMessage visible={true}>{checkFailMsg}</ErrorMessage>
-                            )}
-                            <S_ErrorMessage visible={!!errors.password && touched.password}>{errors.password}</S_ErrorMessage>
-                            <S_Input
-                                value={newPassword}
-                                placeholder="변경할 비밀번호를 입력하세요"
-                                onChange={(e) => setNewPassword(e.target.value)}
-                                isError={!!errors.newPassword && touched.newPassword}
-                                onFocus={() => clearFieldError('newpassword')}
-                                onBlur={() => handleBlur('newpassword')}
-                                type="password"
-                            />
-                            <S_ErrorMessage visible={!!errors.newpassword && touched.newpassword}>{errors.newpassword}</S_ErrorMessage>
-                            <S_Input
-                                value={passwordCheck}
-                                placeholder="변경할 비밀번호를 한번 더 입력하세요"
-                                onChange={(e) => setPasswordCheck(e.target.value)}
-                                isError={!!errors.passwordCheck && touched.passwordCheck}
-                                onFocus={() => clearFieldError('passwordCheck')}
-                                onBlur={() => handleBlur('passwordCheck')}
-                                type="password"
-                            />
-                            <S_ErrorMessage visible={!!errors.passwordCheck && touched.passwordCheck}>{errors.passwordCheck}</S_ErrorMessage>
-                        </Modal>
+                        </>
                     )}
                 </S_ButtonWrapper>
             </S_MyInfo>

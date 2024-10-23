@@ -13,8 +13,7 @@ export interface RecipeProps {
     recipeLevel: string;
     recipeCookingTime: string;
     recipeThumbnail: string;
-    // rate: string;
-    // desc: string;
+    recipeRating: string;
 }
 
 export default function PopularRecipeData(): JSX.Element {

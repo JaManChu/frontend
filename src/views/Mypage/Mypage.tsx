@@ -18,7 +18,16 @@ import { userFormHandler } from '../../handler/userFormHandler';
 import useAuthToken from '../../hooks/useAuthToken';
 import { useNavigate } from 'react-router-dom';
 import { useDeleteUser } from '../../hooks/useDeleteUser';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store/store';
 export default function Mypage(): JSX.Element {
+    const navigate = useNavigate();
+    const isLoggedIn = useSelector((state: RootState) => state.user.value.isLoggedIn);
+    useEffect(() => {
+        if (!isLoggedIn) {
+            navigate('/');
+        }
+    }, [isLoggedIn, navigate]);
     const { handleDeleteUser } = useDeleteUser();
 
     //provider에서 kakao or 일반유저 확인하기위해 사용.
@@ -27,7 +36,6 @@ export default function Mypage(): JSX.Element {
     const parsedProvider = userData.value.provider;
     console.log(parsedProvider);
 
-    const navigate = useNavigate();
     const token = useAuthToken();
     // 페이지 번호 상태
     const [myRecipesPage, setMyRecipesPage] = useState(1);

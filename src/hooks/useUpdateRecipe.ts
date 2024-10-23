@@ -36,6 +36,17 @@ export const useUpdateRecipes = (id: string | undefined) => {
             navigate('/login');
             return;
         }
+        const fetchUserInfo = async () => {
+            try {
+                const response = await instance.get('/users');
+                console.log('게시물수정 유저정보', response);
+                setUserNickname(response.data.data.nickname);
+            } catch (error) {
+                console.error('유저 정보를 불러오는 데 실패했습니다', error);
+                navigate('/login');
+            }
+        };
+        fetchUserInfo();
     }, [navigate]);
 
     // 2. 레시피 데이터 불러오기 및 작성자 확인

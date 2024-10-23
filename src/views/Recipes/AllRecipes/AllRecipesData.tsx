@@ -6,6 +6,7 @@ import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
 import AllRecipes from './AllRecipes.js';
 import Navibar from '../../../components/Navibar/Navibar.js';
 import { RecipeLimitProps } from './AllRecipesView.js';
+import { convertLevel, convertTime } from '../../../common/convertFunc.js';
 import fakeData from '../../../fakeData/recipeFake.js';
 
 export interface RecipeProps {
@@ -37,7 +38,12 @@ export default function AllRecipesData({ limit }: RecipeLimitProps) {
                 const uniqueRecipes = newRecipes.filter(
                     (newRecipe) => !recipes.some((existingRecipe) => existingRecipe.recipeId === newRecipe.recipeId),
                 );
-                setRecipes((prev) => [...prev, ...uniqueRecipes]);
+                const convertData = uniqueRecipes.map((recipe) => ({
+                    ...recipe,
+                    recipeLevel: convertLevel(recipe.recipeLevel),
+                    recipeCookingTime: convertTime(recipe.recipeCookingTime),
+                }));
+                setRecipes((prev) => [...prev, ...convertData]);
                 setOffset((prev) => prev + 1);
             }
         } catch (err: any) {

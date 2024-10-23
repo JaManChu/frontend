@@ -8,9 +8,9 @@ const levelOptions = [
     { label: '60분 이상', value: 'OVER_SIXTY_MINUTES' },
 ];
 const timeOption = [
-    { label: 'LOW', value: 'LOW' },
-    { label: 'MIDDLE', value: 'MIDDLE' },
-    { label: 'HIGH', value: 'HIGH' },
+    { label: '하', value: 'LOW' },
+    { label: '중', value: 'MIDDLE' },
+    { label: '상', value: 'HIGH' },
 ];
 
 export { levelOptions, timeOption };

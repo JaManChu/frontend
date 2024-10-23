@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { BsCartCheckFill } from 'react-icons/bs';
 import RecipeMetaData from '../../../components/Recipe/RecipeMetaData';
 import CommentsView from '../../Comments/CommentsView';
+import { convertLevel, convertTime } from '../../../common/convertFunc';
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -12,12 +13,10 @@ interface Props {
     recipeName: string;
     recipeLevel: string;
     recipeCookingTime: string;
-    // rate: number;
+    recipeRating: string;
     recipeThumbnail: string;
     recipeIngredients: Record<string, string>[];
     recipesManuals: Record<string, string>[];
-    // desc: string;
-    // overview: string;
 }
 
 export default function DetailRecipe(): JSX.Element {
@@ -30,7 +29,13 @@ export default function DetailRecipe(): JSX.Element {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes/${id}`);
                 if (response.data.code === 'OK') {
-                    setRecipe(response.data.data);
+                    const data = response.data.data;
+                    const convertData = data.map((item: Props) => ({
+                        ...item,
+                        recipeLevel: convertLevel(item.recipeLevel),
+                        recipeCookingTime: convertTime(item.recipeCookingTime),
+                    }));
+                    setRecipe(convertData);
                     setMessage(response.data.message);
                 }
             } catch (err: any) {
@@ -51,21 +56,22 @@ export default function DetailRecipe(): JSX.Element {
             <DetailRecipeName>{recipe.recipeName}</DetailRecipeName>
             <DetailRecipeContents>
                 <DetailRecipeInstruction>
+                    <h4>Directions</h4>
                     <img src={recipe.recipeThumbnail} alt="썸네일 이미지" />
                     {recipe.recipesManuals &&
                         recipe.recipesManuals.map((step, idx) => (
                             <DetailRecipeFigure key={idx}>
                                 <img src={`${step.recipeOrderImage}`} alt="단계별 이미지" />
-                                <DetailRecipeFigcapton>{`${idx + 1}. ${step.recipeOrderContent}`}</DetailRecipeFigcapton>
+                                <DetailRecipeFigcapton>
+                                    {`step${idx + 1}`}
+                                    <br />
+                                    {`${step.recipeOrderContent}`}
+                                </DetailRecipeFigcapton>
                             </DetailRecipeFigure>
                         ))}
                 </DetailRecipeInstruction>
 
                 <DetailRecipeInfo>
-                    <DetailOverview>
-                        <h3>OverView</h3>
-                        <p>Overview text??????</p>
-                    </DetailOverview>
                     <DetailIngredientsWrapper>
                         <h3>Ingredients</h3>
                         <DetailIngredientsTable>
@@ -83,7 +89,7 @@ export default function DetailRecipe(): JSX.Element {
                                             <td>{ingredient.ingredientName}</td>
                                             <td>{ingredient.ingredientQuantity}</td>
                                             <td>
-                                                <Link to={`${ingredient.ingredientCoupangLink}`}>
+                                                <Link to={`https://www.coupang.com/np/search?component=&q=${ingredient.ingredientName}`}>
                                                     <CartIcon />
                                                 </Link>
                                             </td>
@@ -92,7 +98,7 @@ export default function DetailRecipe(): JSX.Element {
                             </tbody>
                         </DetailIngredientsTable>
                     </DetailIngredientsWrapper>
-                    <RecipeMetaData time={recipe.recipeCookingTime} level={recipe.recipeLevel} rate="평점 필요함" />
+                    <RecipeMetaData time={recipe.recipeCookingTime} level={recipe.recipeLevel} rate={recipe.recipeRating} />
                 </DetailRecipeInfo>
             </DetailRecipeContents>
             <CommentsView />
@@ -119,17 +125,21 @@ const DetailRecipeContents = styled.div`
     gap: 16px;
 `;
 const DetailRecipeInstruction = styled.div`
+    margin-top: 40px;
     display: flex;
     flex-wrap: wrap;
+    justify-content: flex-start;
     gap: 16px;
     img {
         width: 100%;
-        border: 1px solid lightgray;
+        height: auto;
+        object-fit: cover;
+        border: 0.8 solid #656565;
     }
 `;
 const DetailRecipeFigure = styled.figure`
     width: 40%;
-    flex-grow: 1;
+    flex-grow: 0;
     img {
         display: block;
         height: 200px;
@@ -139,6 +149,7 @@ const DetailRecipeFigure = styled.figure`
 const DetailRecipeFigcapton = styled.figcaption`
     margin-bottom: 16px;
     line-height: 2rem;
+    order: -1;
 `;
 const DetailRecipeInfo = styled.div`
     flex-shrink: 0;
@@ -147,14 +158,7 @@ const DetailRecipeInfo = styled.div`
     height: auto;
     top: 20px;
 `;
-const DetailOverview = styled.div`
-    margin: 0px 16px 50px;
-    text-align: center;
-    h3 {
-        font-size: 24px;
-        font-weight: 400;
-    }
-`;
+
 const DetailIngredientsWrapper = styled.div`
     margin: 16px;
     text-align: center;
@@ -184,6 +188,10 @@ const DetailIngredientsTable = styled.table`
     th:last-child {
         border-left: none;
         border-right: none;
+    }
+    a {
+        text-decoration: none;
+        color: #000;
     }
 `;
 

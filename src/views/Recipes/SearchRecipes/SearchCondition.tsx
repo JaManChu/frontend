@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import instance from '../../../utils/api/instance';
 import qs from 'qs';
 import Navibar from '../../../components/Navibar/Navibar';
+import { convertLevel, convertTime } from '../../../common/convertFunc.js';
 
 export interface RecipeProps {
     recipeId: number;
@@ -88,7 +89,12 @@ export default function SearchCondition(): JSX.Element {
                 const uniqueRecipes = newRecipes.filter(
                     (newRecipe) => !recipes.some((existingRecipe) => existingRecipe.recipeId === newRecipe.recipeId),
                 );
-                setRecipes((prev) => [...prev, ...uniqueRecipes]);
+                const convertData = uniqueRecipes.map((recipe) => ({
+                    ...recipe,
+                    recipeLevel: convertLevel(recipe.recipeLevel),
+                    recipeCookingTime: convertTime(recipe.recipeCookingTime),
+                }));
+                setRecipes((prev) => [...prev, ...convertData]);
                 setOffset((prev) => prev + 1);
                 setHasSearched(true);
                 dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));

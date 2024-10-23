@@ -5,12 +5,12 @@ interface Props {
     recipeThumbnail: string;
     recipeCookingTime: string;
     recipeLevel: string;
-    recipeRating: number;
+    recipeRating: string;
     desc: string;
     ingredients: Record<string, string | number>[];
-    overview: string;
     instructions: Record<number | string, string>[];
 }
+
 const fakeData: Props[] = [
     {
         recipeName: 'first',
@@ -19,7 +19,7 @@ const fakeData: Props[] = [
         recipeCookingTime: '60min',
         recipeAuthor: '',
         recipeLevel: '상',
-        recipeRating: 4.5,
+        recipeRating: '4.5',
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },
@@ -27,7 +27,7 @@ const fakeData: Props[] = [
             { name: 'Tofu', count: 1 },
             { name: 'sugar', count: 5 },
         ],
-        overview: 'This Recipe is ...one...overview',
+
         instructions: [
             { content: '1. 팬에 버터를 녹입니다.', image: '' },
             { content: '2. 계란을 깨뜨려 팬에 넣고 스크램블합니다.', image: '' },
@@ -46,7 +46,7 @@ const fakeData: Props[] = [
         recipeCookingTime: '45min',
         recipeLevel: '상',
         recipeAuthor: '',
-        recipeRating: 1.5,
+        recipeRating: '1.5',
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },
@@ -54,7 +54,7 @@ const fakeData: Props[] = [
             { name: 'Tofu', count: 1 },
             { name: 'salt', count: 5 },
         ],
-        overview: 'This Recipe is ...two...overview',
+
         instructions: [
             { content: '1.오븐을 180도로 예열합니다.', image: '' },
             { content: '2. 케이크 반죽을 준비합니다.', image: '' },
@@ -73,7 +73,7 @@ const fakeData: Props[] = [
         recipeCookingTime: '45min',
         recipeLevel: '상',
         recipeAuthor: '',
-        recipeRating: 1.5,
+        recipeRating: ' 1.5',
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },
@@ -81,7 +81,7 @@ const fakeData: Props[] = [
             { name: 'Tofu', count: 1 },
             { name: 'salt', count: 5 },
         ],
-        overview: 'This Recipe is ...two...overview',
+
         instructions: [
             { content: '1.오븐을 180도로 예열합니다.', image: '' },
             { content: '2. 케이크 반죽을 준비합니다.', image: '' },
@@ -100,7 +100,7 @@ const fakeData: Props[] = [
         recipeCookingTime: '45min',
         recipeLevel: '상',
         recipeAuthor: '',
-        recipeRating: 1.5,
+        recipeRating: '1.5',
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },
@@ -108,7 +108,7 @@ const fakeData: Props[] = [
             { name: 'Tofu', count: 1 },
             { name: 'salt', count: 5 },
         ],
-        overview: 'This Recipe is ...two...overview',
+
         instructions: [
             { content: '1.오븐을 180도로 예열합니다.', image: '' },
             { content: '2. 케이크 반죽을 준비합니다.', image: '' },
@@ -127,7 +127,7 @@ const fakeData: Props[] = [
         recipeCookingTime: '45min',
         recipeLevel: '상',
         recipeAuthor: '',
-        recipeRating: 1.5,
+        recipeRating: '1.5',
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },
@@ -135,7 +135,7 @@ const fakeData: Props[] = [
             { name: 'Tofu', count: 1 },
             { name: 'salt', count: 5 },
         ],
-        overview: 'This Recipe is ...two...overview',
+
         instructions: [
             { content: '1.오븐을 180도로 예열합니다.', image: '' },
             { content: '2. 케이크 반죽을 준비합니다.', image: '' },
@@ -154,7 +154,7 @@ const fakeData: Props[] = [
         recipeCookingTime: '45min',
         recipeLevel: '상',
         recipeAuthor: '',
-        recipeRating: 1.5,
+        recipeRating: '1.5',
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },
@@ -162,7 +162,7 @@ const fakeData: Props[] = [
             { name: 'Tofu', count: 1 },
             { name: 'salt', count: 5 },
         ],
-        overview: 'This Recipe is ...two...overview',
+
         instructions: [
             { content: '1.오븐을 180도로 예열합니다.', image: '' },
             { content: '2. 케이크 반죽을 준비합니다.', image: '' },
@@ -181,7 +181,7 @@ const fakeData: Props[] = [
         recipeCookingTime: '45min',
         recipeLevel: '상',
         recipeAuthor: '',
-        recipeRating: 1.5,
+        recipeRating: '1.5',
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },
@@ -189,7 +189,7 @@ const fakeData: Props[] = [
             { name: 'Tofu', count: 1 },
             { name: 'salt', count: 5 },
         ],
-        overview: 'This Recipe is ...two...overview',
+
         instructions: [
             { content: '1.오븐을 180도로 예열합니다.', image: '' },
             { content: '2. 케이크 반죽을 준비합니다.', image: '' },
@@ -208,7 +208,7 @@ const fakeData: Props[] = [
         recipeCookingTime: '45min',
         recipeLevel: '상',
         recipeAuthor: '',
-        recipeRating: 1.5,
+        recipeRating: '1.5',
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },
@@ -216,7 +216,7 @@ const fakeData: Props[] = [
             { name: 'Tofu', count: 1 },
             { name: 'salt', count: 5 },
         ],
-        overview: 'This Recipe is ...two...overview',
+
         instructions: [
             { content: '1.오븐을 180도로 예열합니다.', image: '' },
             { content: '2. 케이크 반죽을 준비합니다.', image: '' },
@@ -235,7 +235,7 @@ const fakeData: Props[] = [
         recipeCookingTime: '45min',
         recipeLevel: '상',
         recipeAuthor: '',
-        recipeRating: 1.5,
+        recipeRating: '1.5',
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },
@@ -243,7 +243,7 @@ const fakeData: Props[] = [
             { name: 'Tofu', count: 1 },
             { name: 'salt', count: 5 },
         ],
-        overview: 'This Recipe is ...two...overview',
+
         instructions: [
             { content: '1.오븐을 180도로 예열합니다.', image: '' },
             { content: '2. 케이크 반죽을 준비합니다.', image: '' },
@@ -262,7 +262,7 @@ const fakeData: Props[] = [
         recipeCookingTime: '45min',
         recipeLevel: '상',
         recipeAuthor: '',
-        recipeRating: 1.5,
+        recipeRating: '1.5',
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },
@@ -270,7 +270,7 @@ const fakeData: Props[] = [
             { name: 'Tofu', count: 1 },
             { name: 'salt', count: 5 },
         ],
-        overview: 'This Recipe is ...two...overview',
+
         instructions: [
             { content: '1.오븐을 180도로 예열합니다.', image: '' },
             { content: '2. 케이크 반죽을 준비합니다.', image: '' },
@@ -289,7 +289,7 @@ const fakeData: Props[] = [
         recipeCookingTime: '45min',
         recipeLevel: '상',
         recipeAuthor: '',
-        recipeRating: 1.5,
+        recipeRating: '1.5',
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },
@@ -297,7 +297,7 @@ const fakeData: Props[] = [
             { name: 'Tofu', count: 1 },
             { name: 'salt', count: 5 },
         ],
-        overview: 'This Recipe is ...two...overview',
+
         instructions: [
             { content: '1.오븐을 180도로 예열합니다.', image: '' },
             { content: '2. 케이크 반죽을 준비합니다.', image: '' },
@@ -316,7 +316,7 @@ const fakeData: Props[] = [
         recipeCookingTime: '45min',
         recipeLevel: '상',
         recipeAuthor: '',
-        recipeRating: 1.5,
+        recipeRating: '1.5',
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },
@@ -324,7 +324,7 @@ const fakeData: Props[] = [
             { name: 'Tofu', count: 1 },
             { name: 'salt', count: 5 },
         ],
-        overview: 'This Recipe is ...two...overview',
+
         instructions: [
             { content: '1.오븐을 180도로 예열합니다.', image: '' },
             { content: '2. 케이크 반죽을 준비합니다.', image: '' },
@@ -343,7 +343,7 @@ const fakeData: Props[] = [
         recipeCookingTime: '45min',
         recipeLevel: '상',
         recipeAuthor: '',
-        recipeRating: 1.5,
+        recipeRating: '1.5',
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },
@@ -351,7 +351,7 @@ const fakeData: Props[] = [
             { name: 'Tofu', count: 1 },
             { name: 'salt', count: 5 },
         ],
-        overview: 'This Recipe is ...two...overview',
+
         instructions: [
             { content: '1.오븐을 180도로 예열합니다.', image: '' },
             { content: '2. 케이크 반죽을 준비합니다.', image: '' },
@@ -370,7 +370,7 @@ const fakeData: Props[] = [
         recipeCookingTime: '45min',
         recipeLevel: '상',
         recipeAuthor: '',
-        recipeRating: 1.5,
+        recipeRating: '1.5',
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },
@@ -378,7 +378,7 @@ const fakeData: Props[] = [
             { name: 'Tofu', count: 1 },
             { name: 'salt', count: 5 },
         ],
-        overview: 'This Recipe is ...two...overview',
+
         instructions: [
             { content: '1.오븐을 180도로 예열합니다.', image: '' },
             { content: '2. 케이크 반죽을 준비합니다.', image: '' },
@@ -398,7 +398,7 @@ const fakeData: Props[] = [
         recipeCookingTime: '20min',
         recipeLevel: '상',
         recipeAuthor: '',
-        recipeRating: 1.5,
+        recipeRating: '1.5',
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },
@@ -406,7 +406,7 @@ const fakeData: Props[] = [
             { name: 'Tofu', count: 1 },
             { name: 'salt', count: 5 },
         ],
-        overview: 'This Recipe is ...three...overview',
+
         instructions: [
             { content: '1. 닭고기를 손질하여 소금, 후추로 간을 합니다.', image: '' },
             { content: '2. 팬에 기름을 두르고 닭고기를 굽습니다.', image: '' },
@@ -425,7 +425,7 @@ const fakeData: Props[] = [
         recipeThumbnail: 'https://picsum.photos/800/450?random=1',
         recipeCookingTime: '10min',
         recipeLevel: '상',
-        recipeRating: 3.5,
+        recipeRating: '3.5',
         recipeAuthor: '',
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
@@ -434,7 +434,7 @@ const fakeData: Props[] = [
             { name: 'Tofu', count: 1 },
             { name: 'salt', count: 5 },
         ],
-        overview: 'This Recipe is ...four...overview',
+
         instructions: [
             { content: '1. 물을 끓이고 쌀을 씻습니다.', image: '' },
             { content: '2. 씻은 쌀을 냄비에 넣고 물을 추가합니다.', image: '' },
@@ -453,7 +453,7 @@ const fakeData: Props[] = [
         recipeThumbnail: 'https://picsum.photos/800/450?random=1',
         recipeCookingTime: '6min',
         recipeLevel: '상',
-        recipeRating: 5.0,
+        recipeRating: '5.0',
         recipeAuthor: '',
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
@@ -462,7 +462,7 @@ const fakeData: Props[] = [
             { name: 'Tofu', count: 1 },
             { name: 'salt', count: 5 },
         ],
-        overview: 'This Recipe is ...five...overview',
+
         instructions: [
             { content: '1. 신선한 재료를 준비합니다.', image: '' },
             { content: '2. 고기를 적절한 크기로 자릅니다.', image: '' },

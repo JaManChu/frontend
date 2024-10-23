@@ -30,6 +30,10 @@ function RecommendedRecipes(): JSX.Element {
             if (response.data.code == 'OK') {
                 console.log('recommend response.data:       ', response.data);
                 setRecipes(response.data.data);
+                const parsedData = JSON.parse(sessionStorage.getItem('persist:root')!);
+                const userData = JSON.parse(parsedData.user);
+                const parsedProvider = userData.value.provider;
+                console.log(parsedProvider);
             }
         } catch (err) {
             console.log(err);

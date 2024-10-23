@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Modal from '../../components/Modal/Modal';
-import { useModal } from './hooks/useModal';
+import { useModal } from '../../hooks/useModal';
 import { useUpdateForm } from './hooks/updateForm';
 import { useGetMyRecipes } from '../../hooks/useGetMyRecipes';
 import { useGetUserInfo } from '../../hooks/useGetUserInfo';
@@ -67,21 +67,21 @@ export default function Mypage(): JSX.Element {
     //모달 상태관리 hook
     const {
         isModalVisible,
-        setIsModalVisible,
-        handleModalClose,
-        handleCheckModalOpen,
-        handleCheckModalClose,
         isCheckModal,
+        isPasswordModal,
+        closeModal,
         handlePasswordModalOpen,
         handlePasswordModalClose,
-        isPasswordModal,
-        handleDelUserModalOpen,
-        handleDelUserModalClose,
+        handleCheckModalOpen,
+        handleCheckModalClose,
+        setIsModalVisible,
         isDelUserModal,
+        handleDelUserClose,
+        handleDelUserOpen,
     } = useModal();
 
     //회원정보수정 hook
-    const { handleUpdate } = useUserUpdate(password, newPassword, passwordCheck, nickname, handleModalClose, refetchUserInfo);
+    const { handleUpdate } = useUserUpdate(password, newPassword, passwordCheck, nickname, closeModal, refetchUserInfo);
 
     //닉네임중복확인
     const { inputMessage, clickedButEmpty } = userFormHandler();
@@ -244,10 +244,10 @@ export default function Mypage(): JSX.Element {
                             {isDelUserModal && (
                                 <Modal
                                     visible={isDelUserModal}
-                                    onClose={handleDelUserModalClose}
+                                    onClose={handleDelUserClose}
                                     buttons={[
                                         { label: '확인', onClick: handleDeleteUser },
-                                        { label: '취소', onClick: handleDelUserModalClose },
+                                        { label: '취소', onClick: handleDelUserClose },
                                     ]}
                                 >
                                     <h2>회원탈퇴</h2>
@@ -277,17 +277,17 @@ export default function Mypage(): JSX.Element {
                                     mb: 2,
                                     boxShadow: 3,
                                 }}
-                                onClick={handleDeleteUser}
+                                onClick={handleDelUserOpen}
                             >
                                 회원탈퇴
                             </Button>
                             {isDelUserModal && (
                                 <Modal
                                     visible={isDelUserModal}
-                                    onClose={handleDelUserModalClose}
+                                    onClose={handleDelUserClose}
                                     buttons={[
                                         { label: '확인', onClick: handleDeleteUser },
-                                        { label: '취소', onClick: handleDelUserModalClose },
+                                        { label: '취소', onClick: handleDelUserClose },
                                     ]}
                                 >
                                     <h2>회원탈퇴</h2>
@@ -297,10 +297,10 @@ export default function Mypage(): JSX.Element {
                             {isModalVisible && (
                                 <Modal
                                     visible={isModalVisible}
-                                    onClose={handleModalClose}
+                                    onClose={closeModal}
                                     buttons={[
                                         { label: '수정', onClick: handleUpdate, disabled: !(nicknameCheck && passowordInfoCheck) },
-                                        { label: '취소', onClick: handleModalClose },
+                                        { label: '취소', onClick: closeModal },
                                     ]}
                                 >
                                     <h1>회원정보 수정</h1>

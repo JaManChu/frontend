@@ -26,9 +26,25 @@ export const useUpdateRecipes = (id: string | undefined) => {
         setThumbnailPreview,
         thumbnailFile,
         setThumbnailFile,
-        handleThumbnailChange,
         imagePreviews,
     } = useRecipeCreate();
+
+    const handleAddIngredient = () => {
+        setIngredients((prevIngredients) => [...prevIngredients, { ingredientName: '', ingredientQuantity: '' }]);
+    };
+
+    const handleAddStep = () => {
+        setSteps((prevSteps) => [...prevSteps, { content: '', picture: null }]);
+    };
+
+    const handleDeleteIngredient = (index: number) => {
+        setIngredients((prevIngredients) => prevIngredients.filter((_, i) => i !== index));
+    };
+
+    const handleDeleteStep = (index: number) => {
+        setSteps((prevSteps) => prevSteps.filter((_, i) => i !== index));
+        setImagePreviews((prevPreviews) => prevPreviews.filter((_, i) => i !== index));
+    };
 
     // 1. 로그인된 유저의 닉네임 가져오기
     useEffect(() => {
@@ -82,7 +98,7 @@ export const useUpdateRecipes = (id: string | undefined) => {
                 setSteps(stepsData);
 
                 // 이미지 미리보기 데이터를 동기화
-                const imagePreviewsData = recipeData.recipesManuals?.map((manual: any) => manual.recipeOrderImage || DefaultImg) || [];
+                const imagePreviewsData = recipeData.recipesManuals?.map((manual: any) => manual.picture || DefaultImg) || [];
                 setImagePreviews(imagePreviewsData);
 
                 console.log('recipeData.recipeName :', recipeData.recipeName);
@@ -102,6 +118,33 @@ export const useUpdateRecipes = (id: string | undefined) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id, navigate, userNickname]);
+
+    //썸네일 이미지관리.
+    const handleThumbnailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files.length > 0) {
+            const file = event.target.files[0];
+            const tuumbnailImg = URL.createObjectURL(file);
+            setThumbnailPreview(tuumbnailImg);
+            setThumbnailFile(file); // 썸네일 파일 상태 업데이트
+        }
+    };
+
+    //조리단계 미리보기 상태관리.
+    const handleImageChange = (e: any, index: number) => {
+        const file = e.target.files?.[0] || null; //사용자가 업로드한 파일있으면 가져오고 없으면 null
+        const newSteps = [...steps];
+        newSteps[index].picture = file; // 해당 단계에 이미지 파일 저장
+        setSteps(newSteps);
+
+        // 이미지 미리보기 URL 생성
+        const newImagePreviews = [...imagePreviews];
+        if (file) {
+            newImagePreviews[index] = URL.createObjectURL(file); //파일이있는경우 미리보기 URL생성
+        } else {
+            newImagePreviews[index] = null;
+        }
+        setImagePreviews(newImagePreviews);
+    };
 
     // 3. 레시피 수정 요청
     const handleUpdateRecipe = async () => {
@@ -176,7 +219,7 @@ export const useUpdateRecipes = (id: string | undefined) => {
                     // recipeOrderImage: orderImageUrls[index] || '',
                 })),
             };
-
+            //최종수정
             const response = await axios.put(
                 `${import.meta.env.VITE_BASE_URL}/recipes?thumbnailUrl=${thumbnailUrl}&recipeOrderImagesUrl=${orderImageUrls.join(',')}`,
                 recipeData,
@@ -188,7 +231,7 @@ export const useUpdateRecipes = (id: string | undefined) => {
             );
             console.log('레시피수정 최종 response : ', response);
             console.log('레시피수정 최종 response.data : ', response.data);
-            if (response.data.code === 'UPDATED') {
+            if (response.data.code === 'OK') {
                 alert('레시피가 성공적으로 수정되었습니다.');
                 navigate(`/recipes/${id}`);
             }
@@ -215,5 +258,10 @@ export const useUpdateRecipes = (id: string | undefined) => {
         thumbnailFile,
         setThumbnailFile,
         imagePreviews,
+        handleImageChange,
+        handleAddIngredient,
+        handleAddStep,
+        handleDeleteIngredient,
+        handleDeleteStep,
     };
 };

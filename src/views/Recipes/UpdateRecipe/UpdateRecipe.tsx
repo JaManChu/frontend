@@ -11,7 +11,7 @@ import { levelOptions } from '../../../common/options';
 const UpdateRecipe: React.FC = () => {
     const { id } = useParams<{ id: string }>();
 
-    const { handleImageChange, handleDeleteStep, handleAddStep, handleDeleteIngredient, handleAddIngredient } = useRecipeCreate();
+    const { handleDeleteStep, handleAddStep, handleDeleteIngredient, handleAddIngredient } = useRecipeCreate();
     const {
         recipeName,
         setRecipeName,
@@ -26,6 +26,7 @@ const UpdateRecipe: React.FC = () => {
         handleUpdateRecipe,
         thumbnailPreview,
         handleThumbnailChange,
+        handleImageChange,
         imagePreviews,
     } = useUpdateRecipes(id);
     if (!id) {

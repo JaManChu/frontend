@@ -248,6 +248,17 @@ export default function Mypage(): JSX.Element {
                             >
                                 회원정보 수정
                             </Button>
+                            <Button
+                                variant="contained"
+                                color="error"
+                                sx={{
+                                    width: '100%',
+                                    mb: 2,
+                                    boxShadow: 3,
+                                }}
+                            >
+                                회원탈퇴
+                            </Button>
                             {isModalVisible && (
                                 <Modal
                                     visible={isModalVisible}

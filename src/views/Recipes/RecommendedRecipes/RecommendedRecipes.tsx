@@ -5,6 +5,7 @@ import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
 import instance from '../../../utils/api/instance.js';
 import { useDispatch } from 'react-redux';
 import { showModal } from '../../../redux/reducer/modalSlice.js';
+import Navibar from '../../../components/Navibar/Navibar.js';
 
 interface RecipeProps {
     recipeId: number;
@@ -26,14 +27,8 @@ function RecommendedRecipes(): JSX.Element {
     const fetchRecipes = async () => {
         try {
             const response = await instance.get('/recipes/recommended');
-            console.log('recommend resoonse:    ', response);
             if (response.data.code == 'OK') {
-                console.log('recommend response.data:       ', response.data);
-                setRecipes(response.data.data);
-                const parsedData = JSON.parse(sessionStorage.getItem('persist:root')!);
-                const userData = JSON.parse(parsedData.user);
-                const parsedProvider = userData.value.provider;
-                console.log(parsedProvider);
+                setRecipes(response.data.data.recipes);
             }
         } catch (err) {
             console.log(err);
@@ -44,6 +39,7 @@ function RecommendedRecipes(): JSX.Element {
     return (
         <S_RecipeContainer>
             <RecipeList recipes={recipes} />
+            <Navibar />
         </S_RecipeContainer>
     );
 }

@@ -17,8 +17,10 @@ import axios from 'axios';
 import { userFormHandler } from '../../handler/userFormHandler';
 import useAuthToken from '../../hooks/useAuthToken';
 import { useNavigate } from 'react-router-dom';
-
+import { useDeleteUser } from '../../handler/useDeleteUser';
 export default function Mypage(): JSX.Element {
+    const { handleDeleteUser } = useDeleteUser();
+
     //provider에서 kakao or 일반유저 확인하기위해 사용.
     const parsedData = JSON.parse(sessionStorage.getItem('persist:root')!);
     const userData = JSON.parse(parsedData.user);
@@ -231,6 +233,7 @@ export default function Mypage(): JSX.Element {
                                 mb: 2,
                                 boxShadow: 3,
                             }}
+                            onClick={handleDeleteUser}
                         >
                             회원탈퇴
                         </Button>

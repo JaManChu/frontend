@@ -12,6 +12,7 @@ import { FaRegBookmark, FaBookmark } from 'react-icons/fa6';
 import colors from '../../styles/colors';
 import useAuthToken from '../../hooks/useAuthToken';
 import instance from '../../utils/api/instance';
+import useHeaderLogic from '../../hooks/useHeaderLogic';
 
 // ! main 페이지가 아닌 all isMain을 콘솔에 찍으면 false값이 찍힘 -> 최적화 방안 생각(RecipeCard에서는 4번 : main, all, recipeList, recipeCard인듯
 
@@ -24,7 +25,6 @@ interface CardProps {
     recipeCookingTime: string;
     recipeThumbnail: string;
     recipeRating: string;
-    // desc: string;
 }
 
 export default function RecipeNewCard({
@@ -40,6 +40,7 @@ export default function RecipeNewCard({
 
     const token = useAuthToken();
 
+    const { isActive } = useHeaderLogic();
     const handleClickBookmark = async (e: MouseEvent) => {
         e.stopPropagation();
         try {
@@ -81,7 +82,7 @@ export default function RecipeNewCard({
                         {marked ? <FaBookmark /> : <FaRegBookmark />}
                     </M_BookmarkIcons>
                     <Typography gutterBottom variant="caption" component="div">
-                        여기는...아마 카테고리?
+                        {isActive} 레시피입니다.
                     </Typography>
 
                     <M_Linked to={`/recipes/${recipeId}`}>
@@ -89,8 +90,7 @@ export default function RecipeNewCard({
                     </M_Linked>
 
                     <M_StyledTypography variant="body2" color="text.secondary" gutterBottom>
-                        Overview 내용들어가면 좋을듯 ? 그 오늘은 뭐 만들겠다는 내용?그리고 나머지
-                        가나다라마바사아자차가타파하가갸거겨교고교그긔나냐너녀노뇨뉴ㅜ뉴느늬
+                        자세한 레시피를 확인하고 싶다면 클릭해주세요.
                     </M_StyledTypography>
                     <M_StyledInfo>
                         <RecipeMetaData time={recipeCookingTime} level={recipeLevel} rate={recipeRating} />

@@ -5,6 +5,7 @@ import { Container, Box, Typography, TextField, Button, Divider } from '@mui/mat
 import { useDispatch, useSelector } from 'react-redux';
 import { showModal } from '../../redux/reducer/modalSlice';
 import { RootState } from '../../redux/store/store';
+import colors from '../../styles/colors';
 // import Modal from '../../components/Modal/Modal';
 // import { useModal } from '../../hooks/useModal';
 
@@ -61,7 +62,13 @@ export default function Login(): JSX.Element {
                         fullWidth
                         type="submit"
                         variant="contained"
-                        sx={{ mt: 3, backgroundColor: '#b2dfdb', color: 'black', fontWeight: 'bold', ':hover': { backgroundColor: '#80cbc4' } }}
+                        sx={{
+                            mt: 3,
+                            backgroundColor: `${colors[300]}`,
+                            color: 'black',
+                            fontWeight: 'bold',
+                            ':hover': { backgroundColor: '#80cbc4' },
+                        }}
                         onClick={() => dispatch(showModal({ isOpen: true, content: modalContent, onConfirm: null }))}
                     >
                         로그인

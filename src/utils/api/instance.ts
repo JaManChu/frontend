@@ -47,7 +47,14 @@ instance.interceptors.response.use(
         if (err.response && err.response?.status == 401) {
             const newAccessToken = await reissueToken();
             if (newAccessToken) {
-                store.dispatch(loginSuccess({ isLoggedIn: true, token: newAccessToken, nickname: err.response.data.nickname, provider: 'system' }));
+                const parsedData = JSON.parse(sessionStorage.getItem('persist:root')!);
+                const userData = JSON.parse(parsedData.user);
+                const parsedProvider = userData.value.provider;
+                console.log(parsedProvider);
+
+                store.dispatch(
+                    loginSuccess({ isLoggedIn: true, token: newAccessToken, nickname: err.response.data.nickname, provider: parsedProvider }),
+                );
                 err.config.headers['access-token'] = `Bearer ${newAccessToken}`;
                 return instance(err.config); // 중단된 요청을 갱신된 토큰으로 재요청
             } else {

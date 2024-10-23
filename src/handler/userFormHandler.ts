@@ -98,6 +98,8 @@ export const userFormHandler = () => {
 
         try {
             const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, { email, password });
+            console.log('response', response);
+            console.log('response.data :', response.data);
             if (response.data.code == 'OK') {
                 const token = response.headers['access-token']; // 헤더 토큰 저장
                 const accessToken = token?.replace('Bearer ', ''); // Bearer 삭제 후 저장

@@ -35,6 +35,7 @@ export default function useComments() {
     const [createComment, setCreateComment] = useState<string>('');
     const [updateComment, setUpdateComment] = useState<string>('');
     const [currentRate, setCurrentRate] = useState<number>(0);
+    const [updateRate, setupdateRate] = useState<number>(0);
 
     const dispatch = useDispatch();
     // get : recipeId
@@ -119,14 +120,16 @@ export default function useComments() {
     const handleMakeRate = (rate: number) => {
         setCurrentRate(rate);
     };
-    console.log('rate는? ', currentRate);
+    const handleUpdateRate = (rate: number) => {
+        setupdateRate(rate);
+    };
 
     // 코멘트 수정 버튼과 연결
     const handleClickEdit = ({ comments, commentId, commentRate }: EditingProps) => {
         setEditing(true);
         setCommentId(commentId); // 수정버튼 누른 commentId값 저장 => commentsDataList에서 같은 commentid값을 가진 코멘트 filter하기 위함
         setUpdateComment(comments);
-        setCurrentRate(commentRate);
+        setupdateRate(commentRate);
     };
 
     const deleteCommentHandler = async (commentId: number, recipeId: string) => {
@@ -152,6 +155,7 @@ export default function useComments() {
         handleClickEdit,
         commentId,
         currentRate,
+        updateRate,
         createComment,
         updateComment,
         commentDataList,
@@ -162,5 +166,6 @@ export default function useComments() {
         handleCreateComment,
         handleUpdateComment,
         handleMakeRate,
+        handleUpdateRate,
     };
 }

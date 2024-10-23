@@ -22,29 +22,29 @@ interface CommentsListProps {
     isEditing: boolean;
     handleClickEdit: ({ comments, commentId, commentRate }: { comments: string; commentId: number; commentRate: number }) => void;
     commentId?: number;
-    currentRate?: number;
+    updateRate?: number;
     updateComment: string;
     commentDataList: CommentDataProps[];
     fetchCommentHandler: (id: string) => Promise<void>;
     updateCommentHandler: ({ commentId, comment, rating }: UpdateProps, recipeId: string) => Promise<void>;
     deleteCommentHandler: (commentId: number, recipeId: string) => Promise<void>;
     handleUpdateComment: (e: ChangeEvent<HTMLTextAreaElement>) => void;
-    // handleUpdateRate: (rate: number) => void;
+    handleUpdateRate: (rate: number) => void;
 }
 // ! commentId! 강제로 넣어놓은 부분 데이터 연동 후 확인 & 다른 방식으로 구현할것
 export default function CommentList({
     isEditing,
     handleClickEdit,
     commentId,
-    currentRate,
+    updateRate,
     updateComment,
     commentDataList,
     fetchCommentHandler,
     updateCommentHandler,
     deleteCommentHandler,
     handleUpdateComment,
-}: // handleUpdateRate,
-CommentsListProps): JSX.Element {
+    handleUpdateRate,
+}: CommentsListProps): JSX.Element {
     const { id } = useParams<{ id: string }>();
 
     // fetchCommentsList : recipeId 기준 코멘트 조회 & recipeId가 바뀔때마다 fetchCommentHandler 호출
@@ -66,12 +66,18 @@ CommentsListProps): JSX.Element {
                             <ReviewerFigcaption>{comment.commentAuthor}</ReviewerFigcaption>
                         </ReviewerFigure>
                         <CommentsDataWrapper>
-                            <CommentRating rating={comment.rating} />
+                            <CommentRating
+                                isEditing={isEditing}
+                                commentId={commentId}
+                                reviewId={comment.commentId}
+                                rating={comment.rating}
+                                handleUpdateRate={handleUpdateRate}
+                            />
                             <span>{comment.createdAt.split('T')[0]}</span>
                             <CommentEditBtn
                                 isEditing={isEditing}
                                 commentId={commentId}
-                                currentRate={currentRate ?? 0}
+                                updateRate={updateRate ?? 0}
                                 updateComment={updateComment}
                                 handleClickEdit={handleClickEdit}
                                 updateCommentHandler={updateCommentHandler}

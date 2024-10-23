@@ -7,6 +7,7 @@ interface CommentsTextProps {
     reviewId: number;
     content: string;
     updateComment: string;
+
     handleUpdateComment: (e: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 

@@ -157,9 +157,9 @@ export const useUpdateRecipes = (id: string | undefined) => {
             return;
         }
         try {
-            // 1. S3에 썸네일 이미지 업로드
-            let thumbnailUrl = '';
-            console.log(' 1. thumbnail : ', thumbnailFile);
+            // 3-1. S3에 썸네일 이미지 업로드
+            let thumbnailUrl = thumbnailPreview;
+
             if (thumbnailFile) {
                 const formDataThumbnail = new FormData();
                 formDataThumbnail.append('recipeThumbnail', thumbnailFile);
@@ -181,28 +181,34 @@ export const useUpdateRecipes = (id: string | undefined) => {
             }
             console.log(' 1. thumbnailUrl : ', thumbnailUrl);
 
-            // 2. S3에 조리 순서 이미지 업로드
+            // 3-2. S3에 조리 순서 이미지 업로드
             const formDataOrderImages = new FormData();
+            const originOrderImageUrls = [...imagePreviews];
+
             steps.forEach((step) => {
-                if (step.picture) {
+                if (step.picture && step.picture instanceof File) {
                     formDataOrderImages.append('recipeOrderImages', step.picture);
                 }
             });
-            console.log('2.formDataOrderImages : ', formDataOrderImages);
 
-            const s3OrderImagesResponse = await axios.post(
-                `${import.meta.env.VITE_BASE_URL}/pictures/orderImages?recipeName=${recipeName}`,
-                formDataOrderImages,
-                {
-                    headers: {
-                        'access-token': `Bearer ${token}`,
+            //이미지 변경된 경우에만 업로드
+            if (formDataOrderImages.has('recipeOrderImages')) {
+                const s3OrderImagesResponse = await axios.post(
+                    `${import.meta.env.VITE_BASE_URL}/pictures/orderImages?recipeName=${recipeName}`,
+                    formDataOrderImages,
+                    {
+                        headers: {
+                            'access-token': `Bearer ${token}`,
+                        },
                     },
-                },
-            );
-            console.log('s3OrderImageResponse : ', s3OrderImagesResponse);
-            console.log('s3OrderImageResponse.data : ', s3OrderImagesResponse.data);
-            //! response된 값 보고 수정필요
-            const orderImageUrls = s3OrderImagesResponse.data; // 조리 과정 이미지 URL 배열
+                );
+                const newImageUrls = s3OrderImagesResponse.data;
+
+                //새로 업로드된 이미지 urls를 기존의 originOrderImageUrls에 업데이트
+                newImageUrls.forEach((url: string, index: number) => {
+                    originOrderImageUrls[index] = url;
+                });
+            }
 
             const recipeData = {
                 recipeId: id,
@@ -219,9 +225,9 @@ export const useUpdateRecipes = (id: string | undefined) => {
                     // recipeOrderImage: orderImageUrls[index] || '',
                 })),
             };
-            //최종수정
+            //3-3 최종수정api호출
             const response = await axios.put(
-                `${import.meta.env.VITE_BASE_URL}/recipes?thumbnailUrl=${thumbnailUrl}&recipeOrderImagesUrl=${orderImageUrls.join(',')}`,
+                `${import.meta.env.VITE_BASE_URL}/recipes?thumbnailUrl=${thumbnailUrl}&recipeOrderImagesUrl=${originOrderImageUrls.join(',')}`,
                 recipeData,
                 {
                     headers: {

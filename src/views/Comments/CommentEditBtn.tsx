@@ -19,7 +19,7 @@ interface EditBtnProps {
     review: Props;
     isEditing: boolean;
     commentId?: number;
-    currentRate: number;
+    updateRate: number;
     updateComment: string;
     handleClickEdit: ({ comments, commentId, commentRate }: { comments: string; commentId: number; commentRate: number }) => void;
     updateCommentHandler: ({ commentId, comment, rating }: UpdateProps, recipeId: string) => Promise<void>;
@@ -31,7 +31,7 @@ export default function CommentEditBtn({
     review,
     isEditing,
     commentId,
-    currentRate,
+    updateRate,
     updateComment,
     handleClickEdit,
     updateCommentHandler,
@@ -44,14 +44,14 @@ export default function CommentEditBtn({
             {isEditing
                 ? commentId == review.commentId && (
                       <>
-                          {commentId !== undefined && currentRate != undefined && recipeId !== undefined && (
+                          {commentId !== undefined && updateRate != undefined && recipeId !== undefined && (
                               <button
                                   onClick={() =>
                                       updateCommentHandler(
                                           {
                                               commentId: commentId,
                                               comment: updateComment,
-                                              rating: currentRate,
+                                              rating: updateRate,
                                           },
                                           recipeId,
                                       )

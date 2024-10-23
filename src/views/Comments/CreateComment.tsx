@@ -1,6 +1,6 @@
 import { FormEvent, ChangeEvent } from 'react';
 import { useParams } from 'react-router-dom';
-import { FaRegStar, FaStar } from 'react-icons/fa';
+import { MdStar, MdStarBorder } from 'react-icons/md';
 import styled from 'styled-components';
 
 interface CreateHandlerProps {
@@ -34,16 +34,18 @@ export default function CreateComment({
             >
                 <textarea name="comments" value={createdComment} onChange={handleCreateComment}></textarea>
                 <ReviewBottom>
-                    <span>your rating</span>
-                    {Array(5)
-                        .fill(0)
-                        .map((_, idx) => {
-                            return createdRate >= idx + 1 ? (
-                                <FaStar key={idx} onClick={() => handleCreateRate(idx + 1)} />
-                            ) : (
-                                <FaRegStar key={idx} onClick={() => handleCreateRate(idx + 1)} />
-                            );
-                        })}
+                    <span>Check Rating</span>
+                    <ReviewRating>
+                        {Array(5)
+                            .fill(0)
+                            .map((_, idx) => {
+                                return createdRate >= idx + 1 ? (
+                                    <MdStar key={idx} onClick={() => handleCreateRate(idx + 1)} />
+                                ) : (
+                                    <MdStarBorder key={idx} onClick={() => handleCreateRate(idx + 1)} />
+                                );
+                            })}
+                    </ReviewRating>
 
                     <button type="submit">등록하기</button>
                 </ReviewBottom>
@@ -73,4 +75,14 @@ const ReviewForm = styled.form`
 `;
 const ReviewBottom = styled.div`
     display: flex;
+    align-items: center;
+    span {
+        margin-right: 8px;
+    }
+    MdStar {
+        color: #656565;
+    }
+`;
+const ReviewRating = styled.span`
+    cursor: pointer;
 `;

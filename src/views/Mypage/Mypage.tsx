@@ -143,7 +143,9 @@ export default function Mypage(): JSX.Element {
                             <Grid item xs={12} sm={6} md={6} key={scrapedRecipe.recipeId}>
                                 <S_MyFigure>
                                     <img src={scrapedRecipe.recipeThumbnail} alt="스크랩 이미지" style={{ width: '100%', borderRadius: '8px' }} />
-                                    <S_MyFigcaption>{scrapedRecipe.recipeName}</S_MyFigcaption>
+                                    <M_Linked to={`/recipes/${scrapedRecipe.recipeId}`}>
+                                        <S_MyFigcaption>{scrapedRecipe.recipeName}</S_MyFigcaption>
+                                    </M_Linked>
                                     <M_BookmarkIcons
                                         onClick={() => handleClickBookmark(scrapedRecipe.recipeId)}
                                         mark={bookmarkRecipes[scrapedRecipe.recipeId] ?? true}

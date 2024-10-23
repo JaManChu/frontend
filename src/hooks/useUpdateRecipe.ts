@@ -162,6 +162,7 @@ export const useUpdateRecipes = (id: string | undefined) => {
             const orderImageUrls = s3OrderImagesResponse.data; // 조리 과정 이미지 URL 배열
 
             const recipeData = {
+                recipeId: id,
                 recipeName: recipeName,
                 recipeLevel: recipeLevel,
                 recipeCookingTime: recipeCookingTime,

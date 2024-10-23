@@ -20,10 +20,8 @@ export interface RecipeProps {
     recipeLevel: string;
     recipeCookingTime: string;
     recipeThumbnail: string;
-    // rate: string;
-    // desc: string;
+    recipeRating: string;
     ingredients: Record<string, string | number>[];
-    overview: string;
     instructions: Record<number | string, string>[];
 }
 

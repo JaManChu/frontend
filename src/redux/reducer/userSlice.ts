@@ -5,6 +5,7 @@ interface UserActionState {
     isLoggedIn: boolean;
     token: string | null;
     nickname: string | null;
+    provider: string | null;
 }
 interface UserState {
     value: UserActionState;
@@ -13,13 +14,13 @@ interface UserState {
 // createSlice : action과 reducer를 한번에 저장 - reduer의 이름과 초기값 설정 가능
 const userSlice = createSlice({
     name: 'user',
-    initialState: { value: { isLoggedIn: false, token: null, nickname: null } } as UserState,
+    initialState: { value: { isLoggedIn: false, token: null, nickname: null, provider: 'system' } } as UserState,
     reducers: {
         loginSuccess: (state, action: PayloadAction<UserActionState>) => {
             state.value = action.payload;
         },
         logoutSuccess: (state) => {
-            state.value = { isLoggedIn: false, token: null, nickname: null };
+            state.value = { isLoggedIn: false, token: null, nickname: null, provider: 'system' };
         },
     },
 });

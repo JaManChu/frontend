@@ -11,10 +11,11 @@ export default function AuthKaKao() {
         const params = new URLSearchParams(window.location.search);
         const token = params.get('access-token');
         const nickname = params.get('nickname');
+        const provider = params.get('provider');
         console.log(token, nickname);
 
         if (token && nickname) {
-            dispatch(loginSuccess({ isLoggedIn: true, token: token, nickname: nickname }));
+            dispatch(loginSuccess({ isLoggedIn: true, token: token, nickname: nickname, provider: provider }));
             navigate('/');
         }
     }, [navigate]);

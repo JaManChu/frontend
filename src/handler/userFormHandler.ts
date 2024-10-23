@@ -101,7 +101,7 @@ export const userFormHandler = () => {
             if (response.data.code == 'OK') {
                 const token = response.headers['access-token']; // 헤더 토큰 저장
                 const accessToken = token?.replace('Bearer ', ''); // Bearer 삭제 후 저장
-                const userDispatchData = { isLoggedIn: true, token: accessToken, nickname: response.data.data };
+                const userDispatchData = { isLoggedIn: true, token: accessToken, nickname: response.data.data, provider: 'system' };
                 dispatch(loginSuccess(userDispatchData));
                 dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null })); // 로그인 성공 modal
                 navigate('/');

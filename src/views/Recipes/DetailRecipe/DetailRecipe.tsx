@@ -29,12 +29,15 @@ export default function DetailRecipe(): JSX.Element {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes/${id}`);
                 if (response.data.code === 'OK') {
+                    console.log(response);
                     const data = response.data.data;
+                    console.log(data);
                     const convertData = data.map((item: Props) => ({
                         ...item,
                         recipeLevel: convertLevel(item.recipeLevel),
                         recipeCookingTime: convertTime(item.recipeCookingTime),
                     }));
+                    console.log(convertData);
                     setRecipe(convertData);
                     setMessage(response.data.message);
                 }

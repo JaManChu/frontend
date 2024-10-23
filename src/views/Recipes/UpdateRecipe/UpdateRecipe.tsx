@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { useRecipeCreate } from '../../../hooks/useRecipeCreate';
 import DefaultImg from '../../../assets/img/defaultImg.jpeg';
 import { useUpdateRecipes } from '../../../hooks/useUpdateRecipe';
 import withAuth from '../../../hooks/withAuth';

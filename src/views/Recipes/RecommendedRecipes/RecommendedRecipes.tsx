@@ -5,6 +5,7 @@ import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
 import instance from '../../../utils/api/instance.js';
 import { useDispatch } from 'react-redux';
 import { showModal } from '../../../redux/reducer/modalSlice.js';
+import Navibar from '../../../components/Navibar/Navibar.js';
 
 interface RecipeProps {
     recipeId: number;
@@ -38,6 +39,7 @@ function RecommendedRecipes(): JSX.Element {
     return (
         <S_RecipeContainer>
             <RecipeList recipes={recipes} />
+            <Navibar />
         </S_RecipeContainer>
     );
 }

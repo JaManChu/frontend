@@ -5,6 +5,7 @@ import PopularRecipes from './PopularRecipes';
 import { useDispatch } from 'react-redux';
 import { showModal } from '../../../redux/reducer/modalSlice.js';
 import Navibar from '../../../components/Navibar/Navibar.js';
+import { convertLevel, convertTime } from '../../../common/convertFunc.js';
 
 export interface RecipeProps {
     recipeId: number;
@@ -37,7 +38,12 @@ export default function PopularRecipeData(): JSX.Element {
                 const uniqueRecipes = newRecipes.filter(
                     (newRecipe) => !recipes.some((existingRecipe) => existingRecipe.recipeId === newRecipe.recipeId),
                 );
-                setRecipes((prev) => [...prev, ...uniqueRecipes]);
+                const convertData = uniqueRecipes.map((recipe) => ({
+                    ...recipe,
+                    recipeLevel: convertLevel(recipe.recipeLevel),
+                    recipeCookingTime: convertTime(recipe.recipeCookingTime),
+                }));
+                setRecipes((prev) => [...prev, ...convertData]);
                 setOffset((prev) => prev + 1);
             }
         } catch (err: any) {

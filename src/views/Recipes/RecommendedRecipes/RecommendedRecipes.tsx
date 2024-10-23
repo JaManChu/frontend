@@ -6,6 +6,7 @@ import instance from '../../../utils/api/instance.js';
 import { useDispatch } from 'react-redux';
 import { showModal } from '../../../redux/reducer/modalSlice.js';
 import Navibar from '../../../components/Navibar/Navibar.js';
+import { convertTime, convertLevel } from '../../../common/convertFunc.js';
 
 interface RecipeProps {
     recipeId: number;
@@ -28,7 +29,14 @@ function RecommendedRecipes(): JSX.Element {
         try {
             const response = await instance.get('/recipes/recommended');
             if (response.data.code == 'OK') {
-                setRecipes(response.data.data.recipes);
+                const data = response.data.data;
+                const convertData = data.map((item: RecipeProps) => ({
+                    ...item,
+                    recipeLevel: convertLevel(item.recipeLevel),
+                    recipeCookingTime: convertTime(item.recipeCookingTime),
+                }));
+
+                setRecipes(convertData);
             }
         } catch (err) {
             console.log(err);

@@ -3,7 +3,7 @@ import Carousel from './Carousel';
 import styled from 'styled-components';
 import AllRecipesView from '../Recipes/AllRecipes/AllRecipesView';
 
-export default function NewHome(): JSX.Element {
+export default function Home(): JSX.Element {
     const images = [
         {
             download_url: 'https://picsum.photos/200/300',

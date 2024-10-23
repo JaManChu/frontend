@@ -4,6 +4,7 @@ import instance from '../../../utils/api/instance.js';
 import PopularRecipes from './PopularRecipes';
 import { useDispatch } from 'react-redux';
 import { showModal } from '../../../redux/reducer/modalSlice.js';
+import Navibar from '../../../components/Navibar/Navibar.js';
 
 export interface RecipeProps {
     recipeId: number;
@@ -51,6 +52,7 @@ export default function PopularRecipeData(): JSX.Element {
     return (
         <S_RecipeContainer>
             <PopularRecipes recipes={recipes} fetchRecipes={fetchRecipes} isLoading={isLoading} />
+            <Navibar />
         </S_RecipeContainer>
     );
 }

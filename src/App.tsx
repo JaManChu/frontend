@@ -4,7 +4,7 @@ import Login from './views/Login/Login.tsx';
 import Signup from './views/Signup/Signup.tsx';
 import Mypage from './views/Mypage/Mypage.tsx';
 import HeaderView from './components/Header/HeaderView.tsx';
-import NewHome from './views/Home/NewHome.tsx';
+import Home from './views/Home/Home.tsx';
 import AllRecipesView from './views/Recipes/AllRecipes/AllRecipesView.tsx';
 import PopularRecipesView from './views/Recipes/PopularRecipes/PopularRecipesView.tsx';
 import RecommendedRecipes from './views/Recipes/RecommendedRecipes/RecommendedRecipes.tsx';
@@ -19,7 +19,7 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route element={<HeaderView />}>
-                    <Route path="/" element={<NewHome />} />
+                    <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/users/login/auth/kakao" element={<AuthKaKao />} />

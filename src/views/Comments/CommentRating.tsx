@@ -16,11 +16,13 @@ export default function CommentRating({ rating, isEditing, commentId, reviewId, 
                 <CommentsRating>
                     {Array(5)
                         .fill(0)
-                        .map((_, idx) => (
-                            <span key={idx} onClick={() => handleUpdateRate(idx + 1)}>
-                                {rating > idx ? <MdStar /> : <MdStarBorder />}
-                            </span>
-                        ))}
+                        .map((_, idx) => {
+                            return rating >= idx + 1 ? (
+                                <MdStar key={idx} onClick={() => handleUpdateRate(idx + 1)} />
+                            ) : (
+                                <MdStarBorder key={idx} onClick={() => handleUpdateRate(idx + 1)} />
+                            );
+                        })}
                 </CommentsRating>
             ) : (
                 <CommentsRating>

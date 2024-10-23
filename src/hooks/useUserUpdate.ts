@@ -1,13 +1,13 @@
-import instance from '../../../utils/api/instance';
-import { validateUserIfno } from '../../../utils/validation/validation';
-import { userFormHandler } from '../../../handler/userFormHandler';
+import instance from '../utils/api/instance';
+import { validateUserIfno } from '../utils/validation/validation';
+import { userFormHandler } from '../handler/userFormHandler';
 
 export const useUserUpdate = (
     password: string,
     newPassword: string,
     passwordCheck: string,
     nickname: string,
-    handleModalClose: () => void,
+    closeModal: () => void,
     refetchUserInfo: () => void,
 ) => {
     // const token = useAuthToken();
@@ -37,7 +37,7 @@ export const useUserUpdate = (
 
             //서버에서 받은 새로운 정보 상태 업데이트
             refetchUserInfo();
-            handleModalClose();
+            closeModal();
         } catch (error) {
             console.error('회원정보 수정 실패', error);
             alert('회원정보 수정에 실패했습니다.');

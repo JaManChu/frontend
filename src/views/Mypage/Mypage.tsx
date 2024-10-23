@@ -1,23 +1,23 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Modal from '../../components/Modal/Modal';
-import { useModal } from './hooks/useModal';
-import { useUpdateForm } from './hooks/updateForm';
+import { useModal } from '../../hooks/useModal';
+import { useUpdateForm } from '../../hooks/useUpdateForm';
 import { useGetMyRecipes } from '../../hooks/useGetMyRecipes';
 import { useGetUserInfo } from '../../hooks/useGetUserInfo';
 import { Button, Typography, Avatar, Grid, Pagination, Box } from '@mui/material';
 
-import { useUserUpdate } from './hooks/useUserUpdate';
+import { useUserUpdate } from '../../hooks/useUserUpdate';
 import { useRecipeDelete } from '../../hooks/useRecipeDelete';
 import { FaRegBookmark, FaBookmark } from 'react-icons/fa6';
 import colors from '../../styles/colors';
-import { useBookmark } from './hooks/useBookmark';
+import { useBookmark } from '../../hooks/useBookmark';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { userFormHandler } from '../../handler/userFormHandler';
 import useAuthToken from '../../hooks/useAuthToken';
 import { useNavigate } from 'react-router-dom';
-import { useDeleteUser } from '../../handler/useDeleteUser';
+import { useDeleteUser } from '../../hooks/useDeleteUser';
 export default function Mypage(): JSX.Element {
     const { handleDeleteUser } = useDeleteUser();
 
@@ -67,18 +67,21 @@ export default function Mypage(): JSX.Element {
     //모달 상태관리 hook
     const {
         isModalVisible,
-        setIsModalVisible,
-        handleModalClose,
-        handleCheckModalOpen,
-        handleCheckModalClose,
         isCheckModal,
+        isPasswordModal,
+        closeModal,
         handlePasswordModalOpen,
         handlePasswordModalClose,
-        isPasswordModal,
+        handleCheckModalOpen,
+        handleCheckModalClose,
+        setIsModalVisible,
+        isDelUserModal,
+        handleDelUserClose,
+        handleDelUserOpen,
     } = useModal();
 
     //회원정보수정 hook
-    const { handleUpdate } = useUserUpdate(password, newPassword, passwordCheck, nickname, handleModalClose, refetchUserInfo);
+    const { handleUpdate } = useUserUpdate(password, newPassword, passwordCheck, nickname, closeModal, refetchUserInfo);
 
     //닉네임중복확인
     const { inputMessage, clickedButEmpty } = userFormHandler();
@@ -225,18 +228,33 @@ export default function Mypage(): JSX.Element {
                 </S_MyInfoText>
                 <S_ButtonWrapper>
                     {parsedProvider === 'kakao' ? (
-                        <Button
-                            variant="contained"
-                            color="error"
-                            sx={{
-                                width: '100%',
-                                mb: 2,
-                                boxShadow: 3,
-                            }}
-                            onClick={handleDeleteUser}
-                        >
-                            회원탈퇴
-                        </Button>
+                        <>
+                            <Button
+                                variant="contained"
+                                color="error"
+                                sx={{
+                                    width: '100%',
+                                    mb: 2,
+                                    boxShadow: 3,
+                                }}
+                                onClick={handleDeleteUser}
+                            >
+                                회원탈퇴
+                            </Button>
+                            {isDelUserModal && (
+                                <Modal
+                                    visible={isDelUserModal}
+                                    onClose={handleDelUserClose}
+                                    buttons={[
+                                        { label: '확인', onClick: handleDeleteUser },
+                                        { label: '취소', onClick: handleDelUserClose },
+                                    ]}
+                                >
+                                    <h2>회원탈퇴</h2>
+                                    <p>정말 탈퇴하시겠습니까? </p>
+                                </Modal>
+                            )}
+                        </>
                     ) : (
                         <>
                             <Button
@@ -259,16 +277,30 @@ export default function Mypage(): JSX.Element {
                                     mb: 2,
                                     boxShadow: 3,
                                 }}
+                                onClick={handleDelUserOpen}
                             >
                                 회원탈퇴
                             </Button>
+                            {isDelUserModal && (
+                                <Modal
+                                    visible={isDelUserModal}
+                                    onClose={handleDelUserClose}
+                                    buttons={[
+                                        { label: '확인', onClick: handleDeleteUser },
+                                        { label: '취소', onClick: handleDelUserClose },
+                                    ]}
+                                >
+                                    <h2>회원탈퇴</h2>
+                                    <p>정말 탈퇴하시겠습니까? </p>
+                                </Modal>
+                            )}
                             {isModalVisible && (
                                 <Modal
                                     visible={isModalVisible}
-                                    onClose={handleModalClose}
+                                    onClose={closeModal}
                                     buttons={[
                                         { label: '수정', onClick: handleUpdate, disabled: !(nicknameCheck && passowordInfoCheck) },
-                                        { label: '취소', onClick: handleModalClose },
+                                        { label: '취소', onClick: closeModal },
                                     ]}
                                 >
                                     <h1>회원정보 수정</h1>

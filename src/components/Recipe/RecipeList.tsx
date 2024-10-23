@@ -9,8 +9,7 @@ interface RecipeProps {
     recipeLevel: string;
     recipeCookingTime: string;
     recipeThumbnail: string;
-    // rate: string;
-    // desc: string;
+    recipeRating: string;
 }
 interface RecipeListProps {
     recipes: RecipeProps[];

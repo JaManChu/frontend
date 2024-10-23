@@ -23,11 +23,18 @@ interface CardProps {
     recipeLevel: string;
     recipeCookingTime: string;
     recipeThumbnail: string;
-    // rate: string;
+    recipeRating: string;
     // desc: string;
 }
 
-export default function RecipeNewCard({ recipeId, recipeName, recipeThumbnail, recipeCookingTime, recipeLevel }: CardProps): JSX.Element {
+export default function RecipeNewCard({
+    recipeId,
+    recipeName,
+    recipeThumbnail,
+    recipeCookingTime,
+    recipeLevel,
+    recipeRating,
+}: CardProps): JSX.Element {
     const [marked, setMarked] = useState<boolean>(false);
     const [message, setMessage] = useState<string>('');
 
@@ -86,7 +93,7 @@ export default function RecipeNewCard({ recipeId, recipeName, recipeThumbnail, r
                         가나다라마바사아자차가타파하가갸거겨교고교그긔나냐너녀노뇨뉴ㅜ뉴느늬
                     </M_StyledTypography>
                     <M_StyledInfo>
-                        <RecipeMetaData time={recipeCookingTime} level={recipeLevel} rate="평점주세요" />
+                        <RecipeMetaData time={recipeCookingTime} level={recipeLevel} rate={recipeRating} />
                     </M_StyledInfo>
                 </M_SyledCardContent>
             </M_SyledCard>

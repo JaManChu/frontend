@@ -237,7 +237,7 @@ export default function Mypage(): JSX.Element {
                                     mb: 2,
                                     boxShadow: 3,
                                 }}
-                                onClick={handleDeleteUser}
+                                onClick={handleDelUserOpen}
                             >
                                 회원탈퇴
                             </Button>
@@ -291,7 +291,7 @@ export default function Mypage(): JSX.Element {
                                     ]}
                                 >
                                     <h2>회원탈퇴</h2>
-                                    <p>정말 탈퇴하시겠습니까? </p>
+                                    <p>정말 탈퇴하시겠습니까?</p>
                                 </Modal>
                             )}
                             {isModalVisible && (

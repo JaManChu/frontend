@@ -12,7 +12,7 @@ export const useDeleteUser = () => {
             console.log('response.data : ', response.data);
             if (response.data.code === 'OK') {
                 dispatch(logoutSuccess());
-
+                sessionStorage.removeItem('persist:root');
                 alert('탈퇴가 성공적으로 완료됐습니다.');
                 navigate('/');
             }

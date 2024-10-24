@@ -109,7 +109,11 @@ export const userFormHandler = () => {
                 navigate('/');
             }
         } catch (err: any) {
-            console.log('로그인 에러: ', err);
+            if (err.response) {
+                dispatch(showModal({ isOpen: true, content: err.response.data, onConfirm: null }));
+            } else {
+                console.log('로그인 에러: ', err);
+            }
         }
     };
 

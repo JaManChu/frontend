@@ -71,6 +71,7 @@ export default function CommentList({
                                 commentId={commentId}
                                 reviewId={comment.commentId}
                                 rating={comment.rating}
+                                updateRate={updateRate ?? 0}
                                 handleUpdateRate={handleUpdateRate}
                             />
                             <span>{comment.createdAt.split('T')[0]}</span>

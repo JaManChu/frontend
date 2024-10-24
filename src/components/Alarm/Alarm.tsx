@@ -1,10 +1,8 @@
 import { Link } from 'react-router-dom';
-import fetchSSEHandler from '../../handler/fetchSSEHandler';
 import styled from 'styled-components';
+import { SSEProps } from '../../handler/fetchSSEHandler';
 
-export default function Alarm() {
-    const { alarmData } = fetchSSEHandler();
-
+export default function Alarm({ alarmData }: { alarmData: SSEProps[] }) {
     return (
         <AlarmContainer>
             <h5>알람</h5>

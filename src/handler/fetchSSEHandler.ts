@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
 import useAuthToken from '../hooks/useAuthToken';
 
-interface SSEProps {
+export interface SSEProps {
     recipeName: string;
     message: string;
     rating: number;
@@ -36,7 +36,7 @@ export default function fetchSSEHandler() {
             withCredentials: true,
         });
 
-        // 연결 -> 최초 연결시 "Alarm Init Message" -> 랜더 금지?
+        // 연결 -> 최초 연결시 "Alarm Init Message"
         eventSource.onopen = () => {
             console.log('Connection to SSE server stablished');
         };
@@ -45,7 +45,6 @@ export default function fetchSSEHandler() {
         eventSource.onmessage = (evt) => {
             const res = evt.data;
             console.log('event data: ', res);
-
             try {
                 const parsedData = JSON.parse(res);
                 setAlarmData((prev) => [...prev, parsedData]); // recipeId, comment, reviewer, createdAt

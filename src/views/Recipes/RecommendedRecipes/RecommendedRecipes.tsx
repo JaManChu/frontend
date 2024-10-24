@@ -29,7 +29,7 @@ function RecommendedRecipes(): JSX.Element {
         try {
             const response = await instance.get('/recipes/recommended');
             if (response.data.code == 'OK') {
-                const data = response.data.data;
+                const data = response.data.data.recipes;
                 const convertData = data.map((item: RecipeProps) => ({
                     ...item,
                     recipeLevel: convertLevel(item.recipeLevel),

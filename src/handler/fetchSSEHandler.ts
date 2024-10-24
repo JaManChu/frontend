@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
-import useAuthToken from './useAuthToken';
+import useAuthToken from '../hooks/useAuthToken';
 
 interface SSEProps {
     recipeName: string;
@@ -9,21 +9,34 @@ interface SSEProps {
     commentUser: string;
 }
 
-export default function fetchSSE() {
+export default function fetchSSEHandler() {
     const [alarmData, setAlarmData] = useState<SSEProps[]>([]); // 서버가 푸쉬한 데이터 저장
     const token = useAuthToken();
+    let eventSource: EventSource | null = null;
 
     useEffect(() => {
+        if (token) {
+            fetchSSE();
+        }
+        return () => {
+            if (eventSource) {
+                eventSource.close();
+                console.log('Close SSE connection');
+            }
+        };
+    }, [token]);
+
+    const fetchSSE = () => {
         const EventSource = EventSourcePolyfill || NativeEventSource; // request header에 token을 보내기 위해 EventSourcePolyfill(EventSource는 header 수정불가)
         // 새로운 EventSource생성
-        const eventSource = new EventSource(`${import.meta.env.VITE_BASE_URL}/notify`, {
+        eventSource = new EventSource(`${import.meta.env.VITE_BASE_URL}/notify`, {
             headers: {
                 'access-token': `Bearer ${token}`,
             },
             withCredentials: true,
         });
 
-        // 연결 - 유저당 "Alarm Init Message"
+        // 연결 -> 최초 연결시 "Alarm Init Message" -> 랜더 금지?
         eventSource.onopen = () => {
             console.log('Connection to SSE server stablished');
         };
@@ -32,25 +45,23 @@ export default function fetchSSE() {
         eventSource.onmessage = (evt) => {
             const res = evt.data;
             console.log('event data: ', res);
-            const parsedData = JSON.parse(res);
-            // 이벤트 중복체크
-            setAlarmData((prev) => [...prev, parsedData]); // recipeId, comment, reviewer, createdAt
+
+            try {
+                const parsedData = JSON.parse(res);
+                setAlarmData((prev) => [...prev, parsedData]); // recipeId, comment, reviewer, createdAt
+            } catch (error) {
+                console.log('first message: ', res);
+            }
         };
 
         // 종료시 onerror로 처리
         eventSource.onerror = (err: any) => {
             console.log('SSE connection error', err);
-            eventSource.close();
-            if (err.error) {
-                // 에러 발생 시 할 일,
+            if (eventSource) {
+                eventSource.close();
             }
         };
-
-        return () => {
-            eventSource.close();
-            console.log('Close SSE connection');
-        };
-    }, [token]);
+    };
 
     return { alarmData };
 }

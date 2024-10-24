@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import fetchSSE from '../../hooks/useSSE';
+import fetchSSEHandler from '../../handler/fetchSSEHandler';
 import styled from 'styled-components';
 
 export default function Alarm() {
-    const { alarmData } = fetchSSE();
+    const { alarmData } = fetchSSEHandler();
 
     return (
         <AlarmContainer>

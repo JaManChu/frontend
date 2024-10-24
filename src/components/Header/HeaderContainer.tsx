@@ -8,6 +8,7 @@ import Alarm from '../Alarm/Alarm';
 import styled from 'styled-components';
 import logo from '../../assets/img/logo.png';
 import colors from '../../styles/colors';
+import fetchSSEHandler from '../../handler/fetchSSEHandler';
 
 interface HeaderProps {
     menuItems: Record<string, string>[];
@@ -20,6 +21,7 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
     const isLogin = useSelector((state: RootState) => state.user.value.isLoggedIn);
     const dispatch = useDispatch();
 
+    const { alarmData } = fetchSSEHandler();
     const handleShowAlarm = (e: MouseEvent) => {
         e.stopPropagation();
         setShowAlarm(!showAlarm);
@@ -58,7 +60,7 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
                             <S_BellIcon>
                                 <FiBell onClick={handleShowAlarm} />
                             </S_BellIcon>
-                            {showAlarm && <Alarm />}
+                            {showAlarm && <Alarm alarmData={alarmData} />}
                         </S_LoginUserList>
                     ) : (
                         <>

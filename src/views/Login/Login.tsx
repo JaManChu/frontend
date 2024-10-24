@@ -41,10 +41,10 @@ export default function Login(): JSX.Element {
 
     const handleFindPassword = async () => {
         try {
-            const response = await axios.get(`/auth/find-password?email=${email}&nickname=${nickname}`);
+            const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/find-password?email=${email}&nickname=${nickname}`);
             console.log('비밀번호 response : ', response);
             console.log('비밀번호 response.data : ', response.data);
-            if (response.data.code === 200) {
+            if (response.data.status === 200) {
                 handlePasswordModalOpen();
                 setUserId(response.data.userId);
             }

@@ -85,7 +85,7 @@ export default function SearchCondition(): JSX.Element {
             if (response.data.code == 'OK') {
                 console.log('search response.data: ', response.data);
                 console.log('search response: ', response);
-                const newRecipes: RecipeProps[] = response.data.data;
+                const newRecipes: RecipeProps[] = response.data.data.recipes;
                 const uniqueRecipes = newRecipes.filter(
                     (newRecipe) => !recipes.some((existingRecipe) => existingRecipe.recipeId === newRecipe.recipeId),
                 );

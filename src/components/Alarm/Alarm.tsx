@@ -15,7 +15,7 @@ export default function Alarm() {
             <AlarmList>
                 {alarmData.map((data, idx) => (
                     <AlarmItem key={idx}>
-                        <Link to="/">{data}</Link>
+                        <Link to="/">{data.message}</Link>
                     </AlarmItem>
                 ))}
                 <AlarmItem>

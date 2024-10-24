@@ -50,6 +50,7 @@ export default function fetchSSEHandler() {
                 setAlarmData((prev) => [...prev, parsedData]); // recipeId, comment, reviewer, createdAt
             } catch (error) {
                 console.log('first message: ', res);
+                console.log('onmessage catch error: ', error);
             }
         };
 

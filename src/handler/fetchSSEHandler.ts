@@ -32,8 +32,11 @@ export default function fetchSSEHandler() {
         eventSource = new EventSource(`${import.meta.env.VITE_BASE_URL}/notify`, {
             headers: {
                 'access-token': `Bearer ${token}`,
+                'Content-Type': 'text/event-stream',
+                Connection: 'keep-alive',
             },
             withCredentials: true,
+            heartbeatTimeout: 100 * 60 * 1000,
         });
 
         // 연결 -> 최초 연결시 "Alarm Init Message"

@@ -206,7 +206,7 @@ export default function Login(): JSX.Element {
                             margin="normal"
                         />
                         <Box sx={{ display: 'flex', justifyContent: 'cetner', width: '100%' }}>
-                            <Button variant="text" color="primary" sx={{ textAlign: 'center', width: '100%' }} onClick={() => handleFindPassword}>
+                            <Button variant="text" color="primary" sx={{ textAlign: 'center', width: '100%' }} onClick={() => handleFindPassword()}>
                                 확인
                             </Button>
                         </Box>
@@ -239,7 +239,7 @@ export default function Login(): JSX.Element {
                                         variant="text"
                                         color="primary"
                                         sx={{ textAlign: 'center', width: '100%' }}
-                                        onClick={() => handleUpdatePassword}
+                                        onClick={() => handleUpdatePassword()}
                                     >
                                         확인
                                     </Button>

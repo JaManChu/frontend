@@ -21,6 +21,7 @@ export default function PopularRecipeData(): JSX.Element {
     const [recipes, setRecipes] = useState<RecipeProps[]>([]);
     const [offset, setOffset] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [hasMore, setHasMore] = useState<boolean>(true);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -34,6 +35,7 @@ export default function PopularRecipeData(): JSX.Element {
             const response = await instance.get(`/recipes/popular?page=${offset}&size=15`);
 
             if (response.data.code == 'OK') {
+                const totalRecipes = response.data.data.totalRecipes;
                 const newRecipes: RecipeProps[] = response.data.data.recipes;
                 const uniqueRecipes = newRecipes.filter(
                     (newRecipe) => !recipes.some((existingRecipe) => existingRecipe.recipeId === newRecipe.recipeId),
@@ -45,6 +47,10 @@ export default function PopularRecipeData(): JSX.Element {
                 }));
                 setRecipes((prev) => [...prev, ...convertData]);
                 setOffset((prev) => prev + 1);
+
+                if (recipes.length + convertData.length >= totalRecipes) {
+                    setHasMore(false); // 더 이상 불러올 데이터가 없으면 false로 설정
+                }
             }
         } catch (err: any) {
             console.log(err);
@@ -56,7 +62,7 @@ export default function PopularRecipeData(): JSX.Element {
 
     return (
         <S_RecipeContainer>
-            <PopularRecipes recipes={recipes} fetchRecipes={fetchRecipes} isLoading={isLoading} />
+            <PopularRecipes hasMore={hasMore} recipes={recipes} fetchRecipes={fetchRecipes} isLoading={isLoading} />
             <Navibar />
         </S_RecipeContainer>
     );

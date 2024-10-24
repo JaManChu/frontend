@@ -8,9 +8,10 @@ interface RecipeLimitProps {
     recipes: RecipeProps[];
     fetchRecipes: () => void;
     isLoading: boolean;
+    hasMore: boolean;
 }
 
-export default function PopularRecipes({ recipes, fetchRecipes, isLoading }: RecipeLimitProps): JSX.Element {
+export default function PopularRecipes({ hasMore, recipes, fetchRecipes, isLoading }: RecipeLimitProps): JSX.Element {
     const handleObserver = async (entry: IntersectionObserverEntry) => {
         if (entry.isIntersecting && !isLoading) {
             await fetchRecipes();
@@ -22,9 +23,13 @@ export default function PopularRecipes({ recipes, fetchRecipes, isLoading }: Rec
     return (
         <>
             <RecipeList recipes={recipes} />
-            <div ref={target}>
-                <Loading />
-            </div>
+            {hasMore ? (
+                <div ref={target}>
+                    <Loading />
+                </div>
+            ) : (
+                <div>No more recipes to load.</div>
+            )}
         </>
     );
 }

@@ -36,6 +36,7 @@ export default function SearchCondition(): JSX.Element {
     const [offset, setOffset] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [hasSearched, setHasSearched] = useState<boolean>(false);
+    const [hasMore, setHasMore] = useState<boolean>(true);
 
     // 재료 입력시에 검색어 리스트 입력 재료로 갱신
     useEffect(() => {
@@ -81,10 +82,8 @@ export default function SearchCondition(): JSX.Element {
                 },
             });
             console.log('search response: ', response);
-            console.log('검색내용', ingredientsList, time, level);
             if (response.data.code == 'OK') {
-                console.log('search response.data: ', response.data);
-                console.log('search response: ', response);
+                const totalRecipes = response.data.data.totalRecipes;
                 const newRecipes: RecipeProps[] = response.data.data.recipes;
                 const uniqueRecipes = newRecipes.filter(
                     (newRecipe) => !recipes.some((existingRecipe) => existingRecipe.recipeId === newRecipe.recipeId),
@@ -96,6 +95,9 @@ export default function SearchCondition(): JSX.Element {
                 }));
                 setRecipes((prev) => [...prev, ...convertData]);
                 setOffset((prev) => prev + 1);
+                if (recipes.length + convertData.length >= totalRecipes) {
+                    setHasMore(false); // 더 이상 불러올 데이터가 없으면 false로 설정
+                }
                 setHasSearched(true);
                 dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
             } else {
@@ -157,7 +159,7 @@ export default function SearchCondition(): JSX.Element {
                     </S_ConditionContentList>
                 </S_SearchedContent>
             )}
-            <SearchResult recipes={recipes} isLoading={isLoading} hasSearched={hasSearched} fetchRecipes={fetchRecipes} />
+            <SearchResult hasMore={hasMore} recipes={recipes} isLoading={isLoading} hasSearched={hasSearched} fetchRecipes={fetchRecipes} />
             <Navibar />
         </S_ConditionContainer>
     );

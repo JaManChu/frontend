@@ -22,6 +22,7 @@ export default function AllRecipesData({ limit }: RecipeLimitProps) {
     const [recipes, setRecipes] = useState<RecipeProps[]>([]);
     const [offset, setOffset] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [hasMore, setHasMore] = useState<boolean>(true);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -29,11 +30,13 @@ export default function AllRecipesData({ limit }: RecipeLimitProps) {
     }, []);
 
     const fetchRecipes = async () => {
-        if (isLoading) return;
+        if (isLoading && !hasMore) return;
         setIsLoading(true);
         try {
             const response = await instance.get(`/recipes?page=${offset}&size=15`);
+
             if (response.data.code == 'OK') {
+                const totalRecipes = response.data.data.totalRecipes;
                 const newRecipes: RecipeProps[] = response.data.data.recipes;
                 const uniqueRecipes = newRecipes.filter(
                     (newRecipe) => !recipes.some((existingRecipe) => existingRecipe.recipeId === newRecipe.recipeId),
@@ -45,6 +48,11 @@ export default function AllRecipesData({ limit }: RecipeLimitProps) {
                 }));
                 setRecipes((prev) => [...prev, ...convertData]);
                 setOffset((prev) => prev + 1);
+
+                // 현재 레시피의 총 개수와 전체 레시피 개수를 비교하여 hasMore 업데이트
+                if (recipes.length + convertData.length >= totalRecipes) {
+                    setHasMore(false); // 더 이상 불러올 데이터가 없으면 false로 설정
+                }
             }
         } catch (err: any) {
             console.log('전체레시피 error: ', err);
@@ -57,7 +65,7 @@ export default function AllRecipesData({ limit }: RecipeLimitProps) {
 
     return (
         <S_RecipeContainer>
-            <AllRecipes limit={limit} recipes={recipes} fetchRecipes={fetchRecipes} isLoading={isLoading} />
+            <AllRecipes hasMore={hasMore} limit={limit} recipes={recipes} fetchRecipes={fetchRecipes} isLoading={isLoading} />
             <Navibar />
         </S_RecipeContainer>
     );

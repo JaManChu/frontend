@@ -2,8 +2,15 @@ import { useState, useRef } from 'react';
 import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
 import useAuthToken from './useAuthToken';
 
+interface SSEProps {
+    recipeName: string;
+    message: string;
+    rating: number;
+    commentUser: string;
+}
+
 export default function fetchSSE() {
-    const [alarmData, setAlarmData] = useState<string[]>([]); // 서버가 푸쉬한 데이터 저장
+    const [alarmData, setAlarmData] = useState<SSEProps[]>([]); // 서버가 푸쉬한 데이터 저장
 
     const EventSource = EventSourcePolyfill || NativeEventSource; // request header에 token을 보내기 위해 EventSourcePolyfill(EventSource는 header 수정불가)
     const eventSource = useRef<null | EventSourcePolyfill>(null); // 상태변화가 직접적으로 Ui에 영향을 주지 않아 useRef사용
@@ -23,7 +30,9 @@ export default function fetchSSE() {
     });
 
     // 연결
-    eventSource.current.onopen = () => {};
+    eventSource.current.onopen = () => {
+        console.log('연결시작');
+    };
 
     // 데이터 받아옴
     eventSource.current.onmessage = async (evt) => {
@@ -31,7 +40,7 @@ export default function fetchSSE() {
         console.log('event data: ', res);
         const parsedData = JSON.parse(res);
         // 이벤트 중복체크
-        setAlarmData((prev) => [...prev, parsedData]); // recipeId, comment, reviewer, createdAt
+        setAlarmData((prev) => [{ ...prev }, parsedData]); // recipeId, comment, reviewer, createdAt
     };
 
     // 종료시 onerror로 처리

@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../redux/reducer/userSlice.ts';
 import { showModal } from '../redux/reducer/modalSlice.ts';
 import axios from 'axios';
+import fetchSSE from '../hooks/useSSE.ts';
 
 export const userFormHandler = () => {
     const navigate = useNavigate();
@@ -106,6 +107,7 @@ export const userFormHandler = () => {
                 const userDispatchData = { isLoggedIn: true, token: accessToken, nickname: response.data.data, provider: 'system' };
                 dispatch(loginSuccess(userDispatchData));
                 dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null })); // 로그인 성공 modal
+                fetchSSE();
                 navigate('/');
             }
         } catch (err: any) {

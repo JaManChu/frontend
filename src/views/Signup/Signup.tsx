@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Layout } from '../../styles/layout';
 import { userFormHandler } from '../../handler/userFormHandler.ts';
+import { useModal } from '../../hooks/useModal.ts';
 import { Button } from '@mui/material';
+import Modal from '../../components/Modal/Modal';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { showModal } from '../../redux/reducer/modalSlice.ts';
 export default function Signup(): JSX.Element {
+    const [modalMessage, setModalMessage] = useState<string>('');
     const dispatch = useDispatch();
 
     const [emailCheck, setEmailCheck] = useState<boolean>(false);
@@ -27,21 +30,22 @@ export default function Signup(): JSX.Element {
         handleSignup,
     } = userFormHandler();
 
+    const { isModalVisible, openModal, closeModal } = useModal();
+
     const handleCheckEmail = async () => {
         try {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/email-check?email=${email}`);
             console.log(response);
             console.log('response.data :', response.data);
 
-            // 이메일 사용 가능 여부에 따라 처리
             if (response.data.data === true) {
+                console.log(response);
                 setEmailCheck(true);
+                setModalMessage(response.data.message);
             } else if (response.data.data === false) {
                 setEmailCheck(false);
+                setModalMessage(response.data.message);
             }
-
-            // Redux를 통해 모달 띄우기
-            dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
         } catch (err: any) {
             if (err.response) {
                 dispatch(showModal({ isOpen: true, content: err.response.data, onConfirm: null }));
@@ -56,14 +60,14 @@ export default function Signup(): JSX.Element {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/nickname-check?nickname=${nickname}`);
             console.log('nickanme check, response( 204 ok 전): ', response);
             console.log('nick response.data.data', response.data.data);
-
-            // 닉네임 사용 가능 여부에 따라 처리
             if (response.data.data === true) {
+                console.log(response);
                 setNicknameCheck(true);
+                setModalMessage(response.data.message);
             } else if (response.data.data === false) {
                 setNicknameCheck(false);
+                setModalMessage(response.data.message);
             }
-            dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
         } catch (err: any) {
             if (err.response) {
                 dispatch(showModal({ isOpen: true, content: err.response.data, onConfirm: null }));
@@ -99,6 +103,7 @@ export default function Signup(): JSX.Element {
                             <Button
                                 type="button"
                                 onClick={() => {
+                                    openModal();
                                     handleCheckEmail();
                                 }}
                                 sx={{ width: '80px' }}
@@ -119,6 +124,7 @@ export default function Signup(): JSX.Element {
                             <Button
                                 type="button"
                                 onClick={() => {
+                                    openModal();
                                     handleCheckNickname();
                                 }}
                                 sx={{ width: '80px' }}
@@ -167,6 +173,13 @@ export default function Signup(): JSX.Element {
                         회원가입
                     </Button>
                 </form>
+
+                {isModalVisible && (
+                    <Modal visible={isModalVisible} onClose={closeModal} buttons={[{ label: '확인', onClick: closeModal }]}>
+                        <h2>중복 확인</h2>
+                        <p> {modalMessage} </p>
+                    </Modal>
+                )}
             </SingupContainer>
         </Layout>
     );

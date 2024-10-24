@@ -5,9 +5,12 @@ import { useModal } from '../../hooks/useModal.ts';
 import { Button } from '@mui/material';
 import Modal from '../../components/Modal/Modal';
 import axios from 'axios';
+import { AxiosError } from 'axios';
 import styled from 'styled-components';
-
+import { useDispatch } from 'react-redux';
+import { showModal } from '../../redux/reducer/modalSlice.ts';
 export default function Signup(): JSX.Element {
+    const dispatch = useDispatch();
     const [modalMessage, setModalMessage] = useState<string>('');
 
     const [emailCheck, setEmailCheck] = useState<boolean>(false);
@@ -44,9 +47,14 @@ export default function Signup(): JSX.Element {
                 setModalMessage(response.data.message);
             }
         } catch (err) {
-            console.log(err);
+            if (err instanceof AxiosError && err.response) {
+                dispatch(showModal({ isOpen: true, content: err.response.data, onConfirm: null }));
+            } else {
+                console.log(err);
+            }
         }
     };
+
     const handleCheckNickname = async () => {
         try {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/nickname-check?nickname=${nickname}`);

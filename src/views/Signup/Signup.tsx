@@ -5,7 +5,6 @@ import { useModal } from '../../hooks/useModal.ts';
 import { Button } from '@mui/material';
 import Modal from '../../components/Modal/Modal';
 import axios from 'axios';
-import { AxiosError } from 'axios';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { showModal } from '../../redux/reducer/modalSlice.ts';
@@ -46,8 +45,8 @@ export default function Signup(): JSX.Element {
                 setEmailCheck(false);
                 setModalMessage(response.data.message);
             }
-        } catch (err) {
-            if (err instanceof AxiosError && err.response) {
+        } catch (err: any) {
+            if (err.response) {
                 dispatch(showModal({ isOpen: true, content: err.response.data, onConfirm: null }));
             } else {
                 console.log(err);

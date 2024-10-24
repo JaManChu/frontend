@@ -34,6 +34,7 @@ export default function Signup(): JSX.Element {
             console.log('response.data :', response.data);
 
             // 이메일 사용 가능 여부에 따라 처리
+
             if (response.data.data === true) {
                 setEmailCheck(true);
             } else if (response.data.data === false) {

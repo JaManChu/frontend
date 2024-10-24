@@ -34,7 +34,7 @@ export default function PopularRecipeData(): JSX.Element {
             const response = await instance.get(`/recipes/popular?page=${offset}&size=15`);
 
             if (response.data.code == 'OK') {
-                const newRecipes: RecipeProps[] = response.data.data;
+                const newRecipes: RecipeProps[] = response.data.data.recipes;
                 const uniqueRecipes = newRecipes.filter(
                     (newRecipe) => !recipes.some((existingRecipe) => existingRecipe.recipeId === newRecipe.recipeId),
                 );

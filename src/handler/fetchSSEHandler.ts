@@ -11,11 +11,12 @@ export interface SSEProps {
 
 export default function fetchSSEHandler() {
     const [alarmData, setAlarmData] = useState<SSEProps[]>([]); // 서버가 푸쉬한 데이터 저장
+    const [isConnected, setIsConnected] = useState(false);
     const token = useAuthToken();
     let eventSource: EventSource | null = null;
 
     useEffect(() => {
-        if (token) {
+        if (token && !isConnected) {
             fetchSSE();
         }
         return () => {
@@ -24,9 +25,15 @@ export default function fetchSSEHandler() {
                 console.log('Close SSE connection');
             }
         };
-    }, [token]);
+    }, [token, isConnected]);
 
     const fetchSSE = () => {
+        // 기존 연결이 있다면 닫기
+        if (eventSource) {
+            eventSource.close();
+            console.log('Exisiting Connetion CLOSED!!!');
+        }
+
         const EventSource = EventSourcePolyfill || NativeEventSource; // request header에 token을 보내기 위해 EventSourcePolyfill(EventSource는 header 수정불가)
         // 새로운 EventSource생성
         eventSource = new EventSource(`${import.meta.env.VITE_BASE_URL}/notify`, {
@@ -39,6 +46,7 @@ export default function fetchSSEHandler() {
 
         // 연결 -> 최초 연결시 "Alarm Init Message"
         eventSource.onopen = () => {
+            setIsConnected(true);
             console.log('Connection to SSE server stablished');
         };
 
@@ -60,6 +68,7 @@ export default function fetchSSEHandler() {
             console.log('SSE connection error', err);
             if (eventSource) {
                 eventSource.close();
+                setIsConnected(false);
             }
         };
     };

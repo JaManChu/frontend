@@ -115,7 +115,8 @@ export const userFormHandler = () => {
             }
         } catch (err: any) {
             if (err.response) {
-                dispatch(showModal({ isOpen: true, content: err.response.data, onConfirm: null }));
+                console.log(err.respones);
+                dispatch(showModal({ isOpen: true, content: '모든 필드에 입력해주시기 바랍니다.', onConfirm: null }));
             } else {
                 console.log('로그인 에러: ', err);
             }
